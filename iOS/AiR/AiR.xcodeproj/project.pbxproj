@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		696BFFCA1F68757D00A32AF7 /* MapTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696BFFC81F6874C300A32AF7 /* MapTile.swift */; };
+		696BFFCB1F68757D00A32AF7 /* MapGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696BFFC71F6874C300A32AF7 /* MapGrid.swift */; };
 		69C207FE1F66D5C7004C25B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C207FD1F66D5C7004C25B7 /* AppDelegate.swift */; };
 		69C208001F66D5C7004C25B7 /* AiRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C207FF1F66D5C7004C25B7 /* AiRViewController.swift */; };
 		69C208031F66D5C7004C25B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69C208011F66D5C7004C25B7 /* Main.storyboard */; };
@@ -274,8 +276,10 @@
 				69D73D021F67C8AD00BA3E46 /* Utilties.swift in Sources */,
 				69D73D051F67C9EE00BA3E46 /* UIColor+hex.swift in Sources */,
 				69D84E111F68725900CBD39E /* IntroViewController.swift in Sources */,
+				696BFFCB1F68757D00A32AF7 /* MapGrid.swift in Sources */,
 				69C208001F66D5C7004C25B7 /* AiRViewController.swift in Sources */,
 				69C207FE1F66D5C7004C25B7 /* AppDelegate.swift in Sources */,
+				696BFFCA1F68757D00A32AF7 /* MapTile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
