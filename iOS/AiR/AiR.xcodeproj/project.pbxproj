@@ -14,9 +14,13 @@
 		69C208081F66D5C7004C25B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69C208061F66D5C7004C25B7 /* LaunchScreen.storyboard */; };
 		69D73D021F67C8AD00BA3E46 /* Utilties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D73D011F67C8AD00BA3E46 /* Utilties.swift */; };
 		69D73D051F67C9EE00BA3E46 /* UIColor+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D73D041F67C9EE00BA3E46 /* UIColor+hex.swift */; };
+		69D73D071F68149500BA3E46 /* MapTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D73D061F68149500BA3E46 /* MapTile.swift */; };
+		69D73D0B1F68238000BA3E46 /* MapGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D73D0A1F68238000BA3E46 /* MapGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6950825E1F682CBA005D8A3F /* LHR-CDG.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "LHR-CDG.gpx"; sourceTree = "<group>"; };
+		695082601F682FEB005D8A3F /* mapstogpx20170912_150724.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = mapstogpx20170912_150724.gpx; sourceTree = "<group>"; };
 		69C207FA1F66D5C7004C25B7 /* AiR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AiR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69C207FD1F66D5C7004C25B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		69C207FF1F66D5C7004C25B7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,6 +30,8 @@
 		69C208091F66D5C7004C25B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		69D73D011F67C8AD00BA3E46 /* Utilties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilties.swift; sourceTree = "<group>"; };
 		69D73D041F67C9EE00BA3E46 /* UIColor+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+hex.swift"; sourceTree = "<group>"; };
+		69D73D061F68149500BA3E46 /* MapTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
+		69D73D0A1F68238000BA3E46 /* MapGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +45,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6950825F1F682CC1005D8A3F /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				69D73D061F68149500BA3E46 /* MapTile.swift */,
+				69D73D0A1F68238000BA3E46 /* MapGrid.swift */,
+			);
+			path = Maps;
+			sourceTree = "<group>";
+		};
 		69C207F11F66D5C7004C25B7 = {
 			isa = PBXGroup;
 			children = (
@@ -58,8 +73,9 @@
 		69C207FC1F66D5C7004C25B7 /* AiR */ = {
 			isa = PBXGroup;
 			children = (
-				69C207FD1F66D5C7004C25B7 /* AppDelegate.swift */,
+				6950825F1F682CC1005D8A3F /* Maps */,
 				69C207FF1F66D5C7004C25B7 /* ViewController.swift */,
+				69C207FD1F66D5C7004C25B7 /* AppDelegate.swift */,
 				69C208011F66D5C7004C25B7 /* Main.storyboard */,
 				69C208041F66D5C7004C25B7 /* Assets.xcassets */,
 				69C208061F66D5C7004C25B7 /* LaunchScreen.storyboard */,
@@ -72,6 +88,8 @@
 		69D73D031F67C9DD00BA3E46 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				695082601F682FEB005D8A3F /* mapstogpx20170912_150724.gpx */,
+				6950825E1F682CBA005D8A3F /* LHR-CDG.gpx */,
 				69D73D011F67C8AD00BA3E46 /* Utilties.swift */,
 				69D73D041F67C9EE00BA3E46 /* UIColor+hex.swift */,
 			);
@@ -154,6 +172,8 @@
 				69D73D051F67C9EE00BA3E46 /* UIColor+hex.swift in Sources */,
 				69C208001F66D5C7004C25B7 /* ViewController.swift in Sources */,
 				69C207FE1F66D5C7004C25B7 /* AppDelegate.swift in Sources */,
+				69D73D071F68149500BA3E46 /* MapTile.swift in Sources */,
+				69D73D0B1F68238000BA3E46 /* MapGrid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

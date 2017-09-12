@@ -33,12 +33,15 @@ class ViewController: UIViewController {
         sceneView.session.run(configuration)
         addOuterSphere()
         setupLocation()
+        getLocation()
     }
     
     fileprivate func setupLocation(){
         locationManager = CLLocationManager()
+        locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
         locationManager.startUpdatingHeading()
+        locationManager.startUpdatingLocation()
     }
     
     fileprivate func addOuterSphere() {
@@ -56,37 +59,39 @@ class ViewController: UIViewController {
     }
     
     fileprivate func addPlane(){
-        let plane = SCNPlane(width: 100, height: 20)
-        plane.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "testGradient")
-        plane.firstMaterial?.isDoubleSided = true
-        mapPlaneNode = SCNNode(geometry: plane)
+        let tile1 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "skyGradient")!)
+        let tile2 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
+        let tile3 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "skyGradient")!)
+        let tile4 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
+        let tile5 = MapTile(startCoordinate: (0, 0), image:  UIImage(named: "skyGradient")!)
+        let tile6 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
+        let tile7 = MapTile(startCoordinate: (0, 0), image:  UIImage(named: "skyGradient")!)
+        let tile8 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
+        let tile9 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "skyGradient")!)
+        let tile10 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
+        let tile11 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "skyGradient")!)
+        let tile12 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
+        let allTiles = [tile1, tile2, tile3, tile4, tile5, tile6, tile7, tile8, tile9, tile10, tile11, tile12]
         
-        let angleOfFlight: Double = 50.0
-        
-        mapPlaneNode.eulerAngles.x = degreesToRadians(90)
-        mapPlaneNode.eulerAngles.y = degreesToRadians(Float(deviceHeading!.magnitude + angleOfFlight))
-        
-        //Move to the starting position
-        mapPlaneNode.position = SCNVector3(0, -10, 0)
-        
-        sceneView.scene.rootNode.addChildNode(mapPlaneNode)
-        print("Starting at angle: \(mapPlaneNode.eulerAngles.y)")
-        
-        animateMapMoving()
+        let mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: allTiles)
+        sceneView.scene.rootNode.addChildNode(mapGrid.mainPlaneNode)
+    
     }
     
-    func animateMapMoving(){
-        let action = SCNAction.move(to: SCNVector3(50, -1.4, 0), duration: 100)
-        //mapPlaneNode.runAction(action)
+    fileprivate func getLocation(){
+
+        
     }
 }
 
 extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         deviceHeading = newHeading.trueHeading
-        print("Device heading is: \(deviceHeading), mag is: \(deviceHeading!.magnitude) and rads is \(degreesToRadians(Float(deviceHeading!.magnitude)))")
         manager.stopUpdatingHeading()
         addPlane()
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print(locations)
+    }
 }
-
