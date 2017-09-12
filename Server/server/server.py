@@ -1,7 +1,9 @@
 import datetime
 import re
-from flask import Flask, Response, request, logging
+from flask import Flask, Response, request
 import json
+import os
+import sqlite3
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
 
@@ -46,8 +48,14 @@ def refetch(ref_id):
     return
 
 
-
 def send_json(data, code=200):
     return Response(response=json.dumps(data),
                     status=code,
                     mimetype="application/json")
+
+
+def connect_db():
+    """Connects to the specific database."""
+    rv = sqlite3.connect(os.path.join(app.root_path, 'database.db'))
+    rv.row_factory = sqlite3.Row
+    return rv
