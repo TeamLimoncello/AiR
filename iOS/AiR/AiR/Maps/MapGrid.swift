@@ -9,8 +9,7 @@
 import Foundation
 import ARKit
 
-
-class MapGrid {
+public class MapGrid {
     var mainPlane: SCNPlane
     var mainPlaneNode: SCNNode
     init(deviceHeading: Float, tiles: [MapTile]){
