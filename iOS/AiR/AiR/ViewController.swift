@@ -9,11 +9,14 @@
 import UIKit
 import SceneKit
 import ARKit
+import CoreLocation
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var sceneView: ARSCNView!
     var mapPlaneNode: SCNNode!
+    var locationManager: CLLocationManager!
+    var deviceHeading: CLLocationDirection?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +32,13 @@ class ViewController: UIViewController {
         let configuration = AROrientationTrackingConfiguration()
         sceneView.session.run(configuration)
         addOuterSphere()
-        addPlane()
+        setupLocation()
+    }
+    
+    fileprivate func setupLocation(){
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.startUpdatingHeading()
     }
     
     fileprivate func addOuterSphere() {
@@ -43,34 +52,41 @@ class ViewController: UIViewController {
         outerSphereNode.position = SCNVector3(0, 0, 0)
         
         // Add the node to our world
-        sceneView.scene.rootNode.addChildNode(outerSphereNode)
+        //sceneView.scene.rootNode.addChildNode(outerSphereNode)
     }
     
     fileprivate func addPlane(){
-        let plane = SCNPlane(width: 100, height: 5)
-        plane.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "testMap")
+        let plane = SCNPlane(width: 100, height: 20)
+        plane.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "testGradient")
         plane.firstMaterial?.isDoubleSided = true
         mapPlaneNode = SCNNode(geometry: plane)
-        mapPlaneNode.position = SCNVector3(-50, -1.4, 0)
-        mapPlaneNode.rotation = SCNVector4(1, 0, 0, degreesToRadians(90))
+        
+        let angleOfFlight: Double = 50.0
+        
+        mapPlaneNode.eulerAngles.x = degreesToRadians(90)
+        mapPlaneNode.eulerAngles.y = degreesToRadians(Float(deviceHeading!.magnitude + angleOfFlight))
+        
+        //Move to the starting position
+        mapPlaneNode.position = SCNVector3(0, -10, 0)
         
         sceneView.scene.rootNode.addChildNode(mapPlaneNode)
+        print("Starting at angle: \(mapPlaneNode.eulerAngles.y)")
         
         animateMapMoving()
     }
     
     func animateMapMoving(){
-        UIView.animate(withDuration: 10) {
-            
-            //NB: SCNVector IS NOT ANIMATABLE!!!!!!!!!!!!!!!!
-            //TODO: Make the thing move
-            self.mapPlaneNode.position = SCNVector3(x: 50, y: -1.4, z: 0)
-        }
+        let action = SCNAction.move(to: SCNVector3(50, -1.4, 0), duration: 100)
+        //mapPlaneNode.runAction(action)
     }
-    
-    
+}
 
-
-
+extension ViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        deviceHeading = newHeading.trueHeading
+        print("Device heading is: \(deviceHeading), mag is: \(deviceHeading!.magnitude) and rads is \(degreesToRadians(Float(deviceHeading!.magnitude)))")
+        manager.stopUpdatingHeading()
+        addPlane()
+    }
 }
 
