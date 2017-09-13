@@ -18,9 +18,12 @@ class AiR: UIViewController {
     var locationManager: CLLocationManager!
     var deviceHeading: CLLocationDirection?
     var mapGrid: MapGrid?
+    @IBOutlet weak var toggleSphereView: UIView!
+    @IBOutlet weak var toggleSphereButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        toggleSphereView.layer.cornerRadius = 8
         sceneView.showsStatistics = true
         let scene = SCNScene()
         sceneView.scene = scene
@@ -78,6 +81,10 @@ class AiR: UIViewController {
     fileprivate func getLocation(){
 
         
+    }
+    
+    @IBAction func toggleSpherePressed(_ sender: Any) {
+    
     }
 }
 

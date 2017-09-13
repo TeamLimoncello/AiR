@@ -42,7 +42,7 @@ class Intro: UIViewController {
     // MARK: - Initialization
     override func viewDidLoad() {
         initialStyle()
-        apply(state: .UpcomingFlight)
+        apply(state: .FlightReady)
         
         // Set airplane mode indicator
         // statusIndicator.image = !SCNetworkReachabilityFlags.reachable ? #imageLiteral(resourceName: "Plane") : #imageLiteral(resourceName: "NoPlane")
