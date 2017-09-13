@@ -29,7 +29,7 @@ class Server {
             do {
                 guard error == nil else {
                     print("error=\(String(describing: error))")
-                    completion(false, "Server down")
+                    completion(false, "Please check your connection and try again.")
                     return
                 }
                 
@@ -47,7 +47,7 @@ class Server {
                 print("responseString = \(String(describing: responseString))")
                 completion(true, responseString!)
             } catch {
-                completion(false, "Bad Response")
+                completion(false, "Please check your connection and try again.")
             }
         }
         task.resume()

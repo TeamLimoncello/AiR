@@ -54,7 +54,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     
     @IBAction func createFlightClicked(_ sender: Any) {
         print("Create flight")
-        if flightNo?.count == 6 || flightNo?.count == 7 {
+        if map(regex: "([0-9A-Z]{2})([A-Z]?)([0-9]{1,4})([A-Za-z]?)", to: flightNo) {
             AiRServer.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (s, p) in
                 if s! {
                     print("Successfully created flight with ID \(String(describing: p))")
