@@ -39,8 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		696BFFC51F6873C800A32AF7 /* 20170912075335-43009-data.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "20170912075335-43009-data.gpx"; sourceTree = "<group>"; };
-		696BFFC61F6873D000A32AF7 /* mapstogpx20170912_150724.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = mapstogpx20170912_150724.gpx; sourceTree = "<group>"; };
+		69468BE31F691E6800AB8438 /* TestLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestLocation.gpx; sourceTree = "<group>"; };
 		696BFFC71F6874C300A32AF7 /* MapGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGrid.swift; sourceTree = "<group>"; };
 		696BFFC81F6874C300A32AF7 /* MapTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
 		69C207FA1F66D5C7004C25B7 /* AiR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AiR.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,8 +88,7 @@
 		6950825F1F682CC1005D8A3F /* Maps */ = {
 			isa = PBXGroup;
 			children = (
-				696BFFC61F6873D000A32AF7 /* mapstogpx20170912_150724.gpx */,
-				696BFFC51F6873C800A32AF7 /* 20170912075335-43009-data.gpx */,
+				69468BE31F691E6800AB8438 /* TestLocation.gpx */,
 				696BFFC71F6874C300A32AF7 /* MapGrid.swift */,
 				696BFFC81F6874C300A32AF7 /* MapTile.swift */,
 			);

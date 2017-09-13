@@ -17,13 +17,14 @@ class AiRViewController: UIViewController {
     var mapPlaneNode: SCNNode!
     var locationManager: CLLocationManager!
     var deviceHeading: CLLocationDirection?
+    var mapGrid: MapGrid?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.showsStatistics = true
         let scene = SCNScene()
         sceneView.scene = scene
-        sceneView.autoenablesDefaultLighting = true
+        //sceneView.autoenablesDefaultLighting = true
         sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
     }
     
@@ -59,22 +60,18 @@ class AiRViewController: UIViewController {
     }
     
     fileprivate func addPlane(){
-        let tile1 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "skyGradient")!)
-        let tile2 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
-        let tile3 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "skyGradient")!)
-        let tile4 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
-        let tile5 = MapTile(startCoordinate: (0, 0), image:  UIImage(named: "skyGradient")!)
-        let tile6 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
-        let tile7 = MapTile(startCoordinate: (0, 0), image:  UIImage(named: "skyGradient")!)
-        let tile8 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
-        let tile9 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "skyGradient")!)
-        let tile10 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
-        let tile11 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "skyGradient")!)
-        let tile12 = MapTile(startCoordinate: (0, 0), image: UIImage(named: "testGradient")!)
-        let allTiles = [tile1, tile2, tile3, tile4, tile5, tile6, tile7, tile8, tile9, tile10, tile11, tile12]
+        var allTiles = [MapTile]()
         
-        let mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: allTiles)
-        sceneView.scene.rootNode.addChildNode(mapGrid.mainPlaneNode)
+        
+        for i in 0...100 {
+            for j in 0...5 {
+                let tile = MapTile(startCoordinate: (Double(i), Double(j)), color: UIColor.white)
+                allTiles.append(tile)
+            }
+        }
+        
+        mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: allTiles)
+        sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
     
     }
     
@@ -92,6 +89,8 @@ extension AiRViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(locations)
+        if let grid = mapGrid {
+            grid.updateLocation(locations[0])
+        }
     }
 }

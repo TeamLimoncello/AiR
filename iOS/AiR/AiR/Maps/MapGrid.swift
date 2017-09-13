@@ -8,18 +8,23 @@
 
 import Foundation
 import ARKit
+import CoreLocation
 
 public class MapGrid {
-    var mainPlane: SCNPlane
-    var mainPlaneNode: SCNNode
+    private let headingOfFlight: Float = 20.0
+    
+    private var mainPlane: SCNPlane
+    public var mainPlaneNode: SCNNode
+    private var deviceLocation: CLLocation?
+    private var tiles: [MapTile]
+    
     init(deviceHeading: Float, tiles: [MapTile]){
-        let angleOfFlight: Float = 20.0
-        
+        self.tiles = tiles
         mainPlane = SCNPlane(width: 10, height: 10)
         mainPlaneNode = SCNNode(geometry: mainPlane)
         mainPlaneNode.eulerAngles.x = degreesToRadians(90)
-        mainPlaneNode.eulerAngles.y = degreesToRadians(deviceHeading + angleOfFlight)
-        mainPlaneNode.position = SCNVector3(x: 0, y: -10, z: 0)
+        mainPlaneNode.eulerAngles.y = degreesToRadians(deviceHeading + headingOfFlight)
+        mainPlaneNode.position = SCNVector3(x: 0, y: -70, z: 0)
         
         tiles.forEach({mainPlaneNode.addChildNode($0.node)})
         
@@ -29,8 +34,29 @@ public class MapGrid {
         let numberOfRows = tiles.count / numberOfColsPerRow
         for rowNumber in 0...numberOfRows - 1 {
             for columnNumber in 0...numberOfColsPerRow - 1 {
-                tiles[numberOfColsPerRow*rowNumber + columnNumber].setPosition(SCNVector3(columnNumber, rowNumber, 0))
+                let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
+                tile.setPosition(SCNVector3(columnNumber*tile.size, rowNumber*tile.size, 0))
             }
         }
     }
+    
+    func updateLocation(_ location: CLLocation){
+        self.deviceLocation = location
+        let lat = location.coordinate.latitude
+        let long = location.coordinate.longitude
+        
+        let tilesStartCoordinate = tiles[0].startCoordinate
+        let distanceBetweenLat = -lat.distance(to: tilesStartCoordinate.0)
+        let distanceBetweenLong = -long.distance(to: tilesStartCoordinate.1)
+        
+        mainPlaneNode.position.x = Float(distanceBetweenLat)
+        mainPlaneNode.position.z = Float(distanceBetweenLong)
+        
+        
+        print("Device is at: \(lat, long) and firstTileIsAt \(tiles[0].startCoordinate)" )
+        print("Distance:", distanceBetweenLat, distanceBetweenLong)
+        print(mainPlaneNode.position)
+    }
+
+    
 }
