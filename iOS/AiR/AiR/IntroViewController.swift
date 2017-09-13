@@ -15,7 +15,6 @@ class IntroViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet weak var parentView: UIView!
     @IBOutlet weak var planeButton: UIButton!
-    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var statusIndicator: UIImageView!
     @IBOutlet weak var destinationLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -33,24 +32,35 @@ class IntroViewController: UIViewController {
         case UpcomingFlight
         case FlightReady
     }
+    var firstLoad = true
+    
+    // Nearest flight info, will be pulled from local storage
+    let flightDestination = "San Francisco"
+    let flightDate = "21st July at 9pm"
+    let airplaneModeEnabled = true
     
     // MARK: - Initialization
     override func viewDidLoad() {
         initialStyle()
-        apply(state: .NoFlights)
+        apply(state: .FlightReady)
         
         // Set airplane mode indicator
-        // START HEEEERRRREEEE 
         // statusIndicator.image = !SCNetworkReachabilityFlags.reachable ? #imageLiteral(resourceName: "Plane") : #imageLiteral(resourceName: "NoPlane")
     }
     
+    override func viewDidLayoutSubviews() {
+        if firstLoad {
+            // Apply the gradient background
+            let gradient = CAGradientLayer()
+            gradient.frame = view.bounds
+            gradient.colors = [UIColor.hexToRGB(hex: "BADAF8")!.cgColor, UIColor.hexToRGB(hex: "799FCF")!.cgColor]
+            view.layer.insertSublayer(gradient, at: 0)
+            parentView.backgroundColor = .clear
+            firstLoad = false
+        }
+    }
+    
     func initialStyle() {
-        // Apply the gradient background
-        let gradient = CAGradientLayer()
-        gradient.frame = parentView.bounds
-        gradient.colors = [UIColor.hexToRGB(hex: "BADAF8")!.cgColor, UIColor.hexToRGB(hex: "799FCF")!.cgColor]
-        parentView.layer.insertSublayer(gradient, at: 0)
-        
         // Style Flight Management buttons
         flightMgmtButtonsParentView.backgroundColor = .clear
         createFlightView.layer.cornerRadius = 8
@@ -62,27 +72,33 @@ class IntroViewController: UIViewController {
     func apply(state: AiRState) {
         switch state {
         case .FlightReady:
-            // Flight ready to experience!
-            planeButton.isHidden = false
-            planeButton.addShadow(intensity: .ChristianBale)
             flightMgmtButtonsParentView.isHidden = true
-            experienceLabel.text = "Click the plane to experience AiR."
+            destinationLabel.text = "\(flightDestination)"
+            dateLabel.text = "Ready to fly!"
+            if airplaneModeEnabled {
+                // Flight ready to experience!
+                planeButton.isHidden = false
+                planeButton.addShadow(intensity: .ChristianBale)
+                experienceLabel.text = "Click the plane to experience AiR."
+            } else {
+                // Need airplane mode first
+                experienceLabel.text = "Please enable airplane mode before using AiR."
+            }
         case .UpcomingFlight:
             // Upcoming flight
-            planeButton.isHidden = false
+            planeButton.isEnabled = false
             flightMgmtButtonsParentView.isHidden = false
             experienceLabel.text = "Make sure to enable airplane mode and have GPS turned on during your flight to experience AiR."
+            destinationLabel.text = "\(flightDestination)"
+            dateLabel.text = "\(flightDate)"
         default:
             // No flights setup
             planeButton.isHidden = true
             flightMgmtButtonsParentView.isHidden = false
-            viewFlightsView.alpha = 0.5
-            viewFlightsButton.isEnabled = false
             experienceLabel.text = "Add a flight to begin the AiR experience."
+            destinationLabel.isHidden = true
+            dateLabel.isHidden = true
+            viewFlightsView.isHidden = true
         }
-    }
-    
-    @IBAction func planeClicked(_ sender: Any) {
-        
     }
 }
