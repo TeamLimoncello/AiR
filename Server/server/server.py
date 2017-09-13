@@ -1,6 +1,8 @@
 import datetime
 import re
-from flask import Flask, Response, request
+import secrets
+
+from flask import Flask, Response, request, g
 import json
 import os
 import sqlite3
@@ -30,7 +32,16 @@ def register():
             raise ValueError('Invalid flight number')
     except (KeyError, ValueError):
         return send_json({'code': 2, 'string': 'Bad flight number'}, 400)
-    return send_json({'flight': flight_num.groups(), 'date': str(date)})
+    db = get_db()
+    while True:
+        id = str(secrets.token_urlsafe(12))
+        app.logger.info(str(id))
+        c = db.execute('SELECT COUNT(*) FROM flightIDs WHERE id=?', (id,))
+        if c.fetchone()[0] is 0:
+            break
+    db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)',(id,raw_flight,raw_date))
+    db.commit()
+    return send_json({'id': id})
 
 
 @app.route('/api/v1/fetch/<ref_id>')
@@ -59,3 +70,33 @@ def connect_db():
     rv = sqlite3.connect(os.path.join(app.root_path, 'database.db'))
     rv.row_factory = sqlite3.Row
     return rv
+
+
+def get_db():
+    """Opens a new database connection if there is none yet for the
+    current application context.
+    """
+    if not hasattr(g, 'sqlite_db'):
+        g.sqlite_db = connect_db()
+    return g.sqlite_db
+
+
+def init_db():
+    db = get_db()
+    with app.open_resource('schema.sql', mode='r') as f:
+        db.cursor().executescript(f.read())
+    db.commit()
+
+
+@app.cli.command('initdb')
+def initdb_command():
+    """Initializes the database."""
+    init_db()
+    print('Initialized the database.')
+
+
+@app.teardown_appcontext
+def close_db(error):
+    """Closes the database again at the end of the request."""
+    if hasattr(g, 'sqlite_db'):
+        g.sqlite_db.close()
