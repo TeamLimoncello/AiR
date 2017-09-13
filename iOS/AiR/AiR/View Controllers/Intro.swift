@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SystemConfiguration
 
-class IntroViewController: UIViewController {
+class Intro: UIViewController {
     
     // MARK: - Outlets
     @IBOutlet weak var parentView: UIView!
@@ -42,7 +42,7 @@ class IntroViewController: UIViewController {
     // MARK: - Initialization
     override func viewDidLoad() {
         initialStyle()
-        apply(state: .FlightReady)
+        apply(state: .UpcomingFlight)
         
         // Set airplane mode indicator
         // statusIndicator.image = !SCNetworkReachabilityFlags.reachable ? #imageLiteral(resourceName: "Plane") : #imageLiteral(resourceName: "NoPlane")

@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 import CoreLocation
 
-class AiRViewController: UIViewController {
+class AiR: UIViewController {
 
     @IBOutlet weak var sceneView: ARSCNView!
     var mapPlaneNode: SCNNode!
@@ -81,7 +81,7 @@ class AiRViewController: UIViewController {
     }
 }
 
-extension AiRViewController: CLLocationManagerDelegate {
+extension AiR: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         deviceHeading = newHeading.trueHeading
         manager.stopUpdatingHeading()

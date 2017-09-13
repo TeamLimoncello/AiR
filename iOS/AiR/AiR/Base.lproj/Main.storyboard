@@ -15,6 +15,9 @@
         <array key="Montserrat-Light.ttf">
             <string>Montserrat-Light</string>
         </array>
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
         <array key="Montserrat-Regular.ttf">
             <string>Montserrat-Regular</string>
         </array>
@@ -23,10 +26,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Intro View Controller-->
+        <!--Intro-->
         <scene sceneID="DBX-XG-b06">
             <objects>
-                <viewController id="zrv-ND-pBq" customClass="IntroViewController" customModule="AiR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="zrv-ND-pBq" customClass="Intro" customModule="AiR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7SH-VY-7vr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -42,31 +45,31 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AiR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYt-c9-CYX">
-                                        <rect key="frame" x="122.5" y="52" width="132" height="98"/>
+                                        <rect key="frame" x="125.5" y="52" width="124.5" height="93.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Thin" family="Montserrat" pointSize="80"/>
                                         <color key="textColor" red="1" green="0.97647058823529409" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYs-B5-cP5">
-                                        <rect key="frame" x="97.5" y="357" width="182" height="24.5"/>
+                                        <rect key="frame" x="110" y="352.5" width="155.5" height="23.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-ExtraBold" family="Montserrat" pointSize="20"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTN-fp-PPe">
-                                        <rect key="frame" x="149" y="400" width="79" height="18.5"/>
+                                        <rect key="frame" x="151.5" y="394.5" width="72.5" height="17.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created By Limoncello in 🇮🇹" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Nw-G0-Smo">
-                                        <rect key="frame" x="83" y="640.5" width="208.5" height="18.5"/>
+                                        <rect key="frame" x="91" y="641.5" width="192.5" height="17.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
                                         <color key="textColor" red="0.53229843989428682" green="0.70337965660736601" blue="0.90776353491677175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oeO-rh-R1m">
-                                        <rect key="frame" x="149.5" y="221" width="75" height="96"/>
+                                        <rect key="frame" x="149.5" y="216.5" width="75" height="96"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="70"/>
                                         <state key="normal" title="✈️"/>
                                         <connections>
@@ -74,7 +77,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yEz-gU-iGU">
-                                        <rect key="frame" x="31" y="563" width="312" height="48"/>
+                                        <rect key="frame" x="31" y="564" width="312" height="48"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2I1-Hv-rEE">
                                                 <rect key="frame" x="0.0" y="0.0" width="140" height="48"/>
@@ -86,6 +89,9 @@
                                                         <state key="normal" title="Create Flight">
                                                             <color key="titleColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <segue destination="cbq-9T-kEd" kind="show" id="9Wy-fX-Uj9"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -103,6 +109,9 @@
                                                         <state key="normal" title="View All Flights">
                                                             <color key="titleColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <segue destination="JI1-TZ-c2H" kind="show" id="aXi-Sg-81F"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -182,40 +191,176 @@
             </objects>
             <point key="canvasLocation" x="-711.20000000000005" y="-216.34182908545728"/>
         </scene>
-        <!--View Controller-->
+        <!--Create Flight-->
         <scene sceneID="4hK-2P-Rrp">
             <objects>
-                <viewController id="cbq-9T-kEd" sceneMemberID="viewController">
+                <viewController id="cbq-9T-kEd" customClass="CreateFlight" customModule="AiR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xzj-Id-Iyf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C0X-9s-wpk">
+                                <rect key="frame" x="16" y="55" width="343" height="592"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Flight" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6k-sb-1ZJ">
+                                        <rect key="frame" x="25" y="24" width="293.5" height="59"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Thin" family="Montserrat" pointSize="48"/>
+                                        <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flight Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="toN-Pj-aFT">
+                                        <rect key="frame" x="25" y="111" width="128" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="u7x-Si-wIC"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flight Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcZ-yx-ZKK">
+                                        <rect key="frame" x="25" y="241" width="191" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="191" id="tVD-Dq-aWw"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="10" translatesAutoresizingMaskIntoConstraints="NO" id="Rsh-Cx-qe0">
+                                        <rect key="frame" x="16" y="288" width="311" height="162"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="162" id="acy-7G-KJb"/>
+                                        </constraints>
+                                        <date key="date" timeIntervalSinceReferenceDate="526995832.35892898">
+                                            <!--2017-09-13 11:43:52 +0000-->
+                                        </date>
+                                        <connections>
+                                            <action selector="dateChanged:" destination="cbq-9T-kEd" eventType="valueChanged" id="ljZ-3d-Txb"/>
+                                        </connections>
+                                    </datePicker>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MDn-Ac-fHI">
+                                        <rect key="frame" x="101" y="488" width="140" height="48"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mYC-QW-7bQ">
+                                                <rect key="frame" x="0.0" y="0.0" width="140" height="48"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="13"/>
+                                                <state key="normal" title="Create Flight">
+                                                    <color key="titleColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="createFlightClicked:" destination="cbq-9T-kEd" eventType="touchUpInside" id="leZ-57-mrz"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="33j-bO-hGy"/>
+                                            <constraint firstItem="mYC-QW-7bQ" firstAttribute="top" secondItem="MDn-Ac-fHI" secondAttribute="top" id="8BY-iZ-RhS"/>
+                                            <constraint firstAttribute="trailing" secondItem="mYC-QW-7bQ" secondAttribute="trailing" id="Jq0-a8-KUu"/>
+                                            <constraint firstItem="mYC-QW-7bQ" firstAttribute="leading" secondItem="MDn-Ac-fHI" secondAttribute="leading" id="KaW-EB-kLg"/>
+                                            <constraint firstAttribute="bottom" secondItem="mYC-QW-7bQ" secondAttribute="bottom" id="Ybp-H2-AX5"/>
+                                            <constraint firstAttribute="width" constant="140" id="zsF-A2-ypK"/>
+                                        </constraints>
+                                    </view>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="e.g. U2ERGH" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2kO-B8-dFl">
+                                        <rect key="frame" x="56" y="167" width="231" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="231" id="cq4-8R-jaI"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UJp-vE-cqJ">
+                                        <rect key="frame" x="101" y="548" width="140" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="140" id="7bT-IE-QfV"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="cbq-9T-kEd" eventType="touchUpInside" id="TWQ-gS-HxS"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.49565959079999999" green="0.65496504710000003" blue="0.845280896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="O6k-sb-1ZJ" firstAttribute="top" secondItem="C0X-9s-wpk" secondAttribute="top" constant="24" id="1VC-gn-dbG"/>
+                                    <constraint firstItem="UJp-vE-cqJ" firstAttribute="centerX" secondItem="C0X-9s-wpk" secondAttribute="centerX" constant="-0.5" id="6mv-6c-rF1"/>
+                                    <constraint firstItem="toN-Pj-aFT" firstAttribute="leading" secondItem="C0X-9s-wpk" secondAttribute="leading" constant="25" id="83x-Hw-ves"/>
+                                    <constraint firstItem="GcZ-yx-ZKK" firstAttribute="centerY" secondItem="C0X-9s-wpk" secondAttribute="centerY" constant="-44.5" id="9Sp-wP-raU"/>
+                                    <constraint firstItem="GcZ-yx-ZKK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="C0X-9s-wpk" secondAttribute="leading" id="D8a-k9-vtY"/>
+                                    <constraint firstAttribute="trailing" secondItem="GcZ-yx-ZKK" secondAttribute="trailing" constant="127" id="Gru-7Q-YwR"/>
+                                    <constraint firstAttribute="trailing" secondItem="Rsh-Cx-qe0" secondAttribute="trailing" constant="16" id="Lf8-qZ-uy6"/>
+                                    <constraint firstItem="2kO-B8-dFl" firstAttribute="top" secondItem="toN-Pj-aFT" secondAttribute="bottom" constant="35" id="NqS-xp-D4k"/>
+                                    <constraint firstItem="UJp-vE-cqJ" firstAttribute="top" secondItem="MDn-Ac-fHI" secondAttribute="bottom" constant="12" id="UE6-VD-XPF"/>
+                                    <constraint firstItem="2kO-B8-dFl" firstAttribute="centerX" secondItem="C0X-9s-wpk" secondAttribute="centerX" id="YDK-Kk-crU"/>
+                                    <constraint firstItem="Rsh-Cx-qe0" firstAttribute="leading" secondItem="C0X-9s-wpk" secondAttribute="leading" constant="16" id="d8X-zO-wGt"/>
+                                    <constraint firstItem="O6k-sb-1ZJ" firstAttribute="centerX" secondItem="C0X-9s-wpk" secondAttribute="centerX" constant="0.25" id="fEV-u6-9OY"/>
+                                    <constraint firstItem="MDn-Ac-fHI" firstAttribute="centerX" secondItem="C0X-9s-wpk" secondAttribute="centerX" constant="-0.5" id="l97-Fc-ZdO"/>
+                                    <constraint firstItem="Rsh-Cx-qe0" firstAttribute="top" secondItem="GcZ-yx-ZKK" secondAttribute="bottom" constant="26" id="lyi-DJ-bfr"/>
+                                    <constraint firstAttribute="bottom" secondItem="UJp-vE-cqJ" secondAttribute="bottom" constant="12" id="p84-iD-YlY"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="toN-Pj-aFT" secondAttribute="trailing" constant="20" symbolic="YES" id="tgZ-EM-cPW"/>
+                                    <constraint firstItem="GcZ-yx-ZKK" firstAttribute="top" secondItem="2kO-B8-dFl" secondAttribute="bottom" constant="44" id="zDs-36-OUp"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="C0X-9s-wpk" firstAttribute="bottom" secondItem="aE9-ht-akl" secondAttribute="bottom" constant="-20" id="7ad-xd-XY4"/>
+                            <constraint firstItem="C0X-9s-wpk" firstAttribute="trailing" secondItem="aE9-ht-akl" secondAttribute="trailing" constant="-16" id="pKE-Ce-IcR"/>
+                            <constraint firstItem="C0X-9s-wpk" firstAttribute="top" secondItem="xzj-Id-Iyf" secondAttribute="top" constant="55" id="z4i-Uf-wds"/>
+                            <constraint firstItem="C0X-9s-wpk" firstAttribute="leading" secondItem="aE9-ht-akl" secondAttribute="leading" constant="16" id="z50-3k-wQw"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="aE9-ht-akl"/>
                     </view>
+                    <connections>
+                        <outlet property="backButton" destination="UJp-vE-cqJ" id="K6G-7c-A3D"/>
+                        <outlet property="createFlightButton" destination="mYC-QW-7bQ" id="Jop-KF-AKE"/>
+                        <outlet property="createFlightParentView" destination="MDn-Ac-fHI" id="Jy8-uN-ffo"/>
+                        <outlet property="createFlightTitle" destination="O6k-sb-1ZJ" id="vfI-sz-iyg"/>
+                        <outlet property="flightNoTextField" destination="2kO-B8-dFl" id="FFK-R9-1KE"/>
+                        <outlet property="flightTimePicker" destination="Rsh-Cx-qe0" id="bum-vH-wNi"/>
+                        <outlet property="parentView" destination="C0X-9s-wpk" id="Sfm-QC-nFu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="08w-HW-KVL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1075" y="604"/>
+            <point key="canvasLocation" x="-1076" y="603.14842578710648"/>
         </scene>
-        <!--View Controller-->
+        <!--View Flights-->
         <scene sceneID="LUy-5S-XEP">
             <objects>
-                <viewController id="JI1-TZ-c2H" sceneMemberID="viewController">
+                <viewController id="JI1-TZ-c2H" customClass="ViewFlights" customModule="AiR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QU1-Fb-TC7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wbs-wD-nZB">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.0" green="0.79140788316726685" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Wbs-wD-nZB" firstAttribute="leading" secondItem="WsT-lG-bOv" secondAttribute="leading" id="9C3-TP-I3N"/>
+                            <constraint firstItem="Wbs-wD-nZB" firstAttribute="trailing" secondItem="WsT-lG-bOv" secondAttribute="trailing" id="9eS-7E-FNE"/>
+                            <constraint firstItem="Wbs-wD-nZB" firstAttribute="top" secondItem="QU1-Fb-TC7" secondAttribute="top" id="Xlx-Ho-MS2"/>
+                            <constraint firstItem="Wbs-wD-nZB" firstAttribute="bottom" secondItem="WsT-lG-bOv" secondAttribute="bottom" id="qlh-Cf-9rp"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="WsT-lG-bOv"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HD1-lb-ozA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-258" y="603"/>
+            <point key="canvasLocation" x="-258.39999999999998" y="602.24887556221893"/>
         </scene>
-        <!--AiR View Controller-->
+        <!--AiR-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="AiRViewController" customModule="AiR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="AiR" customModule="AiR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
