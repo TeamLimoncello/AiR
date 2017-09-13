@@ -47,7 +47,12 @@ def register():
 
 @app.route('/api/v1/fetch/<ref_id>')
 def fetch(ref_id):
-    return 'fetch %s' % ref_id
+    db = get_db()
+    c = db.execute('SELECT flightCode, date FROM flightIDs WHERE id=?', (ref_id,))
+    flight = c.fetchone()
+    if flight is None:
+        return '', 403
+    return send_json({'id': ref_id, 'flightCode': flight["flightCode"], 'date': flight["date"]})
 
 
 @app.route('/api/v1/reload/<ref_id>')
