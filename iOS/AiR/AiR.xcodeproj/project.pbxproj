@@ -43,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		69468BE31F691E6800AB8438 /* TestLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestLocation.gpx; sourceTree = "<group>"; };
+		69468BE41F696FF200AB8438 /* Quick.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Quick.gpx; sourceTree = "<group>"; };
 		696BFFC71F6874C300A32AF7 /* MapGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGrid.swift; sourceTree = "<group>"; };
 		696BFFC81F6874C300A32AF7 /* MapTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
 		69C207FA1F66D5C7004C25B7 /* AiR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AiR.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +98,7 @@
 				69468BE31F691E6800AB8438 /* TestLocation.gpx */,
 				696BFFC71F6874C300A32AF7 /* MapGrid.swift */,
 				696BFFC81F6874C300A32AF7 /* MapTile.swift */,
+				69468BE41F696FF200AB8438 /* Quick.gpx */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -435,7 +437,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V5YSHRDD9B;
+				DEVELOPMENT_TEAM = 95HMAHL2SN;
 				INFOPLIST_FILE = AiR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lemoncello.AiR;
@@ -450,7 +452,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V5YSHRDD9B;
+				DEVELOPMENT_TEAM = 95HMAHL2SN;
 				INFOPLIST_FILE = AiR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lemoncello.AiR;

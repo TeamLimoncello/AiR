@@ -14,12 +14,13 @@ import CoreLocation
 class AiR: UIViewController {
 
     @IBOutlet weak var sceneView: ARSCNView!
+    @IBOutlet weak var toggleSphereView: UIView!
+    @IBOutlet weak var toggleSphereButton: UIButton!
     var mapPlaneNode: SCNNode!
     var locationManager: CLLocationManager!
     var deviceHeading: CLLocationDirection?
     var mapGrid: MapGrid?
-    @IBOutlet weak var toggleSphereView: UIView!
-    @IBOutlet weak var toggleSphereButton: UIButton!
+    var outerSphereNode: SCNNode!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,25 +51,26 @@ class AiR: UIViewController {
     
     fileprivate func addOuterSphere() {
         // Create a double sided sphere of radius 1m
-        let outerSphere = SCNSphere(radius: 2.5)
+        let outerSphere = SCNSphere(radius: 500)
         outerSphere.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "testGradient")
         outerSphere.firstMaterial?.isDoubleSided = true
         
         // Set the outer sphere node to the phones position (0, 0, 0)
-        let outerSphereNode = SCNNode(geometry: outerSphere)
+        outerSphereNode = SCNNode(geometry: outerSphere)
         outerSphereNode.position = SCNVector3(0, 0, 0)
+        outerSphereNode.isHidden = true
         
         // Add the node to our world
-        //sceneView.scene.rootNode.addChildNode(outerSphereNode)
+        sceneView.scene.rootNode.addChildNode(outerSphereNode)
     }
     
     fileprivate func addPlane(){
         var allTiles = [MapTile]()
         
         
-        for i in 0...100 {
-            for j in 0...5 {
-                let tile = MapTile(startCoordinate: (Double(i), Double(j)), color: UIColor.white)
+        for i in stride(from: 41, to: 51, by: 1) {
+            for j in stride(from: 0, to: 12, by: 0.1) {
+                let tile = MapTile(startCoordinate: (Double(i), Double(j)), color: UIColor.red)
                 allTiles.append(tile)
             }
         }
@@ -84,7 +86,7 @@ class AiR: UIViewController {
     }
     
     @IBAction func toggleSpherePressed(_ sender: Any) {
-    
+        outerSphereNode.isHidden = !outerSphereNode.isHidden
     }
 }
 
