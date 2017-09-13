@@ -6,6 +6,7 @@ from flask import Flask, Response, request, g
 import json
 import os
 import sqlite3
+
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
 
@@ -22,12 +23,12 @@ def foo():
 def register():
     try:
         raw_date = request.form['date']
-        date = datetime.datetime.strptime(raw_date,'%Y-%M-%d')
+        datetime.datetime.strptime(raw_date, '%Y-%M-%d')
     except (KeyError, ValueError):
         return send_json({'code': 1, 'string': 'Bad Date'}, 400)
     try:
         raw_flight = request.form['flightNumber']
-        flight_num = re.match(r'([0-9A-Z]{2})([A-Z]?)([0-9]{1,4})([A-Za-z]?)',raw_flight)
+        flight_num = re.match(r'([0-9A-Z]{2})([A-Z]?)([0-9]{1,4})([A-Za-z]?)', raw_flight)
         if flight_num is None:
             raise ValueError('Invalid flight number')
     except (KeyError, ValueError):
@@ -39,7 +40,7 @@ def register():
         c = db.execute('SELECT COUNT(*) FROM flightIDs WHERE id=?', (id,))
         if c.fetchone()[0] is 0:
             break
-    db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)',(id,raw_flight,raw_date))
+    db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)', (id, raw_flight, raw_date))
     db.commit()
     return send_json({'id': id})
 
