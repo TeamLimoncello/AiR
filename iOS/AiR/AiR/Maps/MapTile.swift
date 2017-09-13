@@ -11,13 +11,14 @@ import ARKit
 
 public class MapTile {
     private var plane: SCNPlane
-    private var startCoordinate: (Double, Double)
+    public var startCoordinate: (Double, Double)
     public var node: SCNNode
+    public let size = 100
     
-    init(startCoordinate: (Double, Double), image: UIImage){
+    init(startCoordinate: (Double, Double), color: UIColor){
         self.startCoordinate = startCoordinate
-        self.plane = SCNPlane(width: 1, height: 1)
-        self.plane.firstMaterial?.diffuse.contents = image
+        self.plane = SCNPlane(width: CGFloat(size), height: CGFloat(size))
+        self.plane.firstMaterial?.diffuse.contents = color
         self.plane.firstMaterial?.isDoubleSided = true
         self.node = SCNNode(geometry: plane)
     }
