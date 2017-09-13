@@ -24,6 +24,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     
     // MARK: - Initialization
     override func viewDidLoad() {
+        flightNoTextField.delegate = self
         initialStyle()
     }
     
@@ -39,21 +40,31 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
         flightNo = textField.text
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return false
+    }
+    
     @IBAction func dateChanged(_ sender: Any) {
         flightDate = flightTimePicker.date
+        print("New Date: \(flightDate!)")
     }
     
     // MARK: - Actions
     
     @IBAction func createFlightClicked(_ sender: Any) {
+        print("Create flight")
         if flightNo?.count == 6 || flightNo?.count == 7 {
-            AiRServer.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { s in
+            AiRServer.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (s, p) in
                 if s! {
-                    
+                    print("Successfully created flight with ID \(String(describing: p))")
                 } else {
-                    
+                    print("Could not create flight, error: \(String(describing: p))")
+                    createDialogue(title: "Could not create flight", message: p!, parentViewController: self)
                 }
             }
+        } else {
+            createDialogue(title: "Could not create flight", message: "Please enter a valid flight number", parentViewController: self)
         }
     }
     
