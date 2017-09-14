@@ -92,7 +92,7 @@ def fetch(ref_id):
             "along": 0,
             "blat": 1,
             "blong": 1,
-            "image": "/api/v1/tile/" + ref_id + "/img.jpg",
+            "image": "api/v1/tile/" + ref_id + "/img.jpg",
         },
     ])
 
