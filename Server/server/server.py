@@ -28,7 +28,8 @@ def register():
         return send_json({'code': 1, 'string': 'Bad Date'}, 400)
     try:
         raw_flight = request.form['flightNumber']
-        flight_num = re.match(r'([0-9A-Z]{2})([A-Z]?)([0-9]{1,4})([A-Za-z]?)', raw_flight)
+        flight_num = re.match(r'([0-9A-Z]{2})([A-Z]?)([0-9]{1,4})([A-Za-z]?)',
+                              raw_flight)
         if flight_num is None:
             raise ValueError('Invalid flight number')
     except (KeyError, ValueError):
@@ -40,7 +41,8 @@ def register():
         c = db.execute('SELECT COUNT(*) FROM flightIDs WHERE id=?', (id,))
         if c.fetchone()[0] is 0:
             break
-    db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)', (id, raw_flight, raw_date))
+    db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)',
+               (id, raw_flight, raw_date))
     db.commit()
     return send_json({'id': id})
 
@@ -48,11 +50,16 @@ def register():
 @app.route('/api/v1/fetch/<ref_id>')
 def fetch(ref_id):
     db = get_db()
-    c = db.execute('SELECT flightCode, date FROM flightIDs WHERE id=?', (ref_id,))
+    c = db.execute('SELECT flightCode, date FROM flightIDs WHERE id=?',
+                   (ref_id,))
     flight = c.fetchone()
     if flight is None:
         return '', 403
-    return send_json({'id': ref_id, 'flightCode': flight["flightCode"], 'date': flight["date"]})
+    return send_json({
+        'id': ref_id,
+        'flightCode': flight["flightCode"],
+        'date': flight["date"]
+    })
 
 
 @app.route('/api/v1/reload/<ref_id>')
