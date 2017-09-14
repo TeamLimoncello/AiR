@@ -6,6 +6,8 @@ from flask import Flask, Response, request, g
 import json
 import os
 import sqlite3
+from PIL import Image
+from io import BytesIO
 
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
@@ -55,11 +57,29 @@ def fetch(ref_id):
     flight = c.fetchone()
     if flight is None:
         return '', 403
-    return send_json({
-        'id': ref_id,
-        'flightCode': flight["flightCode"],
-        'date': flight["date"]
-    })
+    return send_json([
+        {
+            "alat": 0,
+            "along": 0,
+            "blat": 1,
+            "blong": 1,
+            "image": "/api/v1/tile/"+ref_id+"/img.jpg",
+        },
+    ])
+
+
+@app.route('/api/v1/tile/<ref_id>/<filename>')
+def image(ref_id, filename):
+    db = get_db()
+    c = db.execute('SELECT flightCode, date FROM flightIDs WHERE id=?',
+                   (ref_id,))
+    flight = c.fetchone()
+    if flight is None:
+        return '', 403
+    im = Image.open('./imgs/'+filename)
+    io = BytesIO()
+    im.save(io, format='JPEG')
+    return Response(io.getvalue(), mimetype='image/jpeg')
 
 
 @app.route('/api/v1/reload/<ref_id>')
