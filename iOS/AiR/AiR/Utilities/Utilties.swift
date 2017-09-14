@@ -31,3 +31,6 @@ func map(regex: String, to text: String) -> Bool {
         return false
     }
 }
+
+
+

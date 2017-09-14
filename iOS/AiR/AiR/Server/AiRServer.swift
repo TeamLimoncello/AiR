@@ -6,6 +6,7 @@
 //  Copyright © 2017 lemoncello. All rights reserved.
 //
 import Foundation
+import UIKit
 
 class Server {
     static let shared = Server()
@@ -147,7 +148,6 @@ class Server {
                     } catch {
                         completion(nil, "Error whilst parsing JSON")
                     }
-                    completion(nil, nil)
                 default:
                     completion(nil, "\(httpStatus.statusCode) error. ")
                 }
@@ -155,5 +155,28 @@ class Server {
                 completion(nil, "Error with HTTP Response")
             }
         }.resume()
+    }
+    
+    func downloadImage(url: String, completion: @escaping (_ image: UIImage?, _ error: String?) -> Void){
+        URLSession.shared.dataTask(with: URL(string: url)!) { (data, response, error) in
+            guard error == nil else {
+                completion(nil, "Could not connect to server")
+                return
+            }
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                case 200:
+                    guard data != nil else {
+                        completion(nil, "No Data to retrieve")
+                        return
+                    }
+                    completion(UIImage(data: data!), nil)
+                default:
+                    completion(nil, "Error: \(httpResponse.statusCode)")
+                }
+            } else {
+                completion(nil, "Error whilst parsing response")
+            }
+        }
     }
 }
