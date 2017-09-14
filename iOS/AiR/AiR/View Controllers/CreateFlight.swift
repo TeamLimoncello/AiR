@@ -57,15 +57,13 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
             Server.shared.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (success, payload) in
                 if success {
                     print("Successfully created flight with ID \(String(describing: payload))")
-                    
-                    //Persists the flightPath in the IDs
-                    if var existing = UserDefaults.standard.array(forKey: "flightPaths") {
-                        existing.append(payload)
-                        UserDefaults.standard.set(existing, forKey: "flightPaths")
-                    } else {
-                        UserDefaults.standard.set([payload], forKey: "flightPaths")
+            
+                    DispatchQueue.main.async {
+                        Timer.scheduledTimer(withTimeInterval: 32, repeats: false, block: { (_) in
+                            self.getData(withID: payload)
+                        })
                     }
-                    
+
                 } else {
                     print("Could not create flight, error: \(String(describing: payload))")
                     createDialogue(title: "Could not create flight", message: payload, parentViewController: self)
@@ -82,8 +80,18 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
                 createDialogue(title: "Error getting data for this flight", message: error!, parentViewController: self)
                 return
             }
-            let path = Path(source: data!)
-            print(path)
+            
+            //Persists the flightPath in the IDs
+            if var existing = UserDefaults.standard.array(forKey: "flightPaths") {
+                existing.append(id)
+                UserDefaults.standard.set(existing, forKey: "flightPaths")
+            } else {
+                UserDefaults.standard.set([id], forKey: "flightPaths")
+            }
+            
+//            //Generates a path
+//            let path = Path(source: data!)
+//            print(path)
         }
     }
     

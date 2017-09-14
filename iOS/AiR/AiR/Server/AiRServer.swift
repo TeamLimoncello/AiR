@@ -20,7 +20,6 @@ class Server {
     
     /// Creates a flight on the server and returns a success flag and a payload, which will contain the flight id if successful or an error message otherwise.
     func CreateFlight(flightNumber: String!, flightTime: Date!, completion: @escaping (_ success: Bool, _ payload: String) -> Void){
-        print(flightNumber)
         let endpoint = "/api/v1/register"
         var request = URLRequest(url: URL(string: "\(domain)\(endpoint)")!)
         request.httpMethod = "POST"
@@ -196,6 +195,7 @@ class Server {
         let archiveURL = getDocumentsDirectory().appendingPathComponent(id+".bj")
         do {
             try data.write(to: archiveURL)
+            print("Data for flight \(id) has been persisted.")
         } catch let error {
             print("Error whilst caching \(error)")
         }
@@ -203,6 +203,7 @@ class Server {
     
     func getPersistedData(forID id: String) -> Data? {
         let archiveURL = getDocumentsDirectory().appendingPathComponent(id+".bj")
+        print("looking for \(archiveURL)")
         do {
             return try Data(contentsOf: archiveURL)
         } catch {
