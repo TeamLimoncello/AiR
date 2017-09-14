@@ -20,7 +20,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var backButton: UIButton!
     
     var flightNo: String!
-    var flightDate: Date!
+    var flightDate = Date()
     
     // MARK: - Initialization
     override func viewDidLoad() {
@@ -47,7 +47,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     
     @IBAction func dateChanged(_ sender: Any) {
         flightDate = flightTimePicker.date
-        print("New Date: \(flightDate!)")
+        print("New Date: \(flightDate)")
     }
     
     // MARK: - Actions
@@ -57,6 +57,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
             Server.shared.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (success, payload) in
                 if success {
                     print("Successfully created flight with ID \(String(describing: payload))")
+                    self.getData(withID: payload)
                 } else {
                     print("Could not create flight, error: \(String(describing: payload))")
                     createDialogue(title: "Could not create flight", message: payload, parentViewController: self)
@@ -64,6 +65,17 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
             }
         } else {
             createDialogue(title: "Could not create flight", message: "Please enter a valid flight number", parentViewController: self)
+        }
+    }
+    
+    func getData(withID id : String){
+        Server.shared.FetchData(id: id) { (data, error) in
+            guard error == nil else {
+                createDialogue(title: "Error getting data for this flight", message: error!, parentViewController: self)
+                return
+            }
+            
+            print("Did get data \(data!)")
         }
     }
     
