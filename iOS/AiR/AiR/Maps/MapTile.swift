@@ -15,10 +15,10 @@ public class MapTile {
     public var node: SCNNode
     public let size = 100
     
-    init(startCoordinate: (Double, Double), color: UIColor){
+    init(startCoordinate: (Double, Double), overlay: Any){
         self.startCoordinate = startCoordinate
         self.plane = SCNPlane(width: CGFloat(size), height: CGFloat(size))
-        self.plane.firstMaterial?.diffuse.contents = color
+        self.plane.firstMaterial?.diffuse.contents = overlay
         self.plane.firstMaterial?.isDoubleSided = true
         self.node = SCNNode(geometry: plane)
     }

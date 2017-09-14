@@ -52,10 +52,11 @@ public class MapGrid {
         mainPlaneNode.position.x = Float(distanceBetweenLat)
         mainPlaneNode.position.z = Float(distanceBetweenLong)
         
-        
+        /*
         print("Device is at: \(lat, long) and firstTileIsAt \(tiles[0].startCoordinate)" )
         print("Distance:", distanceBetweenLat, distanceBetweenLong)
         print(mainPlaneNode.position)
+         */
     }
 
     

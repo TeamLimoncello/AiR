@@ -52,7 +52,7 @@ class AiR: UIViewController {
     fileprivate func addOuterSphere() {
         // Create a double sided sphere of radius 1m
         let outerSphere = SCNSphere(radius: 500)
-        outerSphere.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "testGradient")
+        outerSphere.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "skyGradient")
         outerSphere.firstMaterial?.isDoubleSided = true
         
         // Set the outer sphere node to the phones position (0, 0, 0)
@@ -70,7 +70,7 @@ class AiR: UIViewController {
         
         for i in stride(from: 41, to: 51, by: 1) {
             for j in stride(from: 0, to: 12, by: 0.1) {
-                let tile = MapTile(startCoordinate: (Double(i), Double(j)), color: UIColor.red)
+                let tile = MapTile(startCoordinate: (Double(i), Double(j)), overlay: UIImage(named: "testGradient")!)
                 allTiles.append(tile)
             }
         }

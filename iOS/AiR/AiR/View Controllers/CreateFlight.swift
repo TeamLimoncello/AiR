@@ -55,12 +55,12 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     @IBAction func createFlightClicked(_ sender: Any) {
         print("Create flight")
         if flightNo?.count == 6 || flightNo?.count == 7 {
-            AiRServer.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (s, p) in
-                if s! {
-                    print("Successfully created flight with ID \(String(describing: p))")
+            Server.shared.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (success, payload) in
+                if success {
+                    print("Successfully created flight with ID \(String(describing: payload))")
                 } else {
-                    print("Could not create flight, error: \(String(describing: p))")
-                    createDialogue(title: "Could not create flight", message: p!, parentViewController: self)
+                    print("Could not create flight, error: \(String(describing: payload))")
+                    createDialogue(title: "Could not create flight", message: payload, parentViewController: self)
                 }
             }
         } else {

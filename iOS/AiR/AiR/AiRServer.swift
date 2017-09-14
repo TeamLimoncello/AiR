@@ -10,7 +10,11 @@ import Foundation
 
 class Server {
     
+    static let shared = Server()
+    
     let domain = "https://air.xsanda.me/"
+    
+    
     
     func compatiableDate(_ date: Date!) -> String {
         let dateFormatter = DateFormatter()
@@ -19,7 +23,7 @@ class Server {
     }
     
     /// Creates a flight on the server and returns a success flag and a payload, which will contain the flight id if successful or an error message otherwise.
-    func CreateFlight(flightNumber: String!, flightTime: Date!, completion: @escaping ((_ success: Bool?, _ payload: String?) -> ())){
+    func CreateFlight(flightNumber: String!, flightTime: Date!, completion: @escaping ((_ success: Bool, _ payload: String) -> ())){
         let endpoint = "/api/v1/register"
         var request = URLRequest(url: URL(string: "\(domain)\(endpoint)")!)
         request.httpMethod = "POST"
@@ -38,7 +42,7 @@ class Server {
                         print("statusCode should be 200, but is \(httpStatus.statusCode)")
                         print("response = \(String(describing: response))")
                         let responseDict = try JSONSerialization.jsonObject(with: data!) as! [String:Any]
-                        completion(false, responseDict["string"] as? String)
+                        completion(false, responseDict["string"] as! String)
                         return
                     }
                 }
@@ -46,12 +50,12 @@ class Server {
                 let responseString = String(data: data!, encoding: .utf8)
                 print("responseString = \(String(describing: responseString))")
                 completion(true, responseString!)
-            } catch {
-                completion(false, "Bad Response")
+            } catch let error {
+                completion(false, "Bad Response. Error: \(error)")
             }
         }
         task.resume()
     }
 }
 
-let AiRServer = Server()
+//let AiRServer = Server()
