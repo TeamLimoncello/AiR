@@ -102,10 +102,10 @@
 			isa = PBXGroup;
 			children = (
 				69468BE31F691E6800AB8438 /* TestLocation.gpx */,
-				DA4E307E1F6A6D2B002D13A6 /* Path.swift */,
-				696BFFC71F6874C300A32AF7 /* MapGrid.swift */,
-				696BFFC81F6874C300A32AF7 /* MapTile.swift */,
 				69468BE41F696FF200AB8438 /* Quick.gpx */,
+				696BFFC71F6874C300A32AF7 /* MapGrid.swift */,
+				DA4E307E1F6A6D2B002D13A6 /* Path.swift */,
+				696BFFC81F6874C300A32AF7 /* MapTile.swift */,
 				DA4E30801F6A6F99002D13A6 /* SignificantPlace.swift */,
 			);
 			path = Maps;

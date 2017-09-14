@@ -10,7 +10,7 @@ import UIKit
 
 class Server {
     static let shared = Server()
-    let domain = "https://air.xsanda.me/api/v1"
+    let domain = "https://air.xsanda.me"
     
     func compatiableDate(_ date: Date!) -> String {
         let dateFormatter = DateFormatter()
@@ -21,7 +21,7 @@ class Server {
     /// Creates a flight on the server and returns a success flag and a payload, which will contain the flight id if successful or an error message otherwise.
     func CreateFlight(flightNumber: String!, flightTime: Date!, completion: @escaping (_ success: Bool, _ payload: String) -> Void){
         print(flightNumber)
-        let endpoint = "/register"
+        let endpoint = "/api/v1/register"
         var request = URLRequest(url: URL(string: "\(domain)\(endpoint)")!)
         request.httpMethod = "POST"
         let postString = "date=\(compatiableDate(flightTime))&flightNumber=\(flightNumber!)"
@@ -54,8 +54,8 @@ class Server {
     }
     
     ///Fetch all of the associated data for a given flight
-    func FetchData(id: String, completion: @escaping (_ data: Any?, _ error: String?) -> Void){
-        let endpoint = "/fetch/\(id)"
+    func FetchData(id: String, completion: @escaping (_ data: [String:Any]?, _ error: String?) -> Void){
+        let endpoint = "/api/v1/fetch/\(id)"
         var request = URLRequest(url: URL(string: domain + endpoint)!)
         request.httpMethod = "GET"
         URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -77,12 +77,13 @@ class Server {
                         completion(nil, "Error whilst parsing JSON")
                     }
                 case 200:
-                    do {
-                        let response = try JSONSerialization.jsonObject(with: data!) as! [[String : Any]]
-                        completion(response, nil)
-                    } catch {
-                        completion(nil, "Error whilst parsing JSON")
-                    }
+                        self.persistData(data!, id: id)
+                        do {
+                            let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
+                            completion(response, nil)
+                        } catch {
+                            print("Error parsing JSON")
+                        }
                 default:
                     completion(nil, "\(httpStatus.statusCode) error. ")
                 }
@@ -94,7 +95,7 @@ class Server {
     
     ///Request that the data for a given flight is recalculated
     func RequestReload(id: String, completion: @escaping (_ success: Bool, _ error: String?) -> Void ){
-        let endpoint = "/reload/\(id)"
+        let endpoint = "/api/v1/reload/\(id)"
         var request = URLRequest(url: URL(string: domain + endpoint)!)
         request.httpMethod = "GET"
         URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -120,7 +121,7 @@ class Server {
     
     ///Fetch rerequested data for a given flight
     func RefetchData(id: String, completion: @escaping (_ response: Any?, _ error: String?) -> Void){
-        let endpoint = "/refetch/\(id)"
+        let endpoint = "/api/v1/refetch/\(id)"
         var request = URLRequest(url: URL(string: domain + endpoint)!)
         request.httpMethod = "GET"
         URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -158,7 +159,14 @@ class Server {
     }
     
     func downloadImage(url: String, completion: @escaping (_ image: UIImage?, _ error: String?) -> Void){
-        URLSession.shared.dataTask(with: URL(string: url)!) { (data, response, error) in
+        //Get from cache if it already exists
+        if let image = getFromCache(name: url) {
+            completion(image, nil)
+            return
+        }
+        
+        //Otherwise request the data from the server
+        URLSession.shared.dataTask(with: URL(string: domain+url)!) { (data, response, error) in
             guard error == nil else {
                 completion(nil, "Could not connect to server")
                 return
@@ -170,13 +178,35 @@ class Server {
                         completion(nil, "No Data to retrieve")
                         return
                     }
-                    completion(UIImage(data: data!), nil)
+                    print("Got image from", url)
+                    let image = UIImage(data: data!)!
+                    cacheImage(image: image, name: url)
+                    completion(image, nil)
                 default:
                     completion(nil, "Error: \(httpResponse.statusCode)")
                 }
             } else {
                 completion(nil, "Error whilst parsing response")
             }
+        }.resume()
+    }
+    
+    //Data persisting
+    func persistData(_ data: Data, id: String){
+        let archiveURL = getDocumentsDirectory().appendingPathComponent(id+".bj")
+        do {
+            try data.write(to: archiveURL)
+        } catch let error {
+            print("Error whilst caching \(error)")
+        }
+    }
+    
+    func getPersistedData(forID id: String) -> Data? {
+        let archiveURL = getDocumentsDirectory().appendingPathComponent(id+".bj")
+        do {
+            return try Data(contentsOf: archiveURL)
+        } catch {
+            return nil
         }
     }
 }

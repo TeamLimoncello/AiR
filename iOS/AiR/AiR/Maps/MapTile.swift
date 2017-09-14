@@ -7,24 +7,29 @@
 //
 
 import Foundation
+import UIKit
 import ARKit
 
 /// A single tile on the path for the flight
 public class MapTile {
     private var plane: SCNPlane
     public var node: SCNNode
-    let alat: Double
-    let along: Double
-    let blat: Double
-    let blong: Double
-    let origin: (lat: Double, long: Double)
-    let resolution: (w: Double, h: Double)
-    let image: String
-    let significantPlaces: [SignificantPlace]
+    var alat: Double
+    var along: Double
+    var blat: Double
+    var blong: Double
+    var origin: (lat: Double, long: Double)
+    var resolution: (w: Double, h: Double)
+    var image: UIImage?
+    var significantPlaces: [SignificantPlace]
     let scaleConstant: Double = 1000000.0
     
-    init(alat: Double, along: Double, blat: Double, blong: Double, image: String, significantPlaces: [SignificantPlace]){
-        self.image = image
+    init(alat: Double, along: Double, blat: Double, blong: Double, significantPlaces: [SignificantPlace]){
+        //self.plane = SCNPlane(width: CGFloat(size), height: CGFloat(size))
+        self.plane = SCNPlane(width: 100.0, height: 100.0)
+        self.plane.firstMaterial?.diffuse.contents = image
+        self.plane.firstMaterial?.isDoubleSided = true
+        self.node = SCNNode(geometry: plane)
         self.alat = alat
         self.blat = blat
         self.along = along
@@ -41,4 +46,9 @@ public class MapTile {
     public func setPosition(_ vector: SCNVector3){
         node.position = vector
     }
+    
+    public func setImage(_ image: UIImage){
+        self.image = image
+    }
+
 }

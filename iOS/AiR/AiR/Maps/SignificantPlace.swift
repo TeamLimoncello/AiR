@@ -19,4 +19,5 @@ class SignificantPlace {
         self.lat = lat
         self.long = long
     }
+    
 }

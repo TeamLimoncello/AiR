@@ -32,5 +32,45 @@ func map(regex: String, to text: String) -> Bool {
     }
 }
 
+public func cacheImage(image: UIImage, name: String){
+    let components = name.components(separatedBy: "/")
+    let flightID = components[4]
+    let tileName = components[5]
+    
+    let fileURL = getDocumentsDirectory().appendingPathComponent("tile-\(flightID)-\(tileName)")
+    print("Saving to \(fileURL)")
+    
+    if let data = UIImageJPEGRepresentation(image, 1) {
+        do {
+            try data.write(to: fileURL)
+        } catch let error {
+            print("Error whilst caching \(error)")
+        }
+    }
+}
+
+public func getDocumentsDirectory() -> URL {
+    return try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+}
+
+public func getFromCache(name: String) -> UIImage? {
+    let components = name.components(separatedBy: "/")
+    let flightID = components[4]
+    let tileName = components[5]
+    
+    let fileURL = getDocumentsDirectory().appendingPathComponent("tile-\(flightID)-\(tileName)")
+    print("Getting from \(fileURL)")
+    do {
+        let data = try Data(contentsOf: fileURL)
+        if let image = UIImage(data: data) {
+            return image
+        } else {
+            return nil
+        }
+    } catch {
+        return nil
+    }
+}
+
 
 

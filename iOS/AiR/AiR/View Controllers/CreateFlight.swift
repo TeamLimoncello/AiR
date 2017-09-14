@@ -53,11 +53,19 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
 
     @IBAction func createFlightClicked(_ sender: Any) {
-        if map(regex: "([0-9A-Z]{2})([A-Z]?)([0-9]{1,4})([A-Za-z]?)", to: flightNo) {
+        if map(regex: "([A-Z]{3})([0-9]{1,4})([A-Za-z]?)", to: flightNo) {
             Server.shared.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (success, payload) in
                 if success {
                     print("Successfully created flight with ID \(String(describing: payload))")
-                    self.getData(withID: payload)
+                    
+                    //Persists the flightPath in the IDs
+                    if var existing = UserDefaults.standard.array(forKey: "flightPaths") {
+                        existing.append(payload)
+                        UserDefaults.standard.set(existing, forKey: "flightPaths")
+                    } else {
+                        UserDefaults.standard.set([payload], forKey: "flightPaths")
+                    }
+                    
                 } else {
                     print("Could not create flight, error: \(String(describing: payload))")
                     createDialogue(title: "Could not create flight", message: payload, parentViewController: self)
@@ -74,12 +82,18 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
                 createDialogue(title: "Error getting data for this flight", message: error!, parentViewController: self)
                 return
             }
-
-            print("Did get data \(data!)")
+            let path = Path(source: data!)
+            print(path)
         }
     }
+    
+
+    
+    
 
     @IBAction func backButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
 }
+
+

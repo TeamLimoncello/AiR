@@ -10,6 +10,7 @@ import Foundation
 
 /// The Path, composed of MapTiles, for a given flight
 class Path {
+
     let id: String!
     let start: String!
     let destination: String!
@@ -32,7 +33,7 @@ class Path {
             let along = tile["along"] as! Double
             let blat = tile["blat"] as! Double
             let blong = tile["blong"] as! Double
-            let image = tile["image"] as! String
+            let imageURL = tile["image"] as! String
             var sigPlaces = [SignificantPlace]()
             for place in (tile["significantPlaces"] as! [[String: Any]]) {
                 let lat = place["lat"] as! Double
@@ -40,7 +41,17 @@ class Path {
                 let name = place["name"] as! String
                 sigPlaces.append(SignificantPlace(name: name, lat: lat, long: long))
             }
-            tiles.append(MapTile(alat: alat, along: along, blat: blat, blong: blong, image: image, significantPlaces: sigPlaces))
+
+            let mapTile = MapTile(alat: alat, along: along, blat: blat, blong: blong, significantPlaces: sigPlaces)
+            
+            Server.shared.downloadImage(url: imageURL) { (image, error) in
+                guard error == nil else {
+                    print("Error whilst downloading image", error!)
+                    return
+                }
+                mapTile.image = image
+            }
+            tiles.append(mapTile)
         }
     }
 }
