@@ -11,6 +11,8 @@ from PIL import Image
 from io import BytesIO
 import time
 
+from server import flight_aware_interface
+
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
 
@@ -86,15 +88,21 @@ def fetch(ref_id):
         return '', 403
     if not flight['dataReady']:
         return send_json({'progress': 0}, 503)
-    return send_json([
-        {
-            "alat": 0,
-            "along": 0,
-            "blat": 1,
-            "blong": 1,
-            "image": "/api/v1/tile/" + ref_id + "/img.jpg",
+    return send_json({
+        "meta":{
+            
         },
-    ])
+        "path": "",
+        "tiles": [
+            {
+                "alat": 0,
+                "along": 0,
+                "blat": 1,
+                "blong": 1,
+                "image": "/api/v1/tile/" + ref_id + "/img.jpg",
+            },
+        ]
+    })
 
 
 @app.route('/api/v1/tile/<ref_id>/<filename>')
@@ -172,7 +180,7 @@ def close_db(error):
 
 @celery.task
 def load_data(flight_id):
-    time.sleep(30)
+    result = flight_aware_interface.cache(flight_id)
     with get_db() as db:
         db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', (flight_id,))
         db.commit()

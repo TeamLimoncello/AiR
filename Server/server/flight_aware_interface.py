@@ -1,5 +1,5 @@
 import time
-
+import sqlite3
 import re
 import requests
 
@@ -68,9 +68,26 @@ def process_flight_path(json_path):
     points.append(convert(json_path[-1], initial))
     return points
 
+
 def print_flight_path(path):
+    csv = ''
     for point in path:
-        print(str(point['timestamp']),end=',')
-        print(str(point['latitude']),end=',')
-        print(str(point['longitude']),end=',')
-        print(str(point['altitude']))
+        csv += (str(point['timestamp']) + ','
+                   + str(point['latitude']) + ','
+                   + str(point['longitude']) + ','
+                   + str(point['altitude']) + '\n')
+    return csv
+
+
+def cache(flight_id):
+    db = sqlite3.connect('database.db')
+    c = db.execute('SELECT path FROM flightPaths WHERE flightCode=? AND expires>?', (flight_id, int(time.time()),))
+    result = c.fetchone()
+    if result is not None:
+        return result['path']
+    path = print_flight_path(process_flight_path(get_flight_path(flight_id)))
+    db.execute('INSERT OR REPLACE INTO flightPaths (flightCode, expires, path) VALUES (?,?,?)', (flight_id,int(time.time()+2592000), path))
+    db.commit()
+    db.close()
+    return path
+
