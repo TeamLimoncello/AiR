@@ -20,3 +20,14 @@ func createDialogue(title: String, message: String, parentViewController: UIView
     alert.addAction(cancelAction)
     parentViewController.present(alert, animated: true)
 }
+
+func map(regex: String, to text: String) -> Bool {
+    do {
+        let regex = try NSRegularExpression(pattern: regex)
+        let results = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+        return results.count > 0
+    } catch let error {
+        print("Invalid regex: \(error.localizedDescription)")
+        return false
+    }
+}

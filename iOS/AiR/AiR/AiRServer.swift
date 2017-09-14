@@ -33,7 +33,7 @@ class Server {
             do {
                 guard error == nil else {
                     print("error=\(String(describing: error))")
-                    completion(false, "Server down")
+                    completion(false, "Please check your connection and try again.")
                     return
                 }
                 
@@ -50,8 +50,8 @@ class Server {
                 let responseString = String(data: data!, encoding: .utf8)
                 print("responseString = \(String(describing: responseString))")
                 completion(true, responseString!)
-            } catch let error {
-                completion(false, "Bad Response. Error: \(error)")
+            } catch {
+                completion(false, "Please check your connection and try again.")
             }
         }
         task.resume()
