@@ -67,17 +67,23 @@ class AiR: UIViewController {
     fileprivate func addPlane(){
         // This needs to be initialized via the server response as a Path
         // e.g. let path = Path(source: response)
-        let allTiles = [MapTile]()
+        var path: Path!
+        // Load test JSON data from bundle
+        if let json = Bundle.main.path(forResource: "pathEx", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: json), options: .alwaysMapped)
+                let jsonObj = try? JSONSerialization.jsonObject(with: data, options: [])
+                path = Path(source: (jsonObj as? [[String: Any]])!)
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        } else {
+            print("Failed to fetch local JSON resource")
+        }
         
-//    Test Data
-//        for i in stride(from: 41, to: 51, by: 1) {
-//            for j in stride(from: 0, to: 12, by: 0.1) {
-//                //let tile = MapTile(startCoordinate: (Double(i), Double(j)), overlay: UIImage(named: "testGradient")!)
-//                allTiles.append(tile)
-//            }
-//        }
+        print(path.tiles)
         
-        mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: allTiles)
+        mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: path.tiles)
         sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
     }
     

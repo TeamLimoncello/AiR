@@ -20,7 +20,7 @@ class Path {
             let blat = tile["blat"] as! Double
             let blong = tile["blong"] as! Double
             let image = tile["image"] as! String
-            var sigPlaces: [SignificantPlace]!
+            var sigPlaces = [SignificantPlace]()
             for place in (tile["significantPlaces"] as! [[String: Any]]) {
                 let lat = place["lat"] as! Double
                 let long = place["long"] as! Double

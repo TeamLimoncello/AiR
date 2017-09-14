@@ -26,17 +26,34 @@ public class MapGrid {
         mainPlaneNode.eulerAngles.y = degreesToRadians(deviceHeading + headingOfFlight)
         mainPlaneNode.position = SCNVector3(x: 0, y: -70, z: 0)
         
+        addTiles()
+    }
+    
+    func addTiles() {
         tiles.forEach({mainPlaneNode.addChildNode($0.node)})
         
         //Position the tiles in the correct position
-        let numberOfColsPerRow = 6
+        let numberOfColsPerRow = 1
         
         let numberOfRows = tiles.count / numberOfColsPerRow
         for rowNumber in 0...numberOfRows - 1 {
             for columnNumber in 0...numberOfColsPerRow - 1 {
                 let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
                 tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), rowNumber*Int(tile.resolution.h), 0))
+                addSignificantPlaces(to: tile)
             }
+        }
+    }
+    
+    func addSignificantPlaces(to tile: MapTile) {
+        for place in tile.significantPlaces {
+            let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0)
+            cube.firstMaterial?.diffuse.contents = UIColor.red
+            let cubeNode = SCNNode(geometry: cube)
+            let x = abs(place.lat - tile.origin.lat)
+            let y = abs(place.long - tile.origin.long)
+            cubeNode.position = SCNVector3(x, Double(mainPlaneNode.position.y), y)
+            tile.node.addChildNode(cubeNode)
         }
     }
     
