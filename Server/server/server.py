@@ -46,7 +46,7 @@ def register():
     db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)',
                (id, raw_flight, raw_date))
     db.commit()
-    return send_json({'id': id})
+    return send_string(id)
 
 
 @app.route('/api/v1/fetch/<ref_id>')
@@ -96,6 +96,12 @@ def send_json(data, code=200):
     return Response(response=json.dumps(data),
                     status=code,
                     mimetype="application/json")
+
+
+def send_string(string, code=200):
+    return Response(response=string,
+                    status=code,
+                    mimetype="text/plain")
 
 
 def connect_db():
