@@ -10,11 +10,24 @@ import Foundation
 
 /// The Path, composed of MapTiles, for a given flight
 class Path {
+    let id: String!
+    let start: String!
+    let destination: String!
+    let time: String!
+    let altitiude: Double!
+    let flightNo: String!
     let tiles: [MapTile]!
+    
     /// Accepts a JSON source to construct the path
-    init(source: [[String: Any]]) {
-        tiles = []
-        for tile in source {
+    init(source: [String: Any]) {
+        id = source["id"] as! String
+        start = source["start"] as! String
+        destination = source["destination"] as! String
+        time = source["time"] as! String
+        altitiude = source["altitiude"] as! Double
+        flightNo = source["flightNo"] as! String
+        tiles = [MapTile]()
+        for tile in source["tiles"] as! [[String: Any]] {
             let alat = tile["alat"] as! Double
             let along = tile["along"] as! Double
             let blat = tile["blat"] as! Double

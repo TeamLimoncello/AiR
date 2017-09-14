@@ -75,6 +75,4 @@ public class MapGrid {
         print(mainPlaneNode.position)
          */
     }
-
-    
 }

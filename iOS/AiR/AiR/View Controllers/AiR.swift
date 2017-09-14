@@ -73,7 +73,7 @@ class AiR: UIViewController {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: json), options: .alwaysMapped)
                 let jsonObj = try? JSONSerialization.jsonObject(with: data, options: [])
-                path = Path(source: (jsonObj as? [[String: Any]])!)
+                path = Path(source: (jsonObj as? [String: Any])!)
             } catch let error {
                 print(error.localizedDescription)
             }

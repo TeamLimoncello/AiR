@@ -17,7 +17,9 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     override func viewDidLoad() {
         styleView()
+        loadFlights()
         flightsTableView.delegate = self
+        flightsTableView.dataSource = self
     }
     
     func styleView() {
@@ -26,17 +28,25 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
         flightsTableView.layer.cornerRadius = 8
     }
     
+    func loadFlights() {
+        // UserDefaults.standard.array(forKey: "flightPaths")
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 7 // number of flights
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "flightCell", for: indexPath) as UITableViewCell
-        let cellView = cell.viewWithTag(0)
-        cellView?.backgroundColor = .black
-        let cellDestination = cell.viewWithTag(1) as? UILabel
+        let cellView = cell.viewWithTag(1)
+        cellView?.backgroundColor = .blue
+        let cellDestination = cell.viewWithTag(2) as? UILabel
         cellDestination?.text = "SFO to NYC"
-        let cellDestTime = cell.viewWithTag(2) as? UILabel
+        let cellDestTime = cell.viewWithTag(3) as? UILabel
         cellDestTime?.text = "21st July"
         return cell
     }
