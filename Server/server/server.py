@@ -2,15 +2,41 @@ import datetime
 import re
 import secrets
 
+from celery import Celery
 from flask import Flask, Response, request, g
 import json
 import os
 import sqlite3
 from PIL import Image
 from io import BytesIO
+import time
 
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
+
+app.config.update(
+    CELERY_BROKER_URL='pyamqp://guest@localhost//',
+    CELERY_RESULT_BACKEND='rpc://'
+)
+
+
+def make_celery(app):
+    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
+                    broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+    TaskBase = celery.Task
+
+    class ContextTask(TaskBase):
+        abstract = True
+
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+
+    celery.Task = ContextTask
+    return celery
+
+celery = make_celery(app)
 
 
 @app.route('/api/v1/')
@@ -46,24 +72,27 @@ def register():
     db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)',
                (id, raw_flight, raw_date))
     db.commit()
+    load_data.delay(id)
     return send_string(id)
 
 
 @app.route('/api/v1/fetch/<ref_id>')
 def fetch(ref_id):
     db = get_db()
-    c = db.execute('SELECT flightCode, date FROM flightIDs WHERE id=?',
+    c = db.execute('SELECT flightCode, date, dataReady FROM flightIDs WHERE id=?',
                    (ref_id,))
     flight = c.fetchone()
     if flight is None:
         return '', 403
+    if not flight['dataReady']:
+        return send_json({'progress': 0}, 503)
     return send_json([
         {
             "alat": 0,
             "along": 0,
             "blat": 1,
             "blong": 1,
-            "image": "/api/v1/tile/"+ref_id+"/img.jpg",
+            "image": "/api/v1/tile/" + ref_id + "/img.jpg",
         },
     ])
 
@@ -76,7 +105,7 @@ def image(ref_id, filename):
     flight = c.fetchone()
     if flight is None:
         return '', 403
-    im = Image.open('./imgs/'+filename)
+    im = Image.open('./imgs/' + filename)
     io = BytesIO()
     im.save(io, format='JPEG')
     return Response(io.getvalue(), mimetype='image/jpeg')
@@ -139,3 +168,12 @@ def close_db(error):
     """Closes the database again at the end of the request."""
     if hasattr(g, 'sqlite_db'):
         g.sqlite_db.close()
+
+
+@celery.task
+def load_data(flight_id):
+    time.sleep(30)
+    with get_db() as db:
+        db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', (flight_id,))
+        db.commit()
+    return flight_id
