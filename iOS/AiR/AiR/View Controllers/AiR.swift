@@ -65,24 +65,23 @@ class AiR: UIViewController {
     }
     
     fileprivate func addPlane(){
-        var allTiles = [MapTile]()
+        // This needs to be initialized via the server response as a Path
+        // e.g. let path = Path(source: response)
+        let allTiles = [MapTile]()
         
-        
-        for i in stride(from: 41, to: 51, by: 1) {
-            for j in stride(from: 0, to: 12, by: 0.1) {
-                let tile = MapTile(startCoordinate: (Double(i), Double(j)), overlay: UIImage(named: "testGradient")!)
-                allTiles.append(tile)
-            }
-        }
+//    Test Data
+//        for i in stride(from: 41, to: 51, by: 1) {
+//            for j in stride(from: 0, to: 12, by: 0.1) {
+//                //let tile = MapTile(startCoordinate: (Double(i), Double(j)), overlay: UIImage(named: "testGradient")!)
+//                allTiles.append(tile)
+//            }
+//        }
         
         mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: allTiles)
         sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
-    
     }
     
     fileprivate func getLocation(){
-
-        
     }
     
     @IBAction func toggleSpherePressed(_ sender: Any) {

@@ -57,5 +57,3 @@ class Server {
         task.resume()
     }
 }
-
-//let AiRServer = Server()

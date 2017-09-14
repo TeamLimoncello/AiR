@@ -35,7 +35,7 @@ public class MapGrid {
         for rowNumber in 0...numberOfRows - 1 {
             for columnNumber in 0...numberOfColsPerRow - 1 {
                 let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
-                tile.setPosition(SCNVector3(columnNumber*tile.size, rowNumber*tile.size, 0))
+                tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), rowNumber*Int(tile.resolution.h), 0))
             }
         }
     }
@@ -45,7 +45,7 @@ public class MapGrid {
         let lat = location.coordinate.latitude
         let long = location.coordinate.longitude
         
-        let tilesStartCoordinate = tiles[0].startCoordinate
+        let tilesStartCoordinate = tiles[0].origin
         let distanceBetweenLat = -lat.distance(to: tilesStartCoordinate.0)
         let distanceBetweenLong = -long.distance(to: tilesStartCoordinate.1)
         
