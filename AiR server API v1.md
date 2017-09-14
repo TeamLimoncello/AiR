@@ -11,7 +11,7 @@ When the user has entered their flight code and date, this is registered into th
 Parameter | Type | Description
 ---|---|---
 date | String | The date of the flight, in the format `YYYY-MM-DD`
-flightNumber | String | The IATA  flight designator, in the format of `xx(a)n(n)(n)(n)(a)`: the 2 or 3 character IATA airline designator, followed by the flight number (up to 4 digits), and finally an operational suffix. The regex for this is `/([0-9A-Z]{2})([A-Z]?)([0-9]{1,4})([A-Za-z]?)/`.
+flightNumber | String | The IATA  flight designator, in the format of `xx(a)n(n)(n)(n)(a)`: the 2 or 3 character IATA airline designator, followed by the flight number (up to 4 digits), and finally an operational suffix. The regex for this is `/([A-Z]{3})([0-9]{1,4})([A-Za-z]?)/`.
 
 ##### Response
 

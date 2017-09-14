@@ -56,7 +56,7 @@ def register():
         return send_json({'code': 1, 'string': 'Bad Date'}, 400)
     try:
         raw_flight = request.form['flightNumber']
-        flight_num = re.match(r'([0-9A-Z]{2})([A-Z]?)([0-9]{1,4})([A-Za-z]?)',
+        flight_num = re.match(r'([A-Z]{3})([0-9]{1,4})([A-Za-z]?)',
                               raw_flight)
         if flight_num is None:
             raise ValueError('Invalid flight number')
