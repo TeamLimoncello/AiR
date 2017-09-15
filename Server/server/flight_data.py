@@ -1,5 +1,4 @@
 import time
-import sqlite3
 import re
 import requests
 from pyproj import Geod
@@ -103,27 +102,25 @@ def print_flight_path(path):
     return csv
 
 
-def cache(flight_id):
-    db = sqlite3.connect('server/database.db')
+def load_flight(db, flight_id):
     flight_id_query = db.execute(
         'SELECT flightCode, date FROM flightIDs WHERE id=?',
         (flight_id,)).fetchone()
-    if flight_id_query is None:
+    if not flight_id_query:
         return
-    flight_code = flight_id_query[0]
-    flight_date = flight_id_query[1]
-    result = db.execute(
-        'SELECT path, origin, destination FROM flightPaths '
-            'WHERE flightCode=? AND expires>?',
-        (flight_code, int(time.time()),)).fetchone()
-    if result is not None:
-        return result[0]
+    flight_code, flight_date = flight_id_query
+    [count] = db.execute(
+        'SELECT count(*) FROM flightPaths '
+        'WHERE flightCode=? AND expires>?',
+        (flight_code, int(time.time()),)
+    ).fetchone()
+    if count != 0:
+        return
     past_flight = get_flight_history(flight_code)
     if past_flight is None:
         db.execute(
             'UPDATE flightIDs SET progress=0.05 WHERE flightCode=?',
             (flight_code,))
-        db.commit()
         # do some fancy (Geod.npts from pyproj) interpolation:
         # flighttime/2min data points. Assume constant speed
         this_flight = get_this_flight(flight_code, flight_date)
@@ -131,15 +128,13 @@ def cache(flight_id):
             db.execute(
                 'UPDATE flightIDs SET invalid=1 WHERE id=?',
                 (flight_id,))
-            db.commit()
             return
         db.execute(
             'UPDATE flightIDs SET progress=0.1 WHERE flightCode=?',
             (flight_code,))
-        db.commit()
-        origin = this_flight["origin"]
-        destination = this_flight["destination"]
-        duration = this_flight["arrivaltime"] - this_flight["departuretime"]
+        origin = this_flight['origin']
+        destination = this_flight['destination']
+        duration = this_flight['arrivaltime'] - this_flight['departuretime']
         try:
             origin_data = openflights_post_request({
                 'icao': origin,
@@ -150,30 +145,27 @@ def cache(flight_id):
                 'db': 'airports',
             })['airports'][0]
             points = Geod().npts(
-                float(origin_data["y"]),
-                float(destination_data["y"]),
-                float(origin_data["x"]),
-                float(destination_data["x"]),
+                float(origin_data['y']),
+                float(destination_data['y']),
+                float(origin_data['x']),
+                float(destination_data['x']),
                 float(duration/180),
             )
             path = ''
             for i, (long,lat) in enumerate(points):
-                path += "{},{},{},{}\n".format(
+                path += '{},{},{},{}\n'.format(
                     duration/len(points), lat, long, 350)
         except (IndexError, KeyError) as a:
             db.execute(
                 'UPDATE flightIDs SET invalid=1 WHERE id=?',
                 (flight_id,))
-            db.commit()
             return
     else:
         db.execute(
             'UPDATE flightIDs SET progress=0.1 WHERE flightCode=?',
             (flight_code,))
-        db.commit()
         ident = flight_ident(past_flight)
         path = print_flight_path(process_flight_path(get_flight_path(ident)))
-        print(past_flight)
         origin = openflights_post_request({
             'icao': past_flight["origin"],
             'db': 'airports',
@@ -188,8 +180,8 @@ def cache(flight_id):
         (flight_code,))
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
-            '(flightCode, origin, originCode, destination, destinationCode, expires, path) '
-            'VALUES (?,?,?,?,?,?,?)',
+        '(flightCode, origin, originCode, destination, destinationCode, expires, path) '
+        'VALUES (?,?,?,?,?,?,?)',
         (flight_code, origin['name'], origin['iata'], destination['name'], destination['iata'],
          int(time.time()+2592000), path))
     db.commit()
