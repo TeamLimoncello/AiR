@@ -63,13 +63,11 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
         let flight = allFlightPaths[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "flightCell", for: indexPath) as UITableViewCell
         let cellView = cell.viewWithTag(1)
-        cellView?.backgroundColor = .black
+        cellView?.layer.cornerRadius = 4
         let cellDestination = cell.viewWithTag(2) as? UILabel
         cellDestination?.text = "\(flight.originCode) to \(flight.destinationCode)"
-        cellDestination?.textColor = .white
         let cellDestTime = cell.viewWithTag(3) as? UILabel
         cellDestTime?.text = flight.date
-        cellDestTime?.textColor = .white
         return cell
     }
     

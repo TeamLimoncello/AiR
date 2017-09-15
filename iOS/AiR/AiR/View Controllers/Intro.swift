@@ -13,6 +13,7 @@ import SystemConfiguration
 class Intro: UIViewController {
 
     // MARK: - Outlets
+    @IBOutlet weak var airLogoView: UIView!
     @IBOutlet weak var parentView: UIView!
     @IBOutlet weak var planeButton: UIButton!
     @IBOutlet weak var planeHorizontalConstraint: NSLayoutConstraint!
@@ -41,15 +42,22 @@ class Intro: UIViewController {
     // MARK: - Initialization
     override func viewDidLoad() {
         initialStyle()
-
-        // Set airplane mode indicator
-        // statusIndicator.image = !SCNetworkReachabilityFlags.reachable ? #imageLiteral(resourceName: "Plane") : #imageLiteral(resourceName: "NoPlane")
     }
 
     // Reload flight whenever home appears
     override func viewDidAppear(_ animated: Bool) {
         loadFlights()
         setState()
+    }
+
+    func initialStyle() {
+        // Style Flight Management buttons
+        airLogoView.layer.cornerRadius = airLogoView.frame.size.width/2
+        flightMgmtButtonsParentView.backgroundColor = .clear
+        createFlightView.layer.cornerRadius = 8
+        createFlightView.addShadow(intensity: .Weak)
+        viewFlightsView.layer.cornerRadius = 8
+        viewFlightsView.addShadow(intensity: .Weak)
     }
 
     func setState() {
@@ -85,16 +93,7 @@ class Intro: UIViewController {
             firstLoad = false
         }
     }
-
-    func initialStyle() {
-        // Style Flight Management buttons
-        flightMgmtButtonsParentView.backgroundColor = .clear
-        createFlightView.layer.cornerRadius = 8
-        createFlightView.addShadow(intensity: .Weak)
-        viewFlightsView.layer.cornerRadius = 8
-        viewFlightsView.addShadow(intensity: .Weak)
-    }
-
+    
     func loadFlights() {
         var allFlights = [[String:Any]]()
         if let flightIDs = UserDefaults.standard.array(forKey: "flightPaths") as? [String] {
@@ -133,7 +132,7 @@ class Intro: UIViewController {
             viewFlightsView.isHidden = false
             destinationLabel.isHidden = false
             flightMgmtButtonsParentView.isHidden = false
-            experienceLabel.text = "Make sure to enable airplane mode and have GPS turned on during your flight to experience AiR."
+            experienceLabel.text = "Make sure to come back when you've taken off to experience AiR."
             destinationLabel.text = "\(closestFlight!.destination)"
             dateLabel.text = "\(closestFlight!.date)"
         default:

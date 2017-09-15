@@ -76,4 +76,3 @@ public func getFromCache(name: String) -> UIImage? {
 }
 
 
-

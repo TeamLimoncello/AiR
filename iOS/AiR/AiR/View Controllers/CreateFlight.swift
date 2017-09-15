@@ -12,6 +12,8 @@ import UIKit
 class CreateFlight: UIViewController, UITextFieldDelegate {
     // MARK: - Outlets
     @IBOutlet weak var parentView: UIView!
+    @IBOutlet weak var parentViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var parentViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var createFlightTitle: UILabel!
     @IBOutlet weak var flightNoTextField: UITextField!
     @IBOutlet weak var flightTimePicker: UIDatePicker!
@@ -19,7 +21,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var createFlightButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
 
-    var flightNo: String!
+    var flightNo = ""
     var flightDate = Date()
 
     // MARK: - Initialization
@@ -29,6 +31,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     }
 
     func initialStyle(){
+        self.moveCard(direction: .Up)
         parentView.layer.cornerRadius = 16
         parentView.addShadow(intensity: .Weak)
         createFlightParentView.layer.cornerRadius = 8
@@ -37,11 +40,11 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     // MARK: - Text Field
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        flightNo = textField.text
+        flightNo = textField.text!
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        flightNo = textField.text
+        flightNo = textField.text!
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -55,32 +58,45 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: - Actions
+    enum Direction {
+        case Up
+        case Down
+    }
+    
+    func moveCard(direction: Direction) {
+        self.parentViewTopConstraint.constant = direction == .Up ? 55 : 580
+        self.parentViewBottomConstraint.constant = direction == .Up ? -20 : 560
+        DispatchQueue.main.async { UIView.animate(withDuration: 1.2) { self.view.layoutIfNeeded() } }
+    }
 
     @IBAction func createFlightClicked(_ sender: Any) {
         if map(regex: "([A-Z]{3})([0-9]{1,4})([A-Za-z]?)", to: flightNo) {
             Server.shared.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (success, payload) in
+                self.moveCard(direction: .Down)
                 if success {
                     print("Successfully created flight with ID \(String(describing: payload))")
-
                     DispatchQueue.main.async {
                         Timer.scheduledTimer(withTimeInterval: 32, repeats: false, block: { (_) in
                             self.getData(withID: payload)
                         })
                     }
-
                 } else {
+                    self.moveCard(direction: .Up)
                     print("Could not create flight, error: \(String(describing: payload))")
                     createDialogue(title: "Could not create flight", message: payload, parentViewController: self, dismissOnCompletion: false)
                 }
             }
         } else {
+            self.moveCard(direction: .Up)
             createDialogue(title: "Could not create flight", message: "Please enter a valid flight number", parentViewController: self, dismissOnCompletion: false)
         }
     }
 
     func getData(withID id : String){
+        
         Server.shared.FetchData(id: id) { (data, error) in
             guard error == nil else {
+                self.moveCard(direction: .Up)
                 createDialogue(title: "Error getting data for this flight", message: error!, parentViewController: self, dismissOnCompletion: false)
                 return
             }
