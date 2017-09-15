@@ -142,10 +142,19 @@ class Intro: UIViewController {
         }
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toARView" {
-            let destination = segue.destination as! AiR
-            destination.flightPath = closestFlight
-        }
+    @IBAction func planePressed(_ sender: Any) {
+        self.planeHorizontalConstraint.constant += 300
+        self.planeTopConstraint.constant -= 250
+        self.planeButton.titleLabel?.font = UIFont(name: (self.planeButton.titleLabel?.font.fontName)!, size: 200)
+        UIView.animate(withDuration: 1.1, animations: {
+            self.view.layoutIfNeeded()
+            self.dateLabel.text = "Have Fun!"
+            self.experienceLabel.isHidden = true
+        }, completion: { s in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "AiR") as! AiR
+            controller.flightPath = self.closestFlight
+            self.present(controller, animated: true, completion: nil)
+        })
     }
 }
