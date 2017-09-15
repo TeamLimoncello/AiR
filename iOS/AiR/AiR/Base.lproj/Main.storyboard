@@ -69,9 +69,8 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2I1-Hv-rEE">
                                                 <rect key="frame" x="0.0" y="0.0" width="140" height="48"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NsP-3h-uhM">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NsP-3h-uhM">
                                                         <rect key="frame" x="0.0" y="0.0" width="140" height="48"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="13"/>
                                                         <state key="normal" title="Create Flight">
                                                             <color key="titleColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -83,7 +82,11 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="140" id="BNp-Fq-Ob1"/>
+                                                    <constraint firstItem="NsP-3h-uhM" firstAttribute="top" secondItem="2I1-Hv-rEE" secondAttribute="top" id="6dx-8r-jR6"/>
+                                                    <constraint firstAttribute="trailing" secondItem="NsP-3h-uhM" secondAttribute="trailing" id="KDv-Yb-qf4"/>
+                                                    <constraint firstItem="NsP-3h-uhM" firstAttribute="leading" secondItem="2I1-Hv-rEE" secondAttribute="leading" id="Nfl-tV-KZ7"/>
+                                                    <constraint firstAttribute="width" constant="140" id="NzE-a9-lqx"/>
+                                                    <constraint firstAttribute="bottom" secondItem="NsP-3h-uhM" secondAttribute="bottom" id="Z5L-C5-AnI"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JlK-Xg-R3C">
@@ -119,7 +122,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make sure to enable airplane mode and have GPS turned on to experience AiR." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIc-82-GDU">
-                                        <rect key="frame" x="66" y="459" width="244" height="76"/>
+                                        <rect key="frame" x="66" y="447" width="244" height="76"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="244" id="4ID-oT-KPV"/>
                                             <constraint firstAttribute="height" constant="76" id="aEU-fj-UEU"/>
@@ -155,7 +158,7 @@
                                     <constraint firstItem="oeO-rh-R1m" firstAttribute="centerX" secondItem="sS2-v9-61X" secondAttribute="centerX" id="Pqu-kk-fWH"/>
                                     <constraint firstAttribute="trailing" secondItem="yEz-gU-iGU" secondAttribute="trailing" constant="32" id="VRD-0o-lDU"/>
                                     <constraint firstItem="oeO-rh-R1m" firstAttribute="top" secondItem="Ewf-ek-9ea" secondAttribute="bottom" constant="56" id="gtT-5a-VnN"/>
-                                    <constraint firstItem="KIc-82-GDU" firstAttribute="centerY" secondItem="sS2-v9-61X" secondAttribute="centerY" constant="163.5" id="jn4-aN-re0"/>
+                                    <constraint firstItem="KIc-82-GDU" firstAttribute="centerY" secondItem="sS2-v9-61X" secondAttribute="centerY" constant="151.5" id="jn4-aN-re0"/>
                                     <constraint firstItem="yYs-B5-cP5" firstAttribute="centerX" secondItem="sS2-v9-61X" secondAttribute="centerX" id="kJk-7W-Xuq"/>
                                     <constraint firstItem="yEz-gU-iGU" firstAttribute="leading" secondItem="sS2-v9-61X" secondAttribute="leading" constant="31" id="lqr-FV-blz"/>
                                     <constraint firstItem="2Nw-G0-Smo" firstAttribute="top" secondItem="yEz-gU-iGU" secondAttribute="bottom" constant="29.5" id="pZv-oJ-vct"/>
@@ -178,6 +181,7 @@
                     <connections>
                         <outlet property="airLogoView" destination="Ewf-ek-9ea" id="JhO-zB-IfU"/>
                         <outlet property="createFlightButton" destination="NsP-3h-uhM" id="bWz-Dh-dLX"/>
+                        <outlet property="createFlightButtonWidth" destination="NzE-a9-lqx" id="hox-HG-kMn"/>
                         <outlet property="createFlightView" destination="2I1-Hv-rEE" id="gpf-Hd-qOJ"/>
                         <outlet property="dateLabel" destination="VTN-fp-PPe" id="v2Q-CL-KNZ"/>
                         <outlet property="destinationLabel" destination="yYs-B5-cP5" id="4jl-82-SXa"/>

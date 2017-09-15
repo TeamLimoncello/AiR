@@ -10,7 +10,7 @@ import Foundation
 
 /// The Path, composed of MapTiles, for a given flight
 class Path {
-    
+
     let origin: String
     let originCode: String
     let destination: String
@@ -22,11 +22,11 @@ class Path {
     let cities: [City]!
     let landmarks: [Landmark]!
 
-    
+
     /// Accepts a JSON source to construct the path
-    
+
     init(source: [String: Any]) {
-        
+
         //Metadata parsing
         let meta = source["meta"] as! [String: Any]
         origin = meta["origin"] as! String
@@ -36,7 +36,7 @@ class Path {
         date = meta["date"] as! String
         flightCode = meta["flightCode"] as! String
 
-        
+
         //Waypoint parsing
         let pathString = source["path"] as! String
         let pathSubstrings = pathString.split(separator: "\n")
@@ -54,7 +54,7 @@ class Path {
             let blong = tile["blong"] as! Double
             let imageURL = tile["image"] as! String
             let mapTile = MapTile(alat: alat, along: along, blat: blat, blong: blong)
-            Server.shared.downloadImage(url: imageURL) { (image, error) in
+            Server.shared.DownloadImage(url: imageURL) { (image, error) in
                 guard error == nil else {
                     print("Error whilst downloading image", error!)
                     return
@@ -77,7 +77,7 @@ class Path {
             cities.append(City(id: citiesID, name: name, englishName: englishName, lat: lat, long: long, population: population))
             citiesID += 1
         }
-        
+
         //Landmarks parsing
         var landmarkID = 0
         landmarks = [Landmark]()
