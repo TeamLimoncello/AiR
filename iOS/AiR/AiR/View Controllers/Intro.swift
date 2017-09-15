@@ -35,7 +35,7 @@ class Intro: UIViewController {
     var firstLoad = true
     var allFlights: [[String:Any]]!
     var allFlightPaths: [Path]!
-    var closestFlight: Path!
+    var closestFlight: Path?
     
     // Nearest flight info, will be pulled from local storage
     let airplaneModeEnabled = true
@@ -57,8 +57,10 @@ class Intro: UIViewController {
         closestFlight = allFlightPaths.sorted(by: { (p1, p2) -> Bool in
             return p1.time > p2.time
         }).first
-        if isNow(flight: closestFlight) { state = .FlightReady }
-        else { state = .UpcomingFlight }
+        if closestFlight != nil {
+            if isNow(flight: closestFlight!) { state = .FlightReady }
+            else { state = .UpcomingFlight }
+        }
         apply(state: state)
     }
     
@@ -115,7 +117,7 @@ class Intro: UIViewController {
         switch state {
         case .FlightReady:
             flightMgmtButtonsParentView.isHidden = true
-            destinationLabel.text = "\(closestFlight.destination)"
+            destinationLabel.text = "\(closestFlight!.destination)"
             dateLabel.text = "Ready to fly!"
             if airplaneModeEnabled {
                 // Flight ready to experience!
@@ -131,8 +133,8 @@ class Intro: UIViewController {
             planeButton.isEnabled = false
             flightMgmtButtonsParentView.isHidden = false
             experienceLabel.text = "Make sure to enable airplane mode and have GPS turned on during your flight to experience AiR."
-            destinationLabel.text = "\(closestFlight.destination)"
-            dateLabel.text = "\(closestFlight.time)"
+            destinationLabel.text = "\(closestFlight!.destination)"
+            dateLabel.text = "\(closestFlight!.time)"
         default:
             // No flights setup
             planeButton.isHidden = true

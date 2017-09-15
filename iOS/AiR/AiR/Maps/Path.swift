@@ -40,7 +40,7 @@ class Path {
                 let lat = place["lat"] as! Double
                 let long = place["long"] as! Double
                 let name = place["name"] as! String
-                sigPlaces.append(SignificantPlace(name: name, lat: lat, long: long))
+                //sigPlaces.append(SignificantPlace(name: name, lat: lat, long: long))
             }
 
             let mapTile = MapTile(alat: alat, along: along, blat: blat, blong: blong, significantPlaces: sigPlaces)

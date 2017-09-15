@@ -16,6 +16,12 @@ class AiR: UIViewController {
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var toggleSphereView: UIView!
     @IBOutlet weak var toggleSphereButton: UIButton!
+   
+    @IBOutlet var significantPlaceInfoView: UIView!
+    @IBOutlet weak var significantPlaceName: UILabel!
+    @IBOutlet weak var significantPlaceEnglishName: UILabel!
+    @IBOutlet weak var significantPlacePopulation: UILabel!
+    
     var mapPlaneNode: SCNNode!
     var locationManager: CLLocationManager!
     var deviceHeading: CLLocationDirection?
@@ -34,10 +40,15 @@ class AiR: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let configuration = AROrientationTrackingConfiguration()
-        sceneView.session.run(configuration)
-        addOuterSphere()
-        setupLocation()
+        if AROrientationTrackingConfiguration.isSupported {
+            let configuration = AROrientationTrackingConfiguration()
+            sceneView.session.run(configuration)
+            addOuterSphere()
+            setupLocation()
+            setupInfoView()
+        } else {
+            createDialogue(title: "Error", message: "Your device does not support this applicaition. Soz.", parentViewController: self)
+        }
     }
     
     fileprivate func setupLocation(){
@@ -80,10 +91,26 @@ class AiR: UIViewController {
         } else {
             print("Failed to fetch local JSON resource")
         }
-        
-       
     }
     
+    fileprivate func setupInfoView(){
+        significantPlaceInfoView.layer.cornerRadius = 16
+        significantPlaceInfoView.center = view.center
+        significantPlaceInfoView.addShadow(intensity: .Ehh)
+        view.addSubview(significantPlaceInfoView)
+        significantPlaceInfoView.isHidden = true
+    }
+    
+    func displaySignificantPlace(_ place: SignificantPlace){
+        significantPlaceName.text = place.name
+        significantPlaceEnglishName.text = "English Name: \(place.englishName)"
+        if let population = place.population {
+            significantPlacePopulation.text =  population
+        }
+        significantPlaceInfoView.isHidden = false
+    }
+    
+    //MARK: - Action Methods
     @IBAction func toggleSpherePressed(_ sender: Any) {
         outerSphereNode.isHidden = !outerSphereNode.isHidden
     }

@@ -13,11 +13,15 @@ class SignificantPlace {
     var name: String
     var lat: Double
     var long: Double
+    var englishName: String
+    var population: String?
     
-    init(name: String, lat: Double, long: Double){
+    init(name: String, englishName: String, lat: Double, long: Double, population: String?){
         self.name = name
+        self.englishName = englishName
         self.lat = lat
         self.long = long
+        self.population = population
     }
     
 }
