@@ -22,25 +22,23 @@ public class MapTile {
     var resolution: (w: Double, h: Double)
     var image: UIImage?
     //var cities: [City]
-    let scaleConstant: Double = 1000000.0
+    let scaleConstant: Double = 10.0
     
     init(alat: Double, along: Double, blat: Double, blong: Double){
-        //self.plane = SCNPlane(width: CGFloat(size), height: CGFloat(size))
-        self.plane = SCNPlane(width: 100.0, height: 100.0)
-        self.plane.firstMaterial?.diffuse.contents = image
-        self.plane.firstMaterial?.isDoubleSided = true
-        self.node = SCNNode(geometry: plane)
         self.alat = alat
         self.blat = blat
         self.along = along
         self.blong = blong
         self.origin = (alat, along)
         self.resolution = ((blat-alat)*scaleConstant, (blong-along)*scaleConstant)
-        //self.cities = cities
         self.plane = SCNPlane(width: CGFloat(self.resolution.w), height: CGFloat(self.resolution.h))
         self.plane.firstMaterial?.diffuse.contents = image
         self.plane.firstMaterial?.isDoubleSided = true
         self.node = SCNNode(geometry: plane)
+        self.node.name = "Test"
+
+        //self.cities = cities
+
     }
     
     public func setPosition(_ vector: SCNVector3){
