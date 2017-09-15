@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// A significant place that is contained within a MapTile
+/// A significant city that is contained within a MapTile
 class City {
     var id: Int
     var name: String

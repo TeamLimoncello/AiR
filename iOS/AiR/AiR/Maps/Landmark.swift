@@ -13,13 +13,11 @@ class Landmark {
     var name: String
     var lat: Float
     var long: Float
-    var englishName: String?
     var modelName: String?
     
-    init(id: Int, name: String, englishName: String?, lat: Float, long: Float, modelName: String?){
+    init(id: Int, name: String, lat: Float, long: Float, modelName: String?){
         self.id = id
         self.name = name
-        self.englishName = englishName
         self.lat = lat
         self.long = long
         self.modelName = modelName
