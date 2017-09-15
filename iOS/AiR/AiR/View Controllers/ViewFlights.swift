@@ -16,9 +16,11 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
     @IBOutlet weak var backButton: UIButton!
     
     var allFlights: [[String:Any]]!
+    var allFlightPaths: [Path]!
     
     override func viewDidLoad() {
         allFlights = [[String:Any]]()
+        allFlightPaths = [Path]()
         styleView()
         loadFlights()
         flightsTableView.delegate = self
@@ -32,7 +34,7 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func loadFlights() {
-        if let flightIDs = UserDefaults.standard.array(forKey: "flightPaths") as? [String]{
+        if let flightIDs = UserDefaults.standard.array(forKey: "flightPaths") as? [String] {
             for flightID in flightIDs {
                 guard let data = Server.shared.getPersistedData(forID: flightID) else {
                     print("Error whilst trying to get persisted data")
@@ -47,10 +49,12 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
             }
         }
         print(allFlights)
+        // Convert to all flight paths
+        allFlights.forEach({allFlightPaths.append(Path(source: $0))})
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7 // number of flights
+        return allFlightPaths.count // number of flights
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -58,13 +62,16 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let flight = allFlightPaths[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "flightCell", for: indexPath) as UITableViewCell
         let cellView = cell.viewWithTag(1)
-        cellView?.backgroundColor = .blue
+        cellView?.backgroundColor = .black
         let cellDestination = cell.viewWithTag(2) as? UILabel
-        cellDestination?.text = "SFO to NYC"
+        cellDestination?.text = flight.destination
+        cellDestination?.textColor = .white
         let cellDestTime = cell.viewWithTag(3) as? UILabel
-        cellDestTime?.text = "21st July"
+        cellDestTime?.text = flight.destination
+        cellDestTime?.textColor = .white
         return cell
     }
     

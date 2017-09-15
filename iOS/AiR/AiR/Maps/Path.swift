@@ -21,12 +21,13 @@ class Path {
     
     /// Accepts a JSON source to construct the path
     init(source: [String: Any]) {
-        id = source["id"] as! String
-        start = source["start"] as! String
-        destination = source["destination"] as! String
-        time = source["time"] as! String
-        altitiude = source["altitiude"] as! Double
-        flightNo = source["flightNo"] as! String
+        let meta = source["meta"] as! [String: Any]
+        id = meta["id"] as! String
+        start = meta["start"] as! String
+        destination = meta["destination"] as! String
+        time = meta["time"] as! String
+        altitiude = meta["altitiude"] as! Double
+        flightNo = meta["flightNo"] as! String
         tiles = [MapTile]()
         for tile in source["tiles"] as! [[String: Any]] {
             let alat = tile["alat"] as! Double

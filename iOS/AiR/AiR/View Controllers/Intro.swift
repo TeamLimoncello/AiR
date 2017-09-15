@@ -33,19 +33,42 @@ class Intro: UIViewController {
         case FlightReady
     }
     var firstLoad = true
+    var allFlights: [[String:Any]]!
+    var allFlightPaths: [Path]!
+    var closestFlight: Path!
     
     // Nearest flight info, will be pulled from local storage
-    let flightDestination = "San Francisco"
-    let flightDate = "21st July at 9pm"
     let airplaneModeEnabled = true
     
     // MARK: - Initialization
     override func viewDidLoad() {
         initialStyle()
-        apply(state: .UpcomingFlight)
+        allFlights = [[String:Any]]()
+        allFlightPaths = [Path]()
+        loadFlights()
+        setState()
         
         // Set airplane mode indicator
         // statusIndicator.image = !SCNetworkReachabilityFlags.reachable ? #imageLiteral(resourceName: "Plane") : #imageLiteral(resourceName: "NoPlane")
+    }
+    
+    func setState() {
+        var state = AiRState.NoFlights
+        closestFlight = allFlightPaths.sorted(by: { (p1, p2) -> Bool in
+            return p1.time > p2.time
+        }).first
+        if isNow(flight: closestFlight) { state = .FlightReady }
+        else { state = .UpcomingFlight }
+        apply(state: state)
+    }
+    
+    func isNow(flight: Path) -> Bool{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let now = dateFormatter.string(from: Date())
+        let flightDate = flight.time
+        if now == flightDate { return true }
+        return false
     }
     
     override func viewDidLayoutSubviews() {
@@ -69,11 +92,30 @@ class Intro: UIViewController {
         viewFlightsView.addShadow(intensity: .Weak)
     }
     
+    func loadFlights() {
+        if let flightIDs = UserDefaults.standard.array(forKey: "flightPaths") as? [String] {
+            for flightID in flightIDs {
+                guard let data = Server.shared.getPersistedData(forID: flightID) else {
+                    print("Error whilst trying to get persisted data")
+                    continue
+                }
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data) as! [String:Any]
+                    allFlights.append(json)
+                    // Convert to all flight paths
+                    allFlights.forEach({allFlightPaths.append(Path(source: $0))})
+                } catch {
+                    print("Error whilst parsing JSON from persisted flights")
+                }
+            }
+        }
+    }
+    
     func apply(state: AiRState) {
         switch state {
         case .FlightReady:
             flightMgmtButtonsParentView.isHidden = true
-            destinationLabel.text = "\(flightDestination)"
+            destinationLabel.text = "\(closestFlight.destination)"
             dateLabel.text = "Ready to fly!"
             if airplaneModeEnabled {
                 // Flight ready to experience!
@@ -89,8 +131,8 @@ class Intro: UIViewController {
             planeButton.isEnabled = false
             flightMgmtButtonsParentView.isHidden = false
             experienceLabel.text = "Make sure to enable airplane mode and have GPS turned on during your flight to experience AiR."
-            destinationLabel.text = "\(flightDestination)"
-            dateLabel.text = "\(flightDate)"
+            destinationLabel.text = "\(closestFlight.destination)"
+            dateLabel.text = "\(closestFlight.time)"
         default:
             // No flights setup
             planeButton.isHidden = true
