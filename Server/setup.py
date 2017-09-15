@@ -10,5 +10,6 @@ setup(
         'celery',
         'requests',
         'pyproj',
+        'utm'
     ],
 )

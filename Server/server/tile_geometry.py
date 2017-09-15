@@ -1,6 +1,5 @@
 import math
-
-import mercator as merc
+import utm
 
 ramani_factor = 1.1943285667419434*256*16
 
@@ -15,7 +14,7 @@ def generate_points(path):
     # path :: [(time, lat, long, alt)]
     points = set()
     for pos in path:
-        x_pos,y_pos = merc.projLatLonToWorldMercator(pos[1], pos[2])
+        x_pos, y_pos = utm.from_latlon(pos[1], pos[2])[:2]
         x_pos /= ramani_factor
         y_pos /= ramani_factor
 
