@@ -16,9 +16,9 @@ def fa_get_request(link, params):
     return response.json()
 
 
-def openflights_post_request(params):
+def openflights_post_request(data):
     link = 'https://openflights.org/php/apsearch.php'
-    response = requests.post(link, params=params)
+    response = requests.post(link, data=data)
     if response.status_code not in range(200,299):
         raise IOError('error: %s' % response.text)
     return response.json()
@@ -157,6 +157,7 @@ def cache(flight_id):
     else:
         ident = flight_ident(past_flight)
         path = print_flight_path(process_flight_path(get_flight_path(ident)))
+        print(past_flight)
         origin = openflights_post_request({
             'icao': past_flight["origin"],
             'db': 'airports',
