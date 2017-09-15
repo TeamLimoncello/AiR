@@ -182,6 +182,8 @@
                         <outlet property="flightMgmtButtonsParentView" destination="yEz-gU-iGU" id="29C-OP-5nL"/>
                         <outlet property="parentView" destination="sS2-v9-61X" id="uLX-jb-aG2"/>
                         <outlet property="planeButton" destination="oeO-rh-R1m" id="KfV-ob-1Yy"/>
+                        <outlet property="planeHorizontalConstraint" destination="Pqu-kk-fWH" id="tPb-Nf-hZV"/>
+                        <outlet property="planeTopConstraint" destination="eLh-rV-vgH" id="U9Z-P8-dAe"/>
                         <outlet property="statusIndicator" destination="zg3-OL-Hbk" id="dPe-Tq-S8Z"/>
                         <outlet property="viewFlightsButton" destination="cng-dY-NxH" id="uDD-Zw-EUW"/>
                         <outlet property="viewFlightsView" destination="JlK-Xg-R3C" id="mgq-xB-EUI"/>

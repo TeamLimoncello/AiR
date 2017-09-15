@@ -20,7 +20,7 @@ class Path {
     let flightCode: String
     let tiles: [MapTile]!
     let waypoints: [Waypoint]!
-    
+
     /// Accepts a JSON source to construct the path
     init(source: [String: Any]) {
         let meta = source["meta"] as! [String: Any]
@@ -31,14 +31,14 @@ class Path {
         destinationCode = meta["destinationCode"] as! String
         date = meta["date"] as! String
         flightCode = meta["flightCode"] as! String
-        
+
         let pathString = source["path"] as! String
         let pathSubstrings = pathString.split(separator: "\n")
         waypoints = pathSubstrings.map { (substring) -> Waypoint in
             let commaSeparated = substring.split(separator: ",")
             return Waypoint(time: Int(commaSeparated[0])!, lat: Double(commaSeparated[1])!, long: Double(commaSeparated[2])!, altitude: Int(commaSeparated[3])!)
         }
-        
+
         tiles = [MapTile]()
         for tile in source["tiles"] as! [[String: Any]] {
             let alat = tile["alat"] as! Double
@@ -56,7 +56,7 @@ class Path {
             }
             tiles.append(mapTile)
         }
-        
+
         var cities = [City]()
         for place in (source["cities"] as! [[String: Any]]) {
             let lat = place["lat"] as! Double

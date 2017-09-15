@@ -13,12 +13,15 @@ func degreesToRadians(_ degrees: Float) -> Float {
     return degrees * Float.pi/180
 }
 
-func createDialogue(title: String, message: String, parentViewController: UIViewController) {
-    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    let cancelAction = UIAlertAction(title: "Okay",
-                                     style: .cancel, handler: nil)
-    alert.addAction(cancelAction)
-    parentViewController.present(alert, animated: true)
+func createDialogue(title: String, message: String, parentViewController: UIViewController, dismissOnCompletion: Bool) {
+    DispatchQueue.main.async(execute: {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Okay",
+                                         style: .cancel,
+                                         handler: {_ in if dismissOnCompletion { parentViewController.dismiss(animated: true, completion: nil) } })
+        alert.addAction(cancelAction)
+        parentViewController.present(alert, animated: true)
+    })
 }
 
 func map(regex: String, to text: String) -> Bool {

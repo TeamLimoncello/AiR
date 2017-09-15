@@ -36,6 +36,10 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
 
     // MARK: - Text Field
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        flightNo = textField.text
+    }
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         flightNo = textField.text
     }
@@ -57,7 +61,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
             Server.shared.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (success, payload) in
                 if success {
                     print("Successfully created flight with ID \(String(describing: payload))")
-            
+
                     DispatchQueue.main.async {
                         Timer.scheduledTimer(withTimeInterval: 32, repeats: false, block: { (_) in
                             self.getData(withID: payload)
@@ -66,21 +70,21 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
 
                 } else {
                     print("Could not create flight, error: \(String(describing: payload))")
-                    createDialogue(title: "Could not create flight", message: payload, parentViewController: self)
+                    createDialogue(title: "Could not create flight", message: payload, parentViewController: self, dismissOnCompletion: false)
                 }
             }
         } else {
-            createDialogue(title: "Could not create flight", message: "Please enter a valid flight number", parentViewController: self)
+            createDialogue(title: "Could not create flight", message: "Please enter a valid flight number", parentViewController: self, dismissOnCompletion: false)
         }
     }
 
     func getData(withID id : String){
         Server.shared.FetchData(id: id) { (data, error) in
             guard error == nil else {
-                createDialogue(title: "Error getting data for this flight", message: error!, parentViewController: self)
+                createDialogue(title: "Error getting data for this flight", message: error!, parentViewController: self, dismissOnCompletion: false)
                 return
             }
-            
+
             //Persists the flightPath in the IDs
             if var existing = UserDefaults.standard.array(forKey: "flightPaths") {
                 existing.append(id)
@@ -88,22 +92,12 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
             } else {
                 UserDefaults.standard.set([id], forKey: "flightPaths")
             }
-            
-            print("Whoop! We got data: \(data)")
-            
-//            //Generates a path
-//            let path = Path(source: data!)
-//            print(path)
+
+            createDialogue(title: "Flight Successfully Created!", message: "Now you just have to launch AiR on the day of your flight.", parentViewController: self, dismissOnCompletion: true)
         }
     }
-    
-
-    
-    
 
     @IBAction func backButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
 }
-
-
