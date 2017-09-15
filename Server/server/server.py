@@ -1,6 +1,7 @@
 from datetime import datetime
 import re
 import secrets
+import csv
 
 from celery import Celery
 from flask import Flask, Response, request, g
@@ -94,6 +95,13 @@ def fetch(ref_id):
         return '', 404
     if not flight['dataReady']:
         return send_json({'progress': 0}, 503)
+    csv_path = csv.reader(flight["path"])
+    cities = []
+    for i in csv_path:
+        csv_lat = i[1]
+        csv_long = i[2]
+        d = db.execute('SELECT * FROM cities WHERE (lat - ?) BETWEEN (-1) AND 1 AND  (long - ?) BETWEEN (-1) AND 1', (csv_lat, csv_long))
+        cities.extend(d.fetchall())
     return send_json({
         'meta':{
             'flightCode': flight['flightCode'],
@@ -102,7 +110,8 @@ def fetch(ref_id):
             'destination': flight['destination'],
         },
         'path': flight["path"],
-        'tiles': [
+        "cities": cities,
+        "tiles": [
             {
                 'alat': 0,
                 'along': 0,
@@ -170,6 +179,18 @@ def init_db():
     db = get_db()
     with app.open_resource('schema.sql', mode='r') as f:
         db.cursor().executescript(f.read())
+    with open('parsed_cities.json') as raw:
+        json_data = json.loads(raw.read())
+        for city in json_data:
+            if city['population'] is None:
+                continue
+            db.execute('INSERT OR REPLACE INTO cities (name, population, lat, long, name_en) VALUES (?, ?, ?, ?, ? )', (
+                city['name'],
+                city['population'],
+                city['lat'],
+                city['long'],
+                city['name_en'],
+            ))
     db.commit()
 
 
