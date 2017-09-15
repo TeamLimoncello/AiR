@@ -60,7 +60,7 @@ class Path {
         }
 
         //We use the cities counter to identify the ID of the node when it is tapped
-        var citiesCounter = 0
+        var citiesID = 0
         cities = [City]()
         for place in (source["cities"] as! [[String: Any]]) {
             let lat = place["lat"] as! Float
@@ -68,11 +68,20 @@ class Path {
             let name = place["name"] as! String
             let englishName = place["name_en"] as? String
             let population = place["population"] as! Int
-            cities.append(City(id: citiesCounter, name: name, englishName: englishName, lat: lat, long: long, population: population))
-            citiesCounter += 1
+            cities.append(City(id: citiesID, name: name, englishName: englishName, lat: lat, long: long, population: population))
+            citiesID += 1
         }
         
+        var landmarkID = 0
         landmarks = [Landmark]()
-        //TODO: Parsing of landmarks
+        //TODO: Parsing of landmarks correctly
+        for landmark in source["landmarks"] as! [[String:Any]]{
+            let lat = landmark["lat"] as! Float
+            let long = landmark["long"] as! Float
+            let name = landmark["name"] as! String
+            let modelName = landmark["modelName"] as? String
+            landmarks.append(Landmark(id: landmarkID, name: name, englishName: nil, lat: lat, long: long, modelName: modelName))
+            landmarkID += 1
+        }
     }
 }
