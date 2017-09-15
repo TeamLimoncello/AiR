@@ -10,7 +10,7 @@ import sqlite3
 from PIL import Image
 from io import BytesIO
 
-from server import flight_aware_interface
+from server import flight_data
 
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
@@ -257,8 +257,7 @@ def close_db(error):
 
 @celery.task
 def load_data(flight_id):
-    result = flight_aware_interface.cache(flight_id)
     with get_db() as db:
+        flight_data.load_flight(db, flight_id)
         db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', (flight_id,))
         db.commit()
-    return flight_id
