@@ -61,6 +61,7 @@ class Intro: UIViewController {
             if isNow(flight: closestFlight!) { state = .FlightReady }
             else { state = .UpcomingFlight }
         }
+        print("Applying \(state)")
         apply(state: state)
     }
 
@@ -126,7 +127,11 @@ class Intro: UIViewController {
             experienceLabel.text = "Click the plane to experience AiR."
         case .UpcomingFlight:
             // Upcoming flight
+            planeButton.isHidden = false
             planeButton.isEnabled = false
+            dateLabel.isHidden = false
+            viewFlightsView.isHidden = false
+            destinationLabel.isHidden = false
             flightMgmtButtonsParentView.isHidden = false
             experienceLabel.text = "Make sure to enable airplane mode and have GPS turned on during your flight to experience AiR."
             destinationLabel.text = "\(closestFlight!.destination)"
