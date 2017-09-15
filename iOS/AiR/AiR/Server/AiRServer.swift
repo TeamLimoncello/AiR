@@ -76,13 +76,13 @@ class Server {
                         completion(nil, "Error whilst parsing JSON")
                     }
                 case 200:
+                    do {
+                        let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
                         self.persistData(data!, id: id)
-                        do {
-                            let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
-                            completion(response, nil)
-                        } catch {
-                            print("Error parsing JSON")
-                        }
+                        completion(response, nil)
+                    } catch {
+                        print("Error parsing JSON response")
+                    }
                 default:
                     completion(nil, "\(httpStatus.statusCode) error. ")
                 }

@@ -11,10 +11,12 @@ import UIKit
 import SystemConfiguration
 
 class Intro: UIViewController {
-    
+
     // MARK: - Outlets
     @IBOutlet weak var parentView: UIView!
     @IBOutlet weak var planeButton: UIButton!
+    @IBOutlet weak var planeHorizontalConstraint: NSLayoutConstraint!
+    @IBOutlet weak var planeTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var statusIndicator: UIImageView!
     @IBOutlet weak var destinationLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -24,7 +26,7 @@ class Intro: UIViewController {
     @IBOutlet weak var createFlightButton: UIButton!
     @IBOutlet weak var viewFlightsView: UIView!
     @IBOutlet weak var viewFlightsButton: UIButton!
-    
+
     // MARK: - Properties
     override var prefersStatusBarHidden: Bool { return true }
     enum AiRState {
@@ -36,10 +38,10 @@ class Intro: UIViewController {
     var allFlights: [[String:Any]]!
     var allFlightPaths: [Path]!
     var closestFlight: Path?
-    
+
     // Nearest flight info, will be pulled from local storage
     let airplaneModeEnabled = true
-    
+
     // MARK: - Initialization
     override func viewDidLoad() {
         initialStyle()
@@ -47,23 +49,23 @@ class Intro: UIViewController {
         allFlightPaths = [Path]()
         loadFlights()
         setState()
-        
+
         // Set airplane mode indicator
         // statusIndicator.image = !SCNetworkReachabilityFlags.reachable ? #imageLiteral(resourceName: "Plane") : #imageLiteral(resourceName: "NoPlane")
     }
-    
+
     func setState() {
-        var state = AiRState.NoFlights
-        closestFlight = allFlightPaths.sorted(by: { (p1, p2) -> Bool in
-            return p1.date > p2.date
-        }).first
-        if closestFlight != nil {
-            if isNow(flight: closestFlight!) { state = .FlightReady }
+        var state: AiRState = .NoFlights
+        if allFlightPaths.count > 0 {
+            closestFlight = allFlightPaths.sorted(by: { (p1, p2) -> Bool in
+                return p1.time > p2.time
+            }).first
+            if isNow(flight: closestFlight) { state = .FlightReady }
             else { state = .UpcomingFlight }
         }
         apply(state: state)
     }
-    
+
     func isNow(flight: Path) -> Bool{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -72,7 +74,7 @@ class Intro: UIViewController {
         if now == flightDate { return true }
         return false
     }
-    
+
     override func viewDidLayoutSubviews() {
         if firstLoad {
             // Apply the gradient background
@@ -84,7 +86,7 @@ class Intro: UIViewController {
             firstLoad = false
         }
     }
-    
+
     func initialStyle() {
         // Style Flight Management buttons
         flightMgmtButtonsParentView.backgroundColor = .clear
@@ -93,7 +95,7 @@ class Intro: UIViewController {
         viewFlightsView.layer.cornerRadius = 8
         viewFlightsView.addShadow(intensity: .Weak)
     }
-    
+
     func loadFlights() {
         if let flightIDs = UserDefaults.standard.array(forKey: "flightPaths") as? [String] {
             for flightID in flightIDs {
@@ -112,7 +114,7 @@ class Intro: UIViewController {
             }
         }
     }
-    
+
     func apply(state: AiRState) {
         switch state {
         case .FlightReady:
