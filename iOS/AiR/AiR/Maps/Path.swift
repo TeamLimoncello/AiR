@@ -10,8 +10,7 @@ import Foundation
 
 /// The Path, composed of MapTiles, for a given flight
 class Path {
-
-//    let id: String!
+    
     let origin: String
     let originCode: String
     let destination: String
@@ -23,10 +22,13 @@ class Path {
     let cities: [City]!
     let landmarks: [Landmark]!
 
+    
     /// Accepts a JSON source to construct the path
+    
     init(source: [String: Any]) {
+        
+        //Metadata parsing
         let meta = source["meta"] as! [String: Any]
-//        id = meta["id"] as! String
         origin = meta["origin"] as! String
         originCode = meta["originCode"] as! String
         destination = meta["destination"] as! String
@@ -34,6 +36,8 @@ class Path {
         date = meta["date"] as! String
         flightCode = meta["flightCode"] as! String
 
+        
+        //Waypoint parsing
         let pathString = source["path"] as! String
         let pathSubstrings = pathString.split(separator: "\n")
         waypoints = pathSubstrings.map { (substring) -> Waypoint in
@@ -41,6 +45,7 @@ class Path {
             return Waypoint(time: Int(commaSeparated[0])!, lat: Double(commaSeparated[1])!, long: Double(commaSeparated[2])!, altitude: Int(commaSeparated[3])!)
         }
 
+        //Tiles parsing
         tiles = [MapTile]()
         for tile in source["tiles"] as! [[String: Any]] {
             let alat = tile["alat"] as! Double
@@ -59,6 +64,7 @@ class Path {
             tiles.append(mapTile)
         }
 
+        //Cities parsing
         //We use the cities counter to identify the ID of the node when it is tapped
         var citiesID = 0
         cities = [City]()
@@ -72,6 +78,7 @@ class Path {
             citiesID += 1
         }
         
+        //Landmarks parsing
 //        var landmarkID = 0
         landmarks = [Landmark]()
 //        //TODO: Parsing of landmarks correctly
