@@ -47,7 +47,7 @@ class AiR: UIViewController {
             setupLocation()
             setupInfoView()
         } else {
-            createDialogue(title: "Error", message: "Your device does not support this applicaition. Soz.", parentViewController: self)
+            createDialogue(title: "Error", message: "Your device does not support Augmented Reality apps.", parentViewController: self, dismissOnCompletion: true)
         }
     }
     

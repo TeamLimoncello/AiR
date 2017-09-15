@@ -65,10 +65,10 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
         let cellView = cell.viewWithTag(1)
         cellView?.backgroundColor = .black
         let cellDestination = cell.viewWithTag(2) as? UILabel
-        cellDestination?.text = flight.destination
+        cellDestination?.text = "\(flight.originCode) to \(flight.destinationCode)"
         cellDestination?.textColor = .white
         let cellDestTime = cell.viewWithTag(3) as? UILabel
-        cellDestTime?.text = flight.destination
+        cellDestTime?.text = flight.date
         cellDestTime?.textColor = .white
         return cell
     }

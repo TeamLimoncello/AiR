@@ -17,7 +17,6 @@ class Intro: UIViewController {
     @IBOutlet weak var planeButton: UIButton!
     @IBOutlet weak var planeHorizontalConstraint: NSLayoutConstraint!
     @IBOutlet weak var planeTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var statusIndicator: UIImageView!
     @IBOutlet weak var destinationLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var experienceLabel: UILabel!
@@ -35,32 +34,31 @@ class Intro: UIViewController {
         case FlightReady
     }
     var firstLoad = true
-    var allFlights: [[String:Any]]!
-    var allFlightPaths: [Path]!
+    var allFlights = [[String:Any]]()
+    var allFlightPaths = [Path]()
     var closestFlight: Path?
-
-    // Nearest flight info, will be pulled from local storage
-    let airplaneModeEnabled = true
-
+    
     // MARK: - Initialization
     override func viewDidLoad() {
         initialStyle()
-        allFlights = [[String:Any]]()
-        allFlightPaths = [Path]()
-        loadFlights()
-        setState()
 
         // Set airplane mode indicator
         // statusIndicator.image = !SCNetworkReachabilityFlags.reachable ? #imageLiteral(resourceName: "Plane") : #imageLiteral(resourceName: "NoPlane")
+    }
+    
+    // Reload flight whenever home appears
+    override func viewDidAppear(_ animated: Bool) {
+        loadFlights()
+        setState()
     }
 
     func setState() {
         var state: AiRState = .NoFlights
         if allFlightPaths.count > 0 {
             closestFlight = allFlightPaths.sorted(by: { (p1, p2) -> Bool in
-                return p1.time > p2.time
+                return p1.date < p2.date
             }).first
-            if isNow(flight: closestFlight) { state = .FlightReady }
+            if isNow(flight: closestFlight!) { state = .FlightReady }
             else { state = .UpcomingFlight }
         }
         apply(state: state)
@@ -121,15 +119,10 @@ class Intro: UIViewController {
             flightMgmtButtonsParentView.isHidden = true
             destinationLabel.text = "\(closestFlight!.destination)"
             dateLabel.text = "Ready to fly!"
-            if airplaneModeEnabled {
-                // Flight ready to experience!
-                planeButton.isHidden = false
-                planeButton.addShadow(intensity: .ChristianBale)
-                experienceLabel.text = "Click the plane to experience AiR."
-            } else {
-                // Need airplane mode first
-                experienceLabel.text = "Please enable airplane mode before using AiR."
-            }
+            // Flight ready to experience!
+            planeButton.isHidden = false
+            planeButton.addShadow(intensity: .ChristianBale)
+            experienceLabel.text = "Click the plane to experience AiR."
         case .UpcomingFlight:
             // Upcoming flight
             planeButton.isEnabled = false
