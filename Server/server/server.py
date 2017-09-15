@@ -263,7 +263,7 @@ def close_db(error):
 
 @celery.task
 def load_data(flight_id):
-    with get_db() as db:
+    with connect_db() as db:
         flight_data.load_flight(db, flight_id)
         db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', (flight_id,))
         db.commit()
