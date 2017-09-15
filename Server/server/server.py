@@ -128,32 +128,38 @@ def fetch(ref_id):
             {
                 'name': 'Clifton Suspension Bridge',
                 'lat': 51.4549,
-                'long': -2.6278
+                'long': -2.6278,
+                'model_name': 'CliftonSuspensionBridge'
             },
             {
                 'name': 'Eiffel Tower',
                 'lat': 48.8584,
-                'long': 2.2945
+                'long': 2.2945,
+                'model_name': 'EiffelTower'
             },
             {
                 'name': 'Colosseum',
                 'lat': 41.8902,
-                'long': 12.4922
+                'long': 12.4922,
+                'model_name': 'Colosseum'
             },
             {
                 'name': 'Arc De Triomphe',
                 'lat': 48.8738,
-                'long': 2.2950
+                'long': 2.2950,
+                'model_name': 'ArcDeTriumphe'
             },
             {
                 'name': 'Leaning Tower of Pisa',
                 'lat': 43.7230,
-                'long': 10.3966
+                'long': 10.3966,
+                'model_name': 'Pisa'
             },
             {
                 'name': "St Peter's Basilica",
                 'lat': 41.9022,
                 'long': 12.4539
+                'model_name': 'Basilica'
             }
         ],
         "cities": list(cities.values()),

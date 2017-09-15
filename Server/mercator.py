@@ -1,9 +1,11 @@
 import math
+
 # Ellipsoid model constants (actual values here are for WGS84)
 sm_a = 6378137.0
 sm_b = 6356752.314
 
-def projLatLonToWorldMercator(lat,lon,isDeg=True):
+
+def projLatLonToWorldMercator(lat, lon, isDeg=True):
     """
     LatLonToWorldMercator
 
@@ -25,13 +27,15 @@ def projLatLonToWorldMercator(lat,lon,isDeg=True):
         lat = projDegToRad(lat)
         lon = projDegToRad(lon)
 
-    x = sm_a*(lon-lon0)
-    y = sm_a*math.log((math.sin(lat)+1)/math.cos(lat))
+    x = sm_a * (lon - lon0)
+    y = sm_a * math.log((math.sin(lat) + 1) / math.cos(lat))
 
-    return  x,y
+    return x, y
+
 
 def projDegToRad(deg):
     return (deg / 180.0 * math.pi)
 
-def projRadToDeg (rad):
+
+def projRadToDeg(rad):
     return (rad / math.pi * 180.0)
