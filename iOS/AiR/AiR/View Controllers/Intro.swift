@@ -37,7 +37,7 @@ class Intro: UIViewController {
     var allFlights = [[String:Any]]()
     var allFlightPaths = [Path]()
     var closestFlight: Path?
-    
+
     // MARK: - Initialization
     override func viewDidLoad() {
         initialStyle()
@@ -45,7 +45,7 @@ class Intro: UIViewController {
         // Set airplane mode indicator
         // statusIndicator.image = !SCNetworkReachabilityFlags.reachable ? #imageLiteral(resourceName: "Plane") : #imageLiteral(resourceName: "NoPlane")
     }
-    
+
     // Reload flight whenever home appears
     override func viewDidAppear(_ animated: Bool) {
         loadFlights()
@@ -95,6 +95,7 @@ class Intro: UIViewController {
     }
 
     func loadFlights() {
+        var allFlights = [[String:Any]]()
         if let flightIDs = UserDefaults.standard.array(forKey: "flightPaths") as? [String] {
             for flightID in flightIDs {
                 guard let data = Server.shared.getPersistedData(forID: flightID) else {
@@ -138,6 +139,13 @@ class Intro: UIViewController {
             destinationLabel.isHidden = true
             dateLabel.isHidden = true
             viewFlightsView.isHidden = true
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toARView" {
+            let destination = segue.destination as! AiR
+            destination.flightPath = closestFlight
         }
     }
 }

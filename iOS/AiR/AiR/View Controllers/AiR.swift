@@ -27,6 +27,7 @@ class AiR: UIViewController {
     var deviceHeading: CLLocationDirection?
     var mapGrid: MapGrid?
     var outerSphereNode: SCNNode!
+    var flightPath: Path!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,22 +76,8 @@ class AiR: UIViewController {
     }
     
     fileprivate func addPlane(){
-        // Load test JSON data from bundle
-        if let json = Bundle.main.path(forResource: "pathEx", ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: json), options: .alwaysMapped)
-                let jsonObj = try? JSONSerialization.jsonObject(with: data, options: [])
-                let path = Path(source: (jsonObj as? [String: Any])!)
-                print(path.tiles)
-                
-                mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: path.tiles)
-                sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        } else {
-            print("Failed to fetch local JSON resource")
-        }
+        mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: flightPath.tiles)
+        sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
     }
     
     fileprivate func setupInfoView(){
@@ -109,6 +96,24 @@ class AiR: UIViewController {
         significantPlacePopulation.text =  "Population: \(place.population)"
         significantPlaceInfoView.isHidden = false
     }
+    
+    //MARK: - Touch Methods
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let location = touch.location(in: sceneView)
+            let hitTestResults = sceneView.hitTest(location, options: nil)
+            for result in hitTestResults {
+                let nodeName = result.node.name
+                showInformation(node: nodeName)
+            }
+        }
+    }
+    
+    func showInformation(node: String?){
+        print(node ?? "Nil")
+    }
+    
     
     //MARK: - Action Methods
     @IBAction func toggleSpherePressed(_ sender: Any) {

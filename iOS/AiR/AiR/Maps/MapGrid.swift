@@ -39,8 +39,8 @@ public class MapGrid {
         for rowNumber in 0...numberOfRows - 1 {
             for columnNumber in 0...numberOfColsPerRow - 1 {
                 let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
-                tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), rowNumber*Int(tile.resolution.h), 0))
-                addCities(to: tile)
+                tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), 0, rowNumber*Int(tile.resolution.h)))
+                //addCities(to: tile)
             }
         }
     }
