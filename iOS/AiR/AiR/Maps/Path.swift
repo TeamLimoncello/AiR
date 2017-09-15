@@ -72,16 +72,16 @@ class Path {
             citiesID += 1
         }
         
-        var landmarkID = 0
+//        var landmarkID = 0
         landmarks = [Landmark]()
-        //TODO: Parsing of landmarks correctly
-        for landmark in source["landmarks"] as! [[String:Any]]{
-            let lat = landmark["lat"] as! Float
-            let long = landmark["long"] as! Float
-            let name = landmark["name"] as! String
-            let modelName = landmark["modelName"] as? String
-            landmarks.append(Landmark(id: landmarkID, name: name, englishName: nil, lat: lat, long: long, modelName: modelName))
-            landmarkID += 1
-        }
+//        //TODO: Parsing of landmarks correctly
+//        for landmark in source["landmarks"] as! [[String:Any]]{
+//            let lat = landmark["lat"] as! Float
+//            let long = landmark["long"] as! Float
+//            let name = landmark["name"] as! String
+//            let modelName = landmark["modelName"] as? String
+//            landmarks.append(Landmark(id: landmarkID, name: name, englishName: nil, lat: lat, long: long, modelName: modelName))
+//            landmarkID += 1
+//        }
     }
 }
