@@ -15,11 +15,9 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
     @IBOutlet weak var flightsTableView: UITableView!
     @IBOutlet weak var backButton: UIButton!
     
-    var allFlights: [[String:Any]]!
     var allFlightPaths: [Path]!
     
     override func viewDidLoad() {
-        allFlights = [[String:Any]]()
         allFlightPaths = [Path]()
         styleView()
         loadFlights()
@@ -34,6 +32,7 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func loadFlights() {
+        var allFlights = [[String:Any]]()
         if let flightIDs = UserDefaults.standard.array(forKey: "flightPaths") as? [String] {
             for flightID in flightIDs {
                 guard let data = Server.shared.getPersistedData(forID: flightID) else {
@@ -48,7 +47,6 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 }
             }
         }
-        print(allFlights)
         // Convert to all flight paths
         allFlights.forEach({allFlightPaths.append(Path(source: $0))})
     }

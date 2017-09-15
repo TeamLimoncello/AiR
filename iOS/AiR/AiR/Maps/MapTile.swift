@@ -21,10 +21,10 @@ public class MapTile {
     var origin: (lat: Double, long: Double)
     var resolution: (w: Double, h: Double)
     var image: UIImage?
-    var significantPlaces: [SignificantPlace]
+    //var cities: [City]
     let scaleConstant: Double = 1000000.0
     
-    init(alat: Double, along: Double, blat: Double, blong: Double, significantPlaces: [SignificantPlace]){
+    init(alat: Double, along: Double, blat: Double, blong: Double){
         //self.plane = SCNPlane(width: CGFloat(size), height: CGFloat(size))
         self.plane = SCNPlane(width: 100.0, height: 100.0)
         self.plane.firstMaterial?.diffuse.contents = image
@@ -36,7 +36,7 @@ public class MapTile {
         self.blong = blong
         self.origin = (alat, along)
         self.resolution = ((blat-alat)*scaleConstant, (blong-along)*scaleConstant)
-        self.significantPlaces = significantPlaces
+        //self.cities = cities
         self.plane = SCNPlane(width: CGFloat(self.resolution.w), height: CGFloat(self.resolution.h))
         self.plane.firstMaterial?.diffuse.contents = image
         self.plane.firstMaterial?.isDoubleSided = true

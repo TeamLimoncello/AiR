@@ -40,21 +40,21 @@ public class MapGrid {
             for columnNumber in 0...numberOfColsPerRow - 1 {
                 let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
                 tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), rowNumber*Int(tile.resolution.h), 0))
-                addSignificantPlaces(to: tile)
+                addCities(to: tile)
             }
         }
     }
     
-    func addSignificantPlaces(to tile: MapTile) {
-        for place in tile.significantPlaces {
-            let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0)
-            cube.firstMaterial?.diffuse.contents = UIColor.red
-            let cubeNode = SCNNode(geometry: cube)
-            let x = abs(place.lat - tile.origin.lat)
-            let y = abs(place.long - tile.origin.long)
-            cubeNode.position = SCNVector3(x, Double(mainPlaneNode.position.y), y)
-            tile.node.addChildNode(cubeNode)
-        }
+    func addCities(to tile: MapTile) {
+//        for place in tile.cities {
+//            let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0)
+//            cube.firstMaterial?.diffuse.contents = UIColor.red
+//            let cubeNode = SCNNode(geometry: cube)
+//            let x = abs(place.lat - tile.origin.lat)
+//            let y = abs(place.long - tile.origin.long)
+//            cubeNode.position = SCNVector3(x, Double(mainPlaneNode.position.y), y)
+//            tile.node.addChildNode(cubeNode)
+//        }
     }
     
     func updateLocation(_ location: CLLocation){

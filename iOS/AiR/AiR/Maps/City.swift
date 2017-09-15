@@ -9,14 +9,14 @@
 import Foundation
 
 /// A significant place that is contained within a MapTile
-class SignificantPlace {
+class City {
     var name: String
     var lat: Double
     var long: Double
-    var englishName: String
-    var population: String?
+    var englishName: String?
+    var population: Int
     
-    init(name: String, englishName: String, lat: Double, long: Double, population: String?){
+    init(name: String, englishName: String?, lat: Double, long: Double, population: Int){
         self.name = name
         self.englishName = englishName
         self.lat = lat

@@ -55,7 +55,7 @@ class Intro: UIViewController {
     func setState() {
         var state = AiRState.NoFlights
         closestFlight = allFlightPaths.sorted(by: { (p1, p2) -> Bool in
-            return p1.time > p2.time
+            return p1.date > p2.date
         }).first
         if closestFlight != nil {
             if isNow(flight: closestFlight!) { state = .FlightReady }
@@ -68,7 +68,7 @@ class Intro: UIViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let now = dateFormatter.string(from: Date())
-        let flightDate = flight.time
+        let flightDate = flight.date
         if now == flightDate { return true }
         return false
     }
@@ -134,7 +134,7 @@ class Intro: UIViewController {
             flightMgmtButtonsParentView.isHidden = false
             experienceLabel.text = "Make sure to enable airplane mode and have GPS turned on during your flight to experience AiR."
             destinationLabel.text = "\(closestFlight!.destination)"
-            dateLabel.text = "\(closestFlight!.time)"
+            dateLabel.text = "\(closestFlight!.date)"
         default:
             // No flights setup
             planeButton.isHidden = true

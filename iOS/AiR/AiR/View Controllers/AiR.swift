@@ -101,12 +101,12 @@ class AiR: UIViewController {
         significantPlaceInfoView.isHidden = true
     }
     
-    func displaySignificantPlace(_ place: SignificantPlace){
+    func displayCity(_ place: City){
         significantPlaceName.text = place.name
-        significantPlaceEnglishName.text = "English Name: \(place.englishName)"
-        if let population = place.population {
-            significantPlacePopulation.text =  population
+        if let englishName = place.englishName {
+            significantPlaceEnglishName.text = "English Name: \(englishName)"
         }
+        significantPlacePopulation.text =  "Population: \(place.population)"
         significantPlaceInfoView.isHidden = false
     }
     

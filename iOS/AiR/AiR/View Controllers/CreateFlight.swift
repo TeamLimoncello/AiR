@@ -89,6 +89,8 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
                 UserDefaults.standard.set([id], forKey: "flightPaths")
             }
             
+            print("Whoop! We got data: \(data)")
+            
 //            //Generates a path
 //            let path = Path(source: data!)
 //            print(path)
