@@ -9,7 +9,6 @@ import os
 import sqlite3
 from PIL import Image
 from io import BytesIO
-import time
 
 from server import flight_aware_interface
 
@@ -125,6 +124,38 @@ def fetch(ref_id):
             'destinationCode': flight['destinationCode'],
         },
         'path': flight["path"],
+        "landmarks": [
+            {
+                'name': 'Clifton Suspension Bridge',
+                'lat': 51.4549,
+                'long': -2.6278
+            },
+            {
+                'name': 'Eiffel Tower',
+                'lat': 48.8584,
+                'long': 2.2945
+            },
+            {
+                'name': 'Colosseum',
+                'lat': 41.8902,
+                'long': 12.4922
+            },
+            {
+                'name': 'Arc De Triomphe',
+                'lat': 48.8738,
+                'long': 2.2950
+            },
+            {
+                'name': 'Leaning Tower of Pisa',
+                'lat': 43.7230,
+                'long': 10.3966
+            },
+            {
+                'name': "St Peter's Basilica",
+                'lat': 41.9022,
+                'long': 12.4539
+            }
+        ],
         "cities": list(cities.values()),
         "tiles": [
             {
