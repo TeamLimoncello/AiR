@@ -46,7 +46,6 @@ public class MapGrid {
             for columnNumber in 0...numberOfColsPerRow - 1 {
                 let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
                 tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), 0, rowNumber*Int(tile.resolution.h)))
-                //addCities(to: tile)
             }
         }
     }
@@ -65,6 +64,7 @@ public class MapGrid {
     }
     
     func addLandmarks(){
+  
         for landmark in landmarks {
             //TODO: Processing, including IF 3D Model available
         }

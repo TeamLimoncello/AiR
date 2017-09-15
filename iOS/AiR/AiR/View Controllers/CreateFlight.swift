@@ -110,9 +110,6 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
             }
 
             createDialogue(title: "Flight Successfully Created!", message: "Now you just have to launch AiR on the day of your flight.", parentViewController: self, dismissOnCompletion: true)
-            
-            //Remove after debugging is complete
-            print(data ?? "No data")
         }
     }
 

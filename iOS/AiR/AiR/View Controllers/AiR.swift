@@ -98,7 +98,6 @@ class AiR: UIViewController {
     }
     
     //MARK: - Touch Methods
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: sceneView)
