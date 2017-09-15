@@ -76,7 +76,7 @@ class AiR: UIViewController {
     }
     
     fileprivate func addPlane(){
-        mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: flightPath.tiles)
+        mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), path: flightPath)
         sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
     }
     
@@ -98,20 +98,31 @@ class AiR: UIViewController {
     }
     
     //MARK: - Touch Methods
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: sceneView)
             let hitTestResults = sceneView.hitTest(location, options: nil)
             for result in hitTestResults {
-                let nodeName = result.node.name
-                showInformation(node: nodeName)
+                if let nodeName = result.node.name {
+                    showInformation(nodeID: nodeName)
+                }
             }
         }
     }
     
-    func showInformation(node: String?){
-        print(node ?? "Nil")
+    //NodeIDs are given in the form {type}-{id}
+    func showInformation(nodeID: String){
+        let nodeID = nodeID.split(separator: "-")
+        guard nodeID.count == 2 else { return }
+        
+        switch nodeID[0] {
+        case "city":
+            break
+        case " ":
+            break
+        default:
+            print("Error whilst parsing touch")
+        }
     }
     
     
