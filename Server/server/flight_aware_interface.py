@@ -168,7 +168,7 @@ def cache(flight_id):
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
             '(flightCode, origin, originCode, destination, destinationCode, expires, path) '
-            'VALUES (?,?,?,?,?)',
+            'VALUES (?,?,?,?,?,?,?)',
         (flight_code, origin['name'], origin['iata'], destination['name'], destination['iata'],
          int(time.time()+2592000), path))
     db.commit()
