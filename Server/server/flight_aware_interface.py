@@ -43,8 +43,6 @@ def get_flight_history(raw_flight):
 def get_this_flight(raw_flight, flight_date):
     flight_num = re.match(r'([A-Z]{3})([0-9]{1,4})([A-Za-z]?)',
                           raw_flight)
-    start_of_day = flight_date.timestamp()
-    start_of_day = flight_date.timestamp()
     result = fa_get_request('AirlineFlightSchedules', {
         'end_date': str(flight_date.timestamp() + 86400),
         'start_date': str(flight_date.timestamp()),
@@ -119,8 +117,6 @@ def cache(flight_id):
     if result is not None:
         return result[0]
     past_flight = get_flight_history(flight_code)
-    print("past_flight")
-    print(past_flight if past_flight is not None else "None")
     if past_flight is None:
         # do some fancy (Geod.npts from pyproj) interpolation:
         # flighttime/2min data points. Assume constant speed
@@ -151,7 +147,7 @@ def cache(flight_id):
             )
             path = ''
             for i, (long,lat) in enumerate(points):
-                path += "{},{},{},{}".format(
+                path += "{},{},{},{}\n".format(
                     duration/len(points), lat, long, 350)
         except (IndexError, KeyError) as a:
             db.execute(
@@ -165,8 +161,8 @@ def cache(flight_id):
         destination = past_flight["destination"]
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
-            '(flightCode, origin, destination, expires, path) VALUES '
-            '(?,?,?,?,?)',
+        '(flightCode, origin, destination, expires, path) VALUES '
+        '(?,?,?,?,?)',
         (flight_code, origin, destination, int(time.time()+2592000), path))
     db.commit()
     db.close()

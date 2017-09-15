@@ -39,6 +39,7 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
+
 celery = make_celery(app)
 
 
@@ -82,10 +83,10 @@ def register():
 @app.route('/api/v1/fetch/<ref_id>')
 def fetch(ref_id):
     db = get_db()
-    c = db.execute('SELECT flightIDs.flightCode as flightCode, date, '
+    c = db.execute('SELECT flightIDs.flightCode AS flightCode, date, '
                    'dataReady, invalid, path, origin, destination '
                    'FROM flightIDs INNER JOIN flightPaths '
-                   'on flightIDs.flightCode = flightPaths.flightCode '
+                   'ON flightIDs.flightCode = flightPaths.flightCode '
                    'WHERE id=?',
                    (ref_id,))
     flight = c.fetchone()
@@ -95,22 +96,34 @@ def fetch(ref_id):
         return '', 404
     if not flight['dataReady']:
         return send_json({'progress': 0}, 503)
-    csv_path = csv.reader(flight["path"])
-    cities = []
-    for i in csv_path:
-        csv_lat = i[1]
-        csv_long = i[2]
-        d = db.execute('SELECT * FROM cities WHERE (lat - ?) BETWEEN (-1) AND 1 AND  (long - ?) BETWEEN (-1) AND 1', (csv_lat, csv_long))
-        cities.extend(d.fetchall())
+    csv_path = map(lambda row: row.split(','), flight["path"].split('\n'))
+    cities = {}
+    for i, row in enumerate(csv_path):
+        try:
+            csv_lat = row[1]
+            csv_long = row[2]
+        except IndexError:
+            print('Error at {}'.format(i))
+        d = db.execute('SELECT id, name, lat, long, population, name_en '
+                       'FROM cities WHERE (lat - ?) BETWEEN (-1) AND 1 AND  (long - ?) BETWEEN (-1) AND 1',
+                       (csv_lat, csv_long))
+        for city in d.fetchall():
+            cities[city['id']] = {
+                'name': city['name'],
+                'lat': city['lat'],
+                'long': city['long'],
+                'population': city['population'],
+                'name_en': city['name_en']
+            }
     return send_json({
-        'meta':{
+        'meta': {
             'flightCode': flight['flightCode'],
             'date': flight['date'],
             'origin': flight['origin'],
             'destination': flight['destination'],
         },
         'path': flight["path"],
-        "cities": cities,
+        "cities": list(cities.values()),
         "tiles": [
             {
                 'alat': 0,

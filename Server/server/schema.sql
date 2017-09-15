@@ -21,6 +21,7 @@ CREATE TABLE flightPaths (
 DROP TABLE IF EXISTS cities;
 
 CREATE TABLE cities (
+  id Integer PRIMARY KEY AUTOINCREMENT,
   name Text,
   population Integer,
   lat Float,
