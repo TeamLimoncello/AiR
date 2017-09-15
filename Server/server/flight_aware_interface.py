@@ -4,15 +4,18 @@ import re
 import requests
 from pyproj import Geod
 
-api_key = 'd499582d8f88245d34324afa83107671b67cbc33'
-base_url = 'https://flightxml.flightaware.com/json/FlightXML3/'
-username = 'lewisbell999'
+
+fa_api_key = 'd499582d8f88245d34324afa83107671b67cbc33'
+fa_url = 'https://flightxml.flightaware.com/json/FlightXML3/'
+fa_username = 'lewisbell999'
 
 
 def fa_get_request(link, params):
-    response = requests.get(base_url+link, params=params, auth=(username, api_key))
+    response = requests.get(fa_url + link,
+                            params=params,
+                            auth=(fa_username, fa_api_key))
     if response.status_code not in range(200,299):
-        raise IOError('error: %s' % response.text)
+        raise IOError('error: {}'.format(response.text))
     return response.json()
 
 
@@ -61,7 +64,6 @@ def flight_ident(flight):
 
 
 def get_flight_path(ident):
-    params = {'ident': ident}
     result = fa_get_request('GetFlightTrack', {'ident': ident})
     if result is None:
         return None
@@ -118,6 +120,10 @@ def cache(flight_id):
         return result[0]
     past_flight = get_flight_history(flight_code)
     if past_flight is None:
+        db.execute(
+            'UPDATE flightIDs SET progress=0.05 WHERE flightCode=?',
+            (flight_code,))
+        db.commit()
         # do some fancy (Geod.npts from pyproj) interpolation:
         # flighttime/2min data points. Assume constant speed
         this_flight = get_this_flight(flight_code, flight_date)
@@ -125,7 +131,12 @@ def cache(flight_id):
             db.execute(
                 'UPDATE flightIDs SET invalid=1 WHERE id=?',
                 (flight_id,))
+            db.commit()
             return
+        db.execute(
+            'UPDATE flightIDs SET progress=0.1 WHERE flightCode=?',
+            (flight_code,))
+        db.commit()
         origin = this_flight["origin"]
         destination = this_flight["destination"]
         duration = this_flight["arrivaltime"] - this_flight["departuretime"]
@@ -153,8 +164,13 @@ def cache(flight_id):
             db.execute(
                 'UPDATE flightIDs SET invalid=1 WHERE id=?',
                 (flight_id,))
+            db.commit()
             return
     else:
+        db.execute(
+            'UPDATE flightIDs SET progress=0.1 WHERE flightCode=?',
+            (flight_code,))
+        db.commit()
         ident = flight_ident(past_flight)
         path = print_flight_path(process_flight_path(get_flight_path(ident)))
         print(past_flight)
@@ -166,6 +182,10 @@ def cache(flight_id):
             'icao': past_flight["destination"],
             'db': 'airports',
         })['airports'][0]
+
+    db.execute(
+        'UPDATE flightIDs SET progress=0.2 WHERE flightCode=?',
+        (flight_code,))
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
             '(flightCode, origin, originCode, destination, destinationCode, expires, path) '
