@@ -194,7 +194,7 @@ def init_db():
     db = get_db()
     with app.open_resource('schema.sql', mode='r') as f:
         db.cursor().executescript(f.read())
-    with open('parsed_cities.json') as raw:
+    with open('server/parsed_cities.json') as raw:
         json_data = json.loads(raw.read())
         for city in json_data:
             if city['population'] is None:
