@@ -82,14 +82,14 @@ class Path {
         var landmarkID = 0
         landmarks = [Landmark]()
 //        //TODO: Parsing of landmarks correctly
-        for landmark in source["landmarks"] as! [[String:Any]]{
-            let lat = landmark["lat"] as! Float
-            let long = landmark["long"] as! Float
-            let name = landmark["name"] as! String
-            let modelName = landmark["model_name"] as? String
-            landmarks.append(Landmark(id: landmarkID, name: name, lat: lat, long: long, modelName: modelName))
-            landmarkID += 1
-        }
+//        for landmark in source["landmarks"] as! [[String:Any]]{
+//            let lat = landmark["lat"] as! Float
+//            let long = landmark["long"] as! Float
+//            let name = landmark["name"] as! String
+//            let modelName = landmark["model_name"] as? String
+//            landmarks.append(Landmark(id: landmarkID, name: name, lat: lat, long: long, modelName: modelName))
+//            landmarkID += 1
+//        }
         
         
         //Debug statements

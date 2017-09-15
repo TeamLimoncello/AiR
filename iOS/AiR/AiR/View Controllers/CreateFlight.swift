@@ -64,9 +64,11 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     }
     
     func moveCard(direction: Direction) {
-        self.parentViewTopConstraint.constant = direction == .Up ? 55 : 600
-        self.parentViewBottomConstraint.constant = direction == .Up ? -20 : 580
-        DispatchQueue.main.async { UIView.animate(withDuration: 1.4) { self.view.layoutIfNeeded() } }
+        DispatchQueue.main.async {
+            self.parentViewTopConstraint.constant = direction == .Up ? 55 : 600
+            self.parentViewBottomConstraint.constant = direction == .Up ? -20 : 580
+            UIView.animate(withDuration: 1.4) { self.view.layoutIfNeeded() }
+        }
     }
 
     @IBAction func createFlightClicked(_ sender: Any) {

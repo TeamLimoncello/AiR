@@ -38,13 +38,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYs-B5-cP5">
-                                        <rect key="frame" x="110" y="357" width="155.5" height="23.5"/>
+                                        <rect key="frame" x="110.5" y="357" width="155.5" height="23.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-ExtraBold" family="Montserrat" pointSize="20"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTN-fp-PPe">
-                                        <rect key="frame" x="151.5" y="399" width="72.5" height="17.5"/>
+                                        <rect key="frame" x="152" y="399" width="72.5" height="17.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -514,13 +514,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </arscnView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fei-lK-ScK">
-                                <rect key="frame" x="259" y="28" width="100" height="48"/>
+                                <rect key="frame" x="317" y="28" width="42" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3hi-5G-7fT">
-                                        <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
+                                    <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3hi-5G-7fT">
+                                        <rect key="frame" x="0.0" y="0.0" width="42" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="10"/>
-                                        <state key="normal" title="Toggle Sphere">
+                                        <state key="normal" backgroundImage="Earth">
                                             <color key="titleColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -528,10 +528,10 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="AkJ-oB-N63"/>
-                                    <constraint firstAttribute="height" constant="48" id="iTL-3u-XWK"/>
+                                    <constraint firstAttribute="width" constant="42" id="AkJ-oB-N63"/>
+                                    <constraint firstAttribute="height" constant="40" id="iTL-3u-XWK"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -603,5 +603,6 @@
     </scenes>
     <resources>
         <image name="AirLogo" width="400" height="400"/>
+        <image name="Earth" width="91" height="91"/>
     </resources>
 </document>

@@ -129,6 +129,7 @@ class AiR: UIViewController {
     //MARK: - Action Methods
     @IBAction func toggleSpherePressed(_ sender: Any) {
         outerSphereNode.isHidden = !outerSphereNode.isHidden
+        toggleSphereButton.setBackgroundImage(outerSphereNode.isHidden ? #imageLiteral(resourceName: "Earth") : #imageLiteral(resourceName: "No Earth"), for: .normal) 
     }
 }
 
