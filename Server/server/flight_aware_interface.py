@@ -109,7 +109,7 @@ def print_flight_path(path):
 def cache(flight_id):
     db = sqlite3.connect('database.db')
     flight_id_query = db.execute(
-        'SELECT flightCode, date FROM flightID WHERE id=?',
+        'SELECT flightCode, date FROM flightIDs WHERE id=?',
         (flight_id,)).fetchone()
     if flight_id_query is None:
         return
