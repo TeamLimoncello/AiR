@@ -45,19 +45,19 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AiR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYt-c9-CYX">
-                                        <rect key="frame" x="126" y="52" width="124.5" height="93.5"/>
+                                        <rect key="frame" x="125.5" y="52" width="124.5" height="93.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Thin" family="Montserrat" pointSize="80"/>
                                         <color key="textColor" red="1" green="0.97647058823529409" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYs-B5-cP5">
-                                        <rect key="frame" x="110.5" y="352.5" width="155.5" height="23.5"/>
+                                        <rect key="frame" x="110" y="352.5" width="155.5" height="23.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-ExtraBold" family="Montserrat" pointSize="20"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTN-fp-PPe">
-                                        <rect key="frame" x="152" y="394.5" width="72.5" height="17.5"/>
+                                        <rect key="frame" x="151.5" y="394.5" width="72.5" height="17.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>

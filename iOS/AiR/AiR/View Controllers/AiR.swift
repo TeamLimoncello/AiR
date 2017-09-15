@@ -38,7 +38,6 @@ class AiR: UIViewController {
         sceneView.session.run(configuration)
         addOuterSphere()
         setupLocation()
-        getLocation()
     }
     
     fileprivate func setupLocation(){
@@ -65,15 +64,16 @@ class AiR: UIViewController {
     }
     
     fileprivate func addPlane(){
-        // This needs to be initialized via the server response as a Path
-        // e.g. let path = Path(source: response)
-        var path: Path!
         // Load test JSON data from bundle
         if let json = Bundle.main.path(forResource: "pathEx", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: json), options: .alwaysMapped)
                 let jsonObj = try? JSONSerialization.jsonObject(with: data, options: [])
-                path = Path(source: (jsonObj as? [String: Any])!)
+                let path = Path(source: (jsonObj as? [String: Any])!)
+                print(path.tiles)
+                
+                mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: path.tiles)
+                sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
             } catch let error {
                 print(error.localizedDescription)
             }
@@ -81,13 +81,7 @@ class AiR: UIViewController {
             print("Failed to fetch local JSON resource")
         }
         
-        print(path.tiles)
-        
-        mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), tiles: path.tiles)
-        sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
-    }
-    
-    fileprivate func getLocation(){
+       
     }
     
     @IBAction func toggleSpherePressed(_ sender: Any) {

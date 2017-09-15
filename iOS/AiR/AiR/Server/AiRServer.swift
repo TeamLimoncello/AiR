@@ -157,6 +157,7 @@ class Server {
         }.resume()
     }
     
+    //MARK: - Image Downloading
     func downloadImage(url: String, completion: @escaping (_ image: UIImage?, _ error: String?) -> Void){
         //Get from cache if it already exists
         if let image = getFromCache(name: url) {
@@ -190,20 +191,19 @@ class Server {
         }.resume()
     }
     
-    //Data persisting
+    //MARK: - Data Persistance
     func persistData(_ data: Data, id: String){
         let archiveURL = getDocumentsDirectory().appendingPathComponent(id+".bj")
         do {
             try data.write(to: archiveURL)
             print("Data for flight \(id) has been persisted.")
         } catch let error {
-            print("Error whilst caching \(error)")
+            print("Error whilst caching: \(error)")
         }
     }
     
     func getPersistedData(forID id: String) -> Data? {
         let archiveURL = getDocumentsDirectory().appendingPathComponent(id+".bj")
-        print("looking for \(archiveURL)")
         do {
             return try Data(contentsOf: archiveURL)
         } catch {

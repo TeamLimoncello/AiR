@@ -49,6 +49,29 @@
 		69468BE41F696FF200AB8438 /* Quick.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Quick.gpx; sourceTree = "<group>"; };
 		696BFFC71F6874C300A32AF7 /* MapGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGrid.swift; sourceTree = "<group>"; };
 		696BFFC81F6874C300A32AF7 /* MapTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
+		697B50061F6BC9E7006B0871 /* ArcDeTriomphe */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ArcDeTriomphe; sourceTree = "<group>"; };
+		697B50071F6BC9E8006B0871 /* Basilica */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Basilica; sourceTree = "<group>"; };
+		697B50081F6BC9E9006B0871 /* Colosseum */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Colosseum; sourceTree = "<group>"; };
+		697B500A1F6BCA09006B0871 /* __Brick-rough2_.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "__Brick-rough2_.jpg"; sourceTree = "<group>"; };
+		697B500B1F6BCA09006B0871 /* __Gravel_.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = __Gravel_.jpg; sourceTree = "<group>"; };
+		697B500C1F6BCA09006B0871 /* __Smooth_Face_Concrete_Block_.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = __Smooth_Face_Concrete_Block_.jpg; sourceTree = "<group>"; };
+		697B500D1F6BCA09006B0871 /* Base1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Base1.jpg; sourceTree = "<group>"; };
+		697B500E1F6BCA09006B0871 /* Brick_Antique.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Brick_Antique.jpg; sourceTree = "<group>"; };
+		697B500F1F6BCA09006B0871 /* CSBbase.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = CSBbase.bmp; sourceTree = "<group>"; };
+		697B50101F6BCA09006B0871 /* CSBroad.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = CSBroad.bmp; sourceTree = "<group>"; };
+		697B50111F6BCA09006B0871 /* CSBtowerwalllower.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = CSBtowerwalllower.bmp; sourceTree = "<group>"; };
+		697B50121F6BCA09006B0871 /* Fencing_Lattice_White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fencing_Lattice_White.png; sourceTree = "<group>"; };
+		697B50131F6BCA09006B0871 /* roof.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = roof.jpg; sourceTree = "<group>"; };
+		697B50141F6BCA09006B0871 /* Top1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Top1.jpg; sourceTree = "<group>"; };
+		697B50151F6BCA09006B0871 /* TopwithWriting.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TopwithWriting.jpg; sourceTree = "<group>"; };
+		697B50161F6BCA09006B0871 /* Underside.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Underside.jpg; sourceTree = "<group>"; };
+		697B50171F6BCA15006B0871 /* CliftonSuspensionBridge.dae */ = {isa = PBXFileReference; lastKnownFileType = text.xml.dae; path = CliftonSuspensionBridge.dae; sourceTree = "<group>"; };
+		697B50191F6BCA6C006B0871 /* material_11.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = material_11.bmp; sourceTree = "<group>"; };
+		697B501A1F6BCA6C006B0871 /* material_12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = material_12.jpg; sourceTree = "<group>"; };
+		697B501B1F6BCA6C006B0871 /* material_16.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = material_16.JPG; sourceTree = "<group>"; };
+		697B501C1F6BCA6C006B0871 /* material_3.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = material_3.bmp; sourceTree = "<group>"; };
+		697B501D1F6BCA6C006B0871 /* material_7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = material_7.jpg; sourceTree = "<group>"; };
+		697B501E1F6BCA6C006B0871 /* Pisa.dae */ = {isa = PBXFileReference; lastKnownFileType = text.xml.dae; path = Pisa.dae; sourceTree = "<group>"; };
 		69C207FA1F66D5C7004C25B7 /* AiR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AiR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69C207FD1F66D5C7004C25B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		69C207FF1F66D5C7004C25B7 /* AiR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AiR.swift; sourceTree = "<group>"; };
@@ -59,6 +82,7 @@
 		69D73D011F67C8AD00BA3E46 /* Utilties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilties.swift; sourceTree = "<group>"; };
 		69D73D041F67C9EE00BA3E46 /* UIColor+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+hex.swift"; sourceTree = "<group>"; };
 		69D84E101F68725900CBD39E /* Intro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Intro.swift; sourceTree = "<group>"; };
+		69F73EAA1F6BCAEF00FF9CD9 /* EiffelTower */ = {isa = PBXFileReference; lastKnownFileType = folder; name = EiffelTower; path = ../../../../../../EiffelTower; sourceTree = "<group>"; };
 		DA340AED1F695D3200F4D147 /* AiRServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AiRServer.swift; sourceTree = "<group>"; };
 		DA4E307E1F6A6D2B002D13A6 /* Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Path.swift; sourceTree = "<group>"; };
 		DA4E30801F6A6F99002D13A6 /* SignificantPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignificantPlace.swift; sourceTree = "<group>"; };
@@ -111,6 +135,53 @@
 			path = Maps;
 			sourceTree = "<group>";
 		};
+		697B50021F6BBEB3006B0871 /* 3DModels */ = {
+			isa = PBXGroup;
+			children = (
+				69F73EAA1F6BCAEF00FF9CD9 /* EiffelTower */,
+				697B50181F6BCA6C006B0871 /* Pisa */,
+				697B50061F6BC9E7006B0871 /* ArcDeTriomphe */,
+				697B50071F6BC9E8006B0871 /* Basilica */,
+				697B50091F6BCA09006B0871 /* CliftonSuspensionBridge */,
+				697B50081F6BC9E9006B0871 /* Colosseum */,
+			);
+			path = 3DModels;
+			sourceTree = "<group>";
+		};
+		697B50091F6BCA09006B0871 /* CliftonSuspensionBridge */ = {
+			isa = PBXGroup;
+			children = (
+				697B50171F6BCA15006B0871 /* CliftonSuspensionBridge.dae */,
+				697B500A1F6BCA09006B0871 /* __Brick-rough2_.jpg */,
+				697B500B1F6BCA09006B0871 /* __Gravel_.jpg */,
+				697B500C1F6BCA09006B0871 /* __Smooth_Face_Concrete_Block_.jpg */,
+				697B500D1F6BCA09006B0871 /* Base1.jpg */,
+				697B500E1F6BCA09006B0871 /* Brick_Antique.jpg */,
+				697B500F1F6BCA09006B0871 /* CSBbase.bmp */,
+				697B50101F6BCA09006B0871 /* CSBroad.bmp */,
+				697B50111F6BCA09006B0871 /* CSBtowerwalllower.bmp */,
+				697B50121F6BCA09006B0871 /* Fencing_Lattice_White.png */,
+				697B50131F6BCA09006B0871 /* roof.jpg */,
+				697B50141F6BCA09006B0871 /* Top1.jpg */,
+				697B50151F6BCA09006B0871 /* TopwithWriting.jpg */,
+				697B50161F6BCA09006B0871 /* Underside.jpg */,
+			);
+			path = CliftonSuspensionBridge;
+			sourceTree = "<group>";
+		};
+		697B50181F6BCA6C006B0871 /* Pisa */ = {
+			isa = PBXGroup;
+			children = (
+				697B50191F6BCA6C006B0871 /* material_11.bmp */,
+				697B501A1F6BCA6C006B0871 /* material_12.jpg */,
+				697B501B1F6BCA6C006B0871 /* material_16.JPG */,
+				697B501C1F6BCA6C006B0871 /* material_3.bmp */,
+				697B501D1F6BCA6C006B0871 /* material_7.jpg */,
+				697B501E1F6BCA6C006B0871 /* Pisa.dae */,
+			);
+			path = Pisa;
+			sourceTree = "<group>";
+		};
 		69C207F11F66D5C7004C25B7 = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +201,7 @@
 		69C207FC1F66D5C7004C25B7 /* AiR */ = {
 			isa = PBXGroup;
 			children = (
+				697B50021F6BBEB3006B0871 /* 3DModels */,
 				6950825F1F682CC1005D8A3F /* Maps */,
 				DAB95D091F694DC500E547A4 /* View Controllers */,
 				69C207FD1F66D5C7004C25B7 /* AppDelegate.swift */,
@@ -457,7 +529,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V5YSHRDD9B;
+				DEVELOPMENT_TEAM = 95HMAHL2SN;
 				INFOPLIST_FILE = AiR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lemoncello.AiR;
@@ -472,7 +544,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = V5YSHRDD9B;
+				DEVELOPMENT_TEAM = 95HMAHL2SN;
 				INFOPLIST_FILE = AiR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lemoncello.AiR;
