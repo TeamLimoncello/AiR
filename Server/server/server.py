@@ -74,7 +74,7 @@ def register():
     db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)',
                (id, raw_flight, raw_date))
     db.commit()
-    load_data.delay(id, datetime)
+    load_data.delay(id)
     return send_string(id)
 
 
