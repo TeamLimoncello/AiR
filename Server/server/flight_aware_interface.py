@@ -157,13 +157,20 @@ def cache(flight_id):
     else:
         ident = flight_ident(past_flight)
         path = print_flight_path(process_flight_path(get_flight_path(ident)))
-        origin = past_flight["origin"]
-        destination = past_flight["destination"]
+        origin = openflights_post_request({
+            'icao': past_flight["origin"],
+            'db': 'airports',
+        })['airports'][0]
+        destination = openflights_post_request({
+            'icao': past_flight["destination"],
+            'db': 'airports',
+        })['airports'][0]
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
-        '(flightCode, origin, destination, expires, path) VALUES '
-        '(?,?,?,?,?)',
-        (flight_code, origin, destination, int(time.time()+2592000), path))
+            '(flightCode, origin, originCode, destination, destinationCode, expires, path) '
+            'VALUES (?,?,?,?,?)',
+        (flight_code, origin['name'], origin['iata'], destination['name'], destination['iata'],
+         int(time.time()+2592000), path))
     db.commit()
     db.close()
     return path

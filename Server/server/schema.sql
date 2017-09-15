@@ -15,7 +15,9 @@ CREATE TABLE flightPaths (
   expires Integer,
   path Text,
   origin Text,
-  destination Text
+  originCode Char(3),
+  destination Text,
+  destinationCode Char(3)
 );
 
 DROP TABLE IF EXISTS cities;

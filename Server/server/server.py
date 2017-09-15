@@ -1,7 +1,6 @@
 from datetime import datetime
 import re
 import secrets
-import csv
 
 from celery import Celery
 from flask import Flask, Response, request, g
@@ -84,7 +83,8 @@ def register():
 def fetch(ref_id):
     db = get_db()
     c = db.execute('SELECT flightIDs.flightCode AS flightCode, date, '
-                   'dataReady, invalid, path, origin, destination '
+                   'dataReady, invalid, path, origin, destination, '
+                   'originCode, destinationCode '
                    'FROM flightIDs INNER JOIN flightPaths '
                    'ON flightIDs.flightCode = flightPaths.flightCode '
                    'WHERE id=?',
@@ -120,7 +120,9 @@ def fetch(ref_id):
             'flightCode': flight['flightCode'],
             'date': flight['date'],
             'origin': flight['origin'],
+            'originCode': flight['originCode'],
             'destination': flight['destination'],
+            'destinationCode': flight['destinationCode'],
         },
         'path': flight["path"],
         "cities": list(cities.values()),
@@ -197,13 +199,14 @@ def init_db():
         for city in json_data:
             if city['population'] is None:
                 continue
-            db.execute('INSERT OR REPLACE INTO cities (name, population, lat, long, name_en) VALUES (?, ?, ?, ?, ? )', (
-                city['name'],
-                city['population'],
-                city['lat'],
-                city['long'],
-                city['name_en'],
-            ))
+            db.execute('INSERT OR REPLACE INTO cities '
+                       '(name, population, lat, long, name_en) '
+                       'VALUES (?, ?, ?, ?, ? )',
+                       (city['name'],
+                        city['population'],
+                        city['lat'],
+                        city['long'],
+                        city['name_en'],))
     db.commit()
 
 
