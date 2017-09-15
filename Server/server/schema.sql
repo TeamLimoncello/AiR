@@ -5,7 +5,8 @@ CREATE TABLE flightIDs (
   flightCode Char(8),
   date Char(10),
   dataReady Boolean DEFAULT 0,
-  invalid Boolean DEFAULT 0
+  invalid Boolean DEFAULT 0,
+  progess Float DEFAULT 0.0
 );
 
 DROP TABLE IF EXISTS flightPaths;

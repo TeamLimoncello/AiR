@@ -83,7 +83,7 @@ def fetch(ref_id):
     db = get_db()
     c = db.execute('SELECT flightIDs.flightCode AS flightCode, date, '
                    'dataReady, invalid, path, origin, destination, '
-                   'originCode, destinationCode '
+                   'originCode, destinationCode, progress '
                    'FROM flightIDs INNER JOIN flightPaths '
                    'ON flightIDs.flightCode = flightPaths.flightCode '
                    'WHERE id=?',
@@ -94,7 +94,7 @@ def fetch(ref_id):
     if flight['invalid']:
         return '', 404
     if not flight['dataReady']:
-        return send_json({'progress': 0}, 503)
+        return send_json({'progress': flight['progress']}, 503)
     csv_path = map(lambda row: row.split(','), flight["path"].split('\n'))
     cities = {}
     for i, row in enumerate(csv_path):
