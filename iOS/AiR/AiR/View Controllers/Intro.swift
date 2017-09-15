@@ -24,6 +24,7 @@ class Intro: UIViewController {
     @IBOutlet weak var flightMgmtButtonsParentView: UIView!
     @IBOutlet weak var createFlightView: UIView!
     @IBOutlet weak var createFlightButton: UIButton!
+    @IBOutlet weak var createFlightButtonWidth: NSLayoutConstraint!
     @IBOutlet weak var viewFlightsView: UIView!
     @IBOutlet weak var viewFlightsButton: UIButton!
 
@@ -122,6 +123,7 @@ class Intro: UIViewController {
             dateLabel.text = "Ready to fly!"
             // Flight ready to experience!
             planeButton.isHidden = false
+            planeButton.isEnabled = true
             planeButton.addShadow(intensity: .ChristianBale)
             experienceLabel.text = "Click the plane to experience AiR."
         case .UpcomingFlight:
@@ -135,6 +137,8 @@ class Intro: UIViewController {
             experienceLabel.text = "Make sure to come back when you've taken off to experience AiR."
             destinationLabel.text = "\(closestFlight!.destination)"
             dateLabel.text = "\(closestFlight!.date)"
+            createFlightButtonWidth.constant = 140
+            self.view.layoutIfNeeded()
         default:
             // No flights setup
             planeButton.isHidden = true
@@ -143,6 +147,8 @@ class Intro: UIViewController {
             destinationLabel.isHidden = true
             dateLabel.isHidden = true
             viewFlightsView.isHidden = true
+            createFlightButtonWidth.constant = flightMgmtButtonsParentView.frame.width
+            self.view.layoutIfNeeded()
         }
     }
 

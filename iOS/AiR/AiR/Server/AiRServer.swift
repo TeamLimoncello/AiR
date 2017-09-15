@@ -53,7 +53,7 @@ class Server {
     }
     
     ///Fetch all of the associated data for a given flight
-    func FetchData(id: String, completion: @escaping (_ data: [String:Any]?, _ error: String?) -> Void){
+    func FetchData(with id: String, completion: @escaping (_ data: [String:Any]?, _ error: String?) -> Void){
         let endpoint = "/api/v1/fetch/\(id)"
         var request = URLRequest(url: URL(string: domain + endpoint)!)
         request.httpMethod = "GET"
@@ -71,7 +71,9 @@ class Server {
                     do {
                         let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
                         let progress = response["progress"] as! Float
-                        completion(nil, "Data is not ready yet. It is \(progress * 100)% completed")
+                        print("Data is not ready yet. It is \(progress * 100)% completed")
+                        sleep(1)
+                        self.FetchData(with: id, completion: completion)
                     } catch {
                         completion(nil, "Error whilst parsing JSON")
                     }
@@ -92,73 +94,75 @@ class Server {
         }.resume()
     }
     
-    ///Request that the data for a given flight is recalculated
-    func RequestReload(id: String, completion: @escaping (_ success: Bool, _ error: String?) -> Void ){
-        let endpoint = "/api/v1/reload/\(id)"
-        var request = URLRequest(url: URL(string: domain + endpoint)!)
-        request.httpMethod = "GET"
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard error == nil else {
-                completion(false, error!.localizedDescription)
-                return
-            }
-            
-            if let httpStatus = response as? HTTPURLResponse {
-                switch httpStatus.statusCode {
-                case 202:
-                    completion(true, nil)
-                case 403:
-                    completion(false, "Bad request: id is not valid.")
-                default:
-                    completion(false, "Error \(httpStatus.statusCode)")
-                }
-            } else {
-                completion(false, "Error whilst parsing HTTP Response")
-            }
-        }.resume()
-    }
-    
-    ///Fetch rerequested data for a given flight
-    func RefetchData(id: String, completion: @escaping (_ response: Any?, _ error: String?) -> Void){
-        let endpoint = "/api/v1/refetch/\(id)"
-        var request = URLRequest(url: URL(string: domain + endpoint)!)
-        request.httpMethod = "GET"
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard error == nil else {
-                completion(nil, error!.localizedDescription)
-                return
-            }
-            
-            if let httpStatus = response as? HTTPURLResponse {
-                switch httpStatus.statusCode {
-                case 403:
-                    completion(nil, "Error with flight ID.")
-                case 503:
-                    do {
-                        let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
-                        let progress = response["progress"] as! Float
-                        completion(nil, "Data is not ready yet. It is \(progress * 100)% completed")
-                    } catch {
-                        completion(nil, "Error whilst parsing JSON")
-                    }
-                case 200:
-                    do {
-                        let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
-                        completion(response, nil)
-                    } catch {
-                        completion(nil, "Error whilst parsing JSON")
-                    }
-                default:
-                    completion(nil, "\(httpStatus.statusCode) error. ")
-                }
-            } else {
-                completion(nil, "Error with HTTP Response")
-            }
-        }.resume()
-    }
-    
+//    ///Request that the data for a given flight is recalculated
+//    func RequestReload(id: String, completion: @escaping (_ success: Bool, _ error: String?) -> Void ){
+//        let endpoint = "/api/v1/reload/\(id)"
+//        var request = URLRequest(url: URL(string: domain + endpoint)!)
+//        request.httpMethod = "GET"
+//        URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            guard error == nil else {
+//                completion(false, error!.localizedDescription)
+//                return
+//            }
+//
+//            if let httpStatus = response as? HTTPURLResponse {
+//                switch httpStatus.statusCode {
+//                case 202:
+//                    completion(true, nil)
+//                case 403:
+//                    completion(false, "Bad request: id is not valid.")
+//                default:
+//                    completion(false, "Error \(httpStatus.statusCode)")
+//                }
+//            } else {
+//                completion(false, "Error whilst parsing HTTP Response")
+//            }
+//        }.resume()
+//    }
+//
+//    ///Fetch rerequested data for a given flight
+//    func RefetchData(id: String, completion: @escaping (_ response: Any?, _ error: String?) -> Void){
+//        let endpoint = "/api/v1/refetch/\(id)"
+//        var request = URLRequest(url: URL(string: domain + endpoint)!)
+//        request.httpMethod = "GET"
+//        URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            guard error == nil else {
+//                completion(nil, error!.localizedDescription)
+//                return
+//            }
+//
+//            if let httpStatus = response as? HTTPURLResponse {
+//                switch httpStatus.statusCode {
+//                case 403:
+//                    completion(nil, "Error with flight ID.")
+//                case 503:
+//                    do {
+//                        let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
+//                        let progress = response["progress"] as! Float
+//                        completion(nil, "Data is not ready yet. It is \(progress * 100)% completed")
+//                        sleep(1)
+//                        self.RefetchData(id: id, completion: completion)
+//                    } catch {
+//                        completion(nil, "Error whilst parsing JSON")
+//                    }
+//                case 200:
+//                    do {
+//                        let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
+//                        completion(response, nil)
+//                    } catch {
+//                        completion(nil, "Error whilst parsing JSON")
+//                    }
+//                default:
+//                    completion(nil, "\(httpStatus.statusCode) error. ")
+//                }
+//            } else {
+//                completion(nil, "Error with HTTP Response")
+//            }
+//        }.resume()
+//    }
+//
     //MARK: - Image Downloading
-    func downloadImage(url: String, completion: @escaping (_ image: UIImage?, _ error: String?) -> Void){
+    func DownloadImage(url: String, completion: @escaping (_ image: UIImage?, _ error: String?) -> Void){
         //Get from cache if it already exists
         if let image = getFromCache(name: url) {
             completion(image, nil)

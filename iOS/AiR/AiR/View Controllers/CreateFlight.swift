@@ -64,9 +64,9 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     }
     
     func moveCard(direction: Direction) {
-        self.parentViewTopConstraint.constant = direction == .Up ? 55 : 580
-        self.parentViewBottomConstraint.constant = direction == .Up ? -20 : 560
-        DispatchQueue.main.async { UIView.animate(withDuration: 1.2) { self.view.layoutIfNeeded() } }
+        self.parentViewTopConstraint.constant = direction == .Up ? 55 : 600
+        self.parentViewBottomConstraint.constant = direction == .Up ? -20 : 580
+        DispatchQueue.main.async { UIView.animate(withDuration: 1.4) { self.view.layoutIfNeeded() } }
     }
 
     @IBAction func createFlightClicked(_ sender: Any) {
@@ -76,9 +76,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
                 if success {
                     print("Successfully created flight with ID \(String(describing: payload))")
                     DispatchQueue.main.async {
-                        Timer.scheduledTimer(withTimeInterval: 32, repeats: false, block: { (_) in
-                            self.getData(withID: payload)
-                        })
+                        self.getData(withID: payload)
                     }
                 } else {
                     self.moveCard(direction: .Up)
@@ -94,7 +92,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
 
     func getData(withID id : String){
         
-        Server.shared.FetchData(id: id) { (data, error) in
+        Server.shared.FetchData(with: id) { (data, error) in
             guard error == nil else {
                 self.moveCard(direction: .Up)
                 createDialogue(title: "Error getting data for this flight", message: error!, parentViewController: self, dismissOnCompletion: false)

@@ -63,7 +63,7 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
         let flight = allFlightPaths[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "flightCell", for: indexPath) as UITableViewCell
         let cellView = cell.viewWithTag(1)
-        cellView?.layer.cornerRadius = 4
+        cellView?.layer.cornerRadius = 8
         let cellDestination = cell.viewWithTag(2) as? UILabel
         cellDestination?.text = "\(flight.originCode) to \(flight.destinationCode)"
         let cellDestTime = cell.viewWithTag(3) as? UILabel

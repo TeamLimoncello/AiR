@@ -49,7 +49,7 @@ class Path {
             let blong = tile["blong"] as! Double
             let imageURL = tile["image"] as! String
             let mapTile = MapTile(alat: alat, along: along, blat: blat, blong: blong)
-            Server.shared.downloadImage(url: imageURL) { (image, error) in
+            Server.shared.DownloadImage(url: imageURL) { (image, error) in
                 guard error == nil else {
                     print("Error whilst downloading image", error!)
                     return
@@ -75,13 +75,15 @@ class Path {
         var landmarkID = 0
         landmarks = [Landmark]()
         //TODO: Parsing of landmarks correctly
-        for landmark in source["landmarks"] as! [[String:Any]]{
-            let lat = landmark["lat"] as! Float
-            let long = landmark["long"] as! Float
-            let name = landmark["name"] as! String
-            let modelName = landmark["modelName"] as? String
-            landmarks.append(Landmark(id: landmarkID, name: name, englishName: nil, lat: lat, long: long, modelName: modelName))
-            landmarkID += 1
+        if let landmarksSource = source["landmarks"] as? [[String:Any]] {
+            for landmark in landmarksSource {
+                let lat = landmark["lat"] as! Float
+                let long = landmark["long"] as! Float
+                let name = landmark["name"] as! String
+                let modelName = landmark["modelName"] as? String
+                landmarks.append(Landmark(id: landmarkID, name: name, englishName: nil, lat: lat, long: long, modelName: modelName))
+                landmarkID += 1
+            }
         }
     }
 }
