@@ -34,7 +34,6 @@ def get_flight_history(raw_flight):
         'flightno': flight_num[2],
         'howMany': 1,
     })
-    print(result['AirlineFlightSchedulesResult'])
     try:
         return result['AirlineFlightSchedulesResult']['flights'][0]
     except IndexError:
@@ -53,16 +52,14 @@ def get_this_flight(raw_flight, flight_date):
         'flightno': flight_num[2],
         'howMany': 1,
     })
-    print(result['AirlineFlightSchedulesResult'])
     try:
         return result['AirlineFlightSchedulesResult']['flights'][0]
     except IndexError:
         return None
 
 
-
 def flight_ident(flight):
-    return flight['ident'] + "@" + flight['departuretime']
+    return str(flight['ident']) + "@" + str(flight['departuretime'])
 
 
 def get_flight_path(ident):
@@ -113,20 +110,21 @@ def cache(flight_id):
         (flight_id,)).fetchone()
     if flight_id_query is None:
         return
-    flight_code = flight_id_query["flight_code"]
-    flight_date = flight_id_query["date"]
-    c = db.execute(
+    flight_code = flight_id_query[0]
+    flight_date = flight_id_query[1]
+    result = db.execute(
         'SELECT path, origin, destination FROM flightPaths '
             'WHERE flightCode=? AND expires>?',
-        (flight_code, int(time.time()),))
-    result = c.fetchone()
+        (flight_code, int(time.time()),)).fetchone()
     if result is not None:
-        return result['path']
-    past_flight = get_flight_history(flight_id)
+        return result[0]
+    past_flight = get_flight_history(flight_code)
+    print("past_flight")
+    print(past_flight if past_flight is not None else "None")
     if past_flight is None:
         # do some fancy (Geod.npts from pyproj) interpolation:
         # flighttime/2min data points. Assume constant speed
-        this_flight = get_this_flight(flight_id, flight_date)
+        this_flight = get_this_flight(flight_code, flight_date)
         if this_flight is None:
             db.execute(
                 'UPDATE flightIDs SET invalid=1 WHERE id=?',
@@ -155,7 +153,7 @@ def cache(flight_id):
             for i, (long,lat) in enumerate(points):
                 path += "{},{},{},{}".format(
                     duration/len(points), lat, long, 350)
-        except (IndexError, KeyError):
+        except (IndexError, KeyError) as a:
             db.execute(
                 'UPDATE flightIDs SET invalid=1 WHERE id=?',
                 (flight_id,))
@@ -169,7 +167,7 @@ def cache(flight_id):
         'INSERT OR REPLACE INTO flightPaths '
             '(flightCode, origin, destination, expires, path) VALUES '
             '(?,?,?,?,?)',
-        (flight_id, origin, destination, int(time.time()+2592000), path))
+        (flight_code, origin, destination, int(time.time()+2592000), path))
     db.commit()
     db.close()
     return path
