@@ -44,7 +44,7 @@ celery = make_celery(app)
 @app.route('/api/v1/')
 def foo():
     obj = {
-        'version': '0.1',
+        'version': '0.2',
     }
     return send_json(obj)
 
@@ -261,3 +261,4 @@ def load_data(flight_id):
         flight_data.load_flight(db, flight_id)
         db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', (flight_id,))
         db.commit()
+    return flight_id
