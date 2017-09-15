@@ -2,4 +2,3 @@ celery
 flask
 requests
 pillow
-utm
