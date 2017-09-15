@@ -158,7 +158,7 @@ def fetch(ref_id):
             {
                 'name': "St Peter's Basilica",
                 'lat': 41.9022,
-                'long': 12.4539
+                'long': 12.4539,
                 'model_name': 'Basilica'
             }
         ],
