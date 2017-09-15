@@ -68,11 +68,11 @@ def register():
     while True:
         id = str(secrets.token_urlsafe(12))
         app.logger.info(str(id))
-        c = db.execute('SELECT COUNT(*) FROM flightIDs WHERE id=?', (id,))
+        c = db.execute('SELECT COUNT(*) FROM flightIDs WHERE id=?', [id])
         if c.fetchone()[0] is 0:
             break
     db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)',
-               (id, raw_flight, raw_date))
+               [id, raw_flight, raw_date])
     db.commit()
     load_data.delay(id)
     return send_string(id)
@@ -87,7 +87,7 @@ def fetch(ref_id):
                    'FROM flightIDs INNER JOIN flightPaths '
                    'ON flightIDs.flightCode = flightPaths.flightCode '
                    'WHERE id=?',
-                   (ref_id,))
+                   [ref_id])
     flight = c.fetchone()
     if flight is None:
         return '', 403
@@ -105,7 +105,7 @@ def fetch(ref_id):
             print('Error at {}'.format(i))
         d = db.execute('SELECT id, name, lat, long, population, name_en '
                        'FROM cities WHERE (lat - ?) BETWEEN (-1) AND 1 AND  (long - ?) BETWEEN (-1) AND 1',
-                       (csv_lat, csv_long))
+                       [csv_lat, csv_long])
         for city in d.fetchall():
             cities[city['id']] = {
                 'name': city['name'],
@@ -173,7 +173,7 @@ def fetch(ref_id):
 def image(ref_id, filename):
     db = get_db()
     c = db.execute('SELECT flightCode, date FROM flightIDs WHERE id=?',
-                   (ref_id,))
+                   [ref_id])
     flight = c.fetchone()
     if flight is None:
         return '', 403
@@ -233,11 +233,11 @@ def init_db():
             db.execute('INSERT OR REPLACE INTO cities '
                        '(name, population, lat, long, name_en) '
                        'VALUES (?, ?, ?, ?, ? )',
-                       (city['name'],
+                       [city['name'],
                         city['population'],
                         city['lat'],
                         city['long'],
-                        city['name_en'],))
+                        city['name_en']])
     db.commit()
 
 
