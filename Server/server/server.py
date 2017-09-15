@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import re
 import secrets
 
@@ -53,7 +53,7 @@ def foo():
 def register():
     try:
         raw_date = request.form['date']
-        datetime.datetime.strptime(raw_date, '%Y-%M-%d')
+        datetime.strptime(raw_date, '%Y-%M-%d')
     except (KeyError, ValueError):
         return send_json({'code': 1, 'string': 'Bad Date'}, 400)
     try:
@@ -74,32 +74,41 @@ def register():
     db.execute('INSERT INTO flightIDs (id, flightCode, date) VALUES (?,?,?)',
                (id, raw_flight, raw_date))
     db.commit()
-    load_data.delay(id)
+    load_data.delay(id, datetime)
     return send_string(id)
 
 
 @app.route('/api/v1/fetch/<ref_id>')
 def fetch(ref_id):
     db = get_db()
-    c = db.execute('SELECT flightCode, date, dataReady FROM flightIDs WHERE id=?',
+    c = db.execute('SELECT flightIDs.flightCode as flightCode, date, '
+                   'dataReady, invalid, path, origin, destination '
+                   'FROM flightIDs INNER JOIN flightPaths '
+                   'on flightIDs.flightCode = flightPaths.flightCode '
+                   'WHERE id=?',
                    (ref_id,))
     flight = c.fetchone()
     if flight is None:
         return '', 403
+    if flight['invalid']:
+        return '', 404
     if not flight['dataReady']:
         return send_json({'progress': 0}, 503)
     return send_json({
-        "meta":{
-            
+        'meta':{
+            'flightCode': flight['flightCode'],
+            'date': flight['date'],
+            'origin': flight['origin'],
+            'destination': flight['destination'],
         },
-        "path": "",
-        "tiles": [
+        'path': flight["path"],
+        'tiles': [
             {
-                "alat": 0,
-                "along": 0,
-                "blat": 1,
-                "blong": 1,
-                "image": "/api/v1/tile/" + ref_id + "/img.jpg",
+                'alat': 0,
+                'along': 0,
+                'blat': 1,
+                'blong': 1,
+                'image': '/api/v1/tile/' + ref_id + '/img.jpg',
             },
         ]
     })

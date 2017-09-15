@@ -8,6 +8,7 @@ setup(
         'flask',
         'pillow',
         'celery',
-        'requests'
+        'requests',
+        'pyproj',
     ],
 )

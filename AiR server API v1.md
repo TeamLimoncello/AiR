@@ -37,6 +37,8 @@ All the data. Format TBD.
 
 - 403 Forbidden: bad ID.
 
+- 404 Not Found: bad flight.
+
 - 503 Service Unavailable. Encoded in JSON:
 	- `{ "progress": `float` }`
 	  	 where float is a number between 0 and 1, representing how ready the data is.
