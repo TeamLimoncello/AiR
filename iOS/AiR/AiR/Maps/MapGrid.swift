@@ -17,9 +17,13 @@ public class MapGrid {
     public var mainPlaneNode: SCNNode
     private var deviceLocation: CLLocation?
     private var tiles: [MapTile]
+    private var cities: [City]
+    private var landmarks: [Landmark]
     
-    init(deviceHeading: Float, tiles: [MapTile]){
-        self.tiles = tiles
+    init(deviceHeading: Float, path: Path){
+        self.tiles = path.tiles
+        self.cities = path.cities
+        self.landmarks = path.landmarks
         mainPlane = SCNPlane(width: 10, height: 10)
         mainPlaneNode = SCNNode(geometry: mainPlane)
         mainPlaneNode.eulerAngles.x = degreesToRadians(90)
@@ -27,6 +31,8 @@ public class MapGrid {
         mainPlaneNode.position = SCNVector3(x: 0, y: -70, z: 0)
         
         addTiles()
+        addCities()
+        addLandmarks()
     }
     
     func addTiles() {
@@ -45,16 +51,23 @@ public class MapGrid {
         }
     }
     
-    func addCities(to tile: MapTile) {
-//        for place in tile.cities {
-//            let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0)
-//            cube.firstMaterial?.diffuse.contents = UIColor.red
-//            let cubeNode = SCNNode(geometry: cube)
-//            let x = abs(place.lat - tile.origin.lat)
-//            let y = abs(place.long - tile.origin.long)
-//            cubeNode.position = SCNVector3(x, Double(mainPlaneNode.position.y), y)
-//            tile.node.addChildNode(cubeNode)
-//        }
+    func addCities() {
+        for city in cities {
+            let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0)
+            cube.firstMaterial?.diffuse.contents = UIColor.red
+            let cubeNode = SCNNode(geometry: cube)
+            let lat = city.lat - mainPlaneNode.position.x
+            let long = city.long - mainPlaneNode.position.y
+            cubeNode.position = SCNVector3(lat, 0, long)
+            cubeNode.name = "city-\(city.id)"
+            mainPlaneNode.addChildNode(cubeNode)
+        }
+    }
+    
+    func addLandmarks(){
+        for landmark in landmarks {
+            //TODO: Processing, including IF 3D Model available
+        }
     }
     
     func updateLocation(_ location: CLLocation){

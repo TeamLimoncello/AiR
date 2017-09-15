@@ -20,6 +20,8 @@ class Path {
     let flightCode: String
     let tiles: [MapTile]!
     let waypoints: [Waypoint]!
+    let cities: [City]!
+    let landmarks: [Landmark]!
 
     /// Accepts a JSON source to construct the path
     init(source: [String: Any]) {
@@ -57,14 +59,20 @@ class Path {
             tiles.append(mapTile)
         }
 
-        var cities = [City]()
+        //We use the cities counter to identify the ID of the node when it is tapped
+        var citiesCounter = 0
+        cities = [City]()
         for place in (source["cities"] as! [[String: Any]]) {
-            let lat = place["lat"] as! Double
-            let long = place["long"] as! Double
+            let lat = place["lat"] as! Float
+            let long = place["long"] as! Float
             let name = place["name"] as! String
             let englishName = place["name_en"] as? String
             let population = place["population"] as! Int
-            cities.append(City(name: name, englishName: englishName, lat: lat, long: long, population: population))
+            cities.append(City(id: citiesCounter, name: name, englishName: englishName, lat: lat, long: long, population: population))
+            citiesCounter += 1
         }
+        
+        landmarks = [Landmark]()
+        //TODO: Parsing of landmarks
     }
 }

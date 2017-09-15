@@ -21,7 +21,6 @@ public class MapTile {
     var origin: (lat: Double, long: Double)
     var resolution: (w: Double, h: Double)
     var image: UIImage?
-    //var cities: [City]
     let scaleConstant: Double = 10.0
     
     init(alat: Double, along: Double, blat: Double, blong: Double){
@@ -35,10 +34,6 @@ public class MapTile {
         self.plane.firstMaterial?.diffuse.contents = image
         self.plane.firstMaterial?.isDoubleSided = true
         self.node = SCNNode(geometry: plane)
-        self.node.name = "Test"
-
-        //self.cities = cities
-
     }
     
     public func setPosition(_ vector: SCNVector3){
