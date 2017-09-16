@@ -274,7 +274,11 @@ def load_data(flight_id):
         path = flight_data.load_flight(db, flight_id)
         points = tile_geometry.generate_points(path)
         grouped_points = tile_geometry.group_points(points)
-        for group in grouped_points:
+        for i, group in enumerate(grouped_points):
+            progress = 0.2 + 0.8 * i / len(group)
+            db.execute(
+                'UPDATE flightIDs SET progress=? WHERE flightCode=?',
+                [progress, flight_id])
             bounds = tile_geometry.mercator_bounds(group)
             image = tile_geometry.fetch_group_image(group)
             save_image(db, flight_id, image, *bounds)
