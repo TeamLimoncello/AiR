@@ -297,4 +297,4 @@ def save_image(db, flight_id, image, alat, along, blat, blong):
     db.execute('INSERT INTO tiles (file, id, alat, along, blat, blong)'
                'VALUES (?,?,?,?,?,?)',
                [file, flight_id, alat, along, blat, blong])
-    image.save('img/{}.jpg'.format(file))
+    image.save('imgs/{}.jpg'.format(file))
