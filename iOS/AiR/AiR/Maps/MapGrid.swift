@@ -65,23 +65,14 @@ public class MapGrid {
     
     func addLandmarks(){
   
-        for landmark in landmarks {
-            if let modelName = landmark.modelName {
-                
-                if let path = Bundle.main.path(forResource: "art.scnassets/\(modelName)", ofType: "dae"){
-                    print(path)
-//                    let source = SCNSceneSource(url: url, options: nil)
-//                    let block = source?.entryWithIdentifier(modelName, withClass: SCNGeometry.self)
-//                    mainPlaneNode.addChildNode(SCNNode(geometry: block))
-                } else {
-                    print("URL is not valid")
-                }
-                
-            } else {
-                //Add a standard pin
-            }
-           
-        }
+//        if let model = SCNScene(named: "3dmodels/Pisa.scn") {
+//            model.rootNode.scale = SCNVector3(x: 0.01, y: 0.01, z: -0.01)
+//            model.rootNode.position = SCNVector3(-90, 0, 0)
+//            mainPlaneNode.addChildNode(model.rootNode)
+//        } else {
+//            //Add a standard pin
+//        }
+   
     }
     
     func updateLocation(_ location: CLLocation){

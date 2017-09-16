@@ -37,6 +37,7 @@ class AiR: UIViewController {
         sceneView.scene = scene
         //sceneView.autoenablesDefaultLighting = true
         sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
+        sceneView.isJitteringEnabled = true
     }
     
     override func viewDidAppear(_ animated: Bool) {

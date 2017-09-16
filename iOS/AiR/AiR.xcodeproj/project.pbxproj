@@ -10,6 +10,7 @@
 		6915BE791F6C66E100DE5E86 /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6915BE781F6C66E100DE5E86 /* Landmark.swift */; };
 		696BFFCA1F68757D00A32AF7 /* MapTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696BFFC81F6874C300A32AF7 /* MapTile.swift */; };
 		696BFFCB1F68757D00A32AF7 /* MapGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696BFFC71F6874C300A32AF7 /* MapGrid.swift */; };
+		6973BF311F6D2A6C00DA9E70 /* 3dmodels in Resources */ = {isa = PBXBuildFile; fileRef = 6973BF301F6D2A6C00DA9E70 /* 3dmodels */; };
 		69C207FE1F66D5C7004C25B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C207FD1F66D5C7004C25B7 /* AppDelegate.swift */; };
 		69C208001F66D5C7004C25B7 /* AiR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C207FF1F66D5C7004C25B7 /* AiR.swift */; };
 		69C208031F66D5C7004C25B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69C208011F66D5C7004C25B7 /* Main.storyboard */; };
@@ -52,7 +53,7 @@
 		69468BE41F696FF200AB8438 /* Quick.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Quick.gpx; sourceTree = "<group>"; };
 		696BFFC71F6874C300A32AF7 /* MapGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGrid.swift; sourceTree = "<group>"; };
 		696BFFC81F6874C300A32AF7 /* MapTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
-		6991629F1F6D1D3E003D74AC /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		6973BF301F6D2A6C00DA9E70 /* 3dmodels */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 3dmodels; sourceTree = "<group>"; };
 		69C207FA1F66D5C7004C25B7 /* AiR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AiR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69C207FD1F66D5C7004C25B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		69C207FF1F66D5C7004C25B7 /* AiR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AiR.swift; sourceTree = "<group>"; };
@@ -135,7 +136,7 @@
 		69C207FC1F66D5C7004C25B7 /* AiR */ = {
 			isa = PBXGroup;
 			children = (
-				6991629F1F6D1D3E003D74AC /* art.scnassets */,
+				6973BF301F6D2A6C00DA9E70 /* 3dmodels */,
 				6950825F1F682CC1005D8A3F /* Maps */,
 				DAB95D091F694DC500E547A4 /* View Controllers */,
 				DA4E30821F6A852C002D13A6 /* Server */,
@@ -289,6 +290,7 @@
 				DAE5EB0B1F6825E90028810D /* Montserrat-Regular.ttf in Resources */,
 				69C208081F66D5C7004C25B7 /* LaunchScreen.storyboard in Resources */,
 				DAE5EB051F6825E90028810D /* Montserrat-ExtraLightItalic.ttf in Resources */,
+				6973BF311F6D2A6C00DA9E70 /* 3dmodels in Resources */,
 				DAE5EB061F6825E90028810D /* Montserrat-Italic.ttf in Resources */,
 				DAE5EB0C1F6825E90028810D /* Montserrat-SemiBold.ttf in Resources */,
 				DAE5EB0F1F6825E90028810D /* Montserrat-ThinItalic.ttf in Resources */,
