@@ -252,7 +252,6 @@ def init_db():
                         city['lat'],
                         city['long'],
                         city['name_en']])
-            db.commit()
     db.commit()
 
 
@@ -277,34 +276,33 @@ def load_data(flight_id):
         db.execute(
             'UPDATE flightIDs SET progress=0.2 WHERE id=?',
             [flight_id])
+        print(flight_id)
         db.commit()
 
         points = tile_geometry.generate_points(path)
         grouped_points = tile_geometry.group_points(points)
-        job = celery_group(load_group.s(flight_id, group) for group in grouped_points)
-        result = job.apply_async()
-        while not result.ready():
-            progress = 0.2 + 0.8 * result.completed_count() / len(grouped_points)
-            db.execute(
-                'UPDATE flightIDs SET progress=? WHERE flightCode=?',
-                [progress, flight_id])
-            db.commit()
-            time.sleep(1)
-        db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', [flight_id])
-        db.commit()
-        try:
-            db.close()
-        except sqlite3.ProgrammingError:
-            pass
-    return flight_id
+        count = len(grouped_points)
+        job = celery_group(load_group.s(flight_id, group, count) for group in grouped_points)
+        result = job()
 
 
 @celery.task
-def load_group(flight_id, group):
+def load_group(flight_id, group, count):
     db = get_db()
     bounds = tile_geometry.mercator_bounds(group)
     image = tile_geometry.fetch_group_image(group)
     save_image(db, flight_id, image, *bounds)
+    db.execute(
+        'UPDATE flightIDs SET progress=progress+? WHERE id=?',
+        [0.8/count, flight_id])
+    db.commit()
+    c = db.execute(
+        'SELECT COUNT(*) FROM tiles WHERE id=?',
+        [flight_id])
+    if c.fetchone()[0] == count:
+        db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', [flight_id])
+        db.commit()
+    print('completed')
     try:
         db.close()
     except sqlite3.ProgrammingError:
