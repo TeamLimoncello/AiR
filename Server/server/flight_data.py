@@ -185,6 +185,5 @@ def load_flight(db, flight_id):
         [flight_code, origin['name'], origin['iata'], destination['name'], destination['iata'],
          int(time.time()+2592000), path])
     db.commit()
-    db.close()
     return path
 
