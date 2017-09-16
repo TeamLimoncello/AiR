@@ -237,7 +237,7 @@ def init_db():
         db.cursor().executescript(f.read())
     for f in os.listdir('imgs/'):
         if f != 'img.jpg':
-            os.remove(f)
+            os.remove('imgs/'+f)
     with open('server/parsed_cities.json') as raw:
         json_data = json.loads(raw.read())
         for city in json_data:
