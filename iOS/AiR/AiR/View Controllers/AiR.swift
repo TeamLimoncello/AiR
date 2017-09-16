@@ -143,7 +143,7 @@ extension AiR: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let grid = mapGrid {
-            grid.updateLocation(locations[0])
+            //grid.updateLocation(locations[0])
         }
     }
 }

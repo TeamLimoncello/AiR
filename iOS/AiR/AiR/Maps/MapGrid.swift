@@ -37,18 +37,30 @@ public class MapGrid {
     }
     
     func addTiles() {
-        tiles.forEach({mainPlaneNode.addChildNode($0.node)})
+//        tiles.forEach({
+//            mainPlaneNode.addChildNode($0.node)
+//            $0.setPosition(SCNVector3($0.alat, 0, $0.along))
+//        })
+
         
-        //Position the tiles in the correct position
-        let numberOfColsPerRow = 1
+        let demoTile = SCNPlane(width: 1, height: 1)
+        demoTile.firstMaterial?.diffuse.contents = UIColor.red
+        let demoTileNode = SCNNode(geometry: demoTile)
+        demoTileNode.position = SCNVector3(x: 0, y: 0, z: 0)
+        mainPlaneNode.addChildNode(demoTileNode)
         
-        let numberOfRows = tiles.count / numberOfColsPerRow
-        for rowNumber in 0...numberOfRows - 1 {
-            for columnNumber in 0...numberOfColsPerRow - 1 {
-                let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
-                tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), 0, rowNumber*Int(tile.resolution.h)))
-            }
-        }
+        
+        
+//        //Position the tiles in the correct position
+//        //let numberOfColsPerRow = 1
+//
+//        //let numberOfRows = tiles.count / numberOfColsPerRow
+//        //for rowNumber in 0...numberOfRows - 1 {
+//            for columnNumber in 0...numberOfColsPerRow - 1 {
+//                let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
+//                tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), 0, rowNumber*Int(tile.resolution.h)))
+//            }
+//        }
     }
     
     func addCities() {
@@ -66,34 +78,27 @@ public class MapGrid {
     
     func addLandmarks(){
         //TODO: Fully implement
-        if let model = SCNScene(named: "3dmodels/Colosseum.scn") {
-            model.rootNode.scale = SCNVector3(x: 0.01, y: 0.01, z: -0.01)
-            model.rootNode.position = SCNVector3(-90, 0, -90)
-            model.rootNode.name = "landmark-"
-            mainPlaneNode.addChildNode(model.rootNode)
-        } else {
-            //Add a standard pin
-        }
+        
    
     }
     
-    func updateLocation(_ location: CLLocation){
-        self.lastKnownDeviceLocation = location
-        self.deviceLocationUpdateTime = Date()
-        let lat = location.coordinate.latitude
-        let long = location.coordinate.longitude
-        
-        let tilesStartCoordinate = tiles[0].origin
-        let distanceBetweenLat = -lat.distance(to: tilesStartCoordinate.0)
-        let distanceBetweenLong = -long.distance(to: tilesStartCoordinate.1)
-        
-        mainPlaneNode.position.x = Float(distanceBetweenLat)
-        mainPlaneNode.position.z = Float(distanceBetweenLong)
-        
-        /*
-        print("Device is at: \(lat, long) and firstTileIsAt \(tiles[0].startCoordinate)" )
-        print("Distance:", distanceBetweenLat, distanceBetweenLong)
-        print(mainPlaneNode.position)
-         */
-    }
+//    func updateLocation(_ location: CLLocation){
+//        self.lastKnownDeviceLocation = location
+//        self.deviceLocationUpdateTime = Date()
+//        let lat = location.coordinate.latitude
+//        let long = location.coordinate.longitude
+//
+//        let tilesStartCoordinate = tiles[0].origin
+//        let distanceBetweenLat = -lat.distance(to: tilesStartCoordinate.0)
+//        let distanceBetweenLong = -long.distance(to: tilesStartCoordinate.1)
+//
+//        mainPlaneNode.position.x = Float(distanceBetweenLat)
+//        mainPlaneNode.position.z = Float(distanceBetweenLong)
+//
+//        /*
+//        print("Device is at: \(lat, long) and firstTileIsAt \(tiles[0].startCoordinate)" )
+//        print("Distance:", distanceBetweenLat, distanceBetweenLong)
+//        print(mainPlaneNode.position)
+//         */
+//    }
 }

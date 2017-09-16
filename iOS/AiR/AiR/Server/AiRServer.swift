@@ -70,6 +70,7 @@ class Server {
                 case 503:
                     do {
                         let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
+                        print(response)
                         let progress = response["progress"] as! Float
                         print("Data is not ready yet. It is \(progress * 100)% completed")
                         sleep(1)

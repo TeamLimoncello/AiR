@@ -38,7 +38,6 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: - Text Field
-
     func textFieldDidBeginEditing(_ textField: UITextField) {
         flightNo = textField.text!
     }
@@ -90,10 +89,14 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
             self.moveCard(direction: .Up)
             createDialogue(title: "Could not create flight", message: "Please enter a valid flight number", parentViewController: self, dismissOnCompletion: false)
         }
+
+//        let fixedDemoID = "_R_BwobGsF8iqTWD"
+//        self.moveCard(direction: .Down)
+//        self.getData(withID: fixedDemoID)
     }
 
     func getData(withID id : String){
-        
+        print("Requestinging with ID \(id)")
         Server.shared.FetchData(with: id) { (data, error) in
             guard error == nil else {
                 self.moveCard(direction: .Up)
