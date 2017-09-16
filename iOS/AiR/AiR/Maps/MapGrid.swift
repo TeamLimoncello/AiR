@@ -65,21 +65,14 @@ public class MapGrid {
     
     func addCities() {
         for city in cities {
-            let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0)
-            cube.firstMaterial?.diffuse.contents = UIColor.red
-            let cubeNode = SCNNode(geometry: cube)
-            let lat = city.lat - mainPlaneNode.position.x
-            let long = city.long - mainPlaneNode.position.y
-            cubeNode.position = SCNVector3(lat, 0, long)
-            cubeNode.name = "city-\(city.id)"
-            //mainPlaneNode.addChildNode(cubeNode)
+            // let billboard = Billboard(with: city.englishName, position: city.position)
+            // mainPlaneNode.addChildNode(billboard)
         }
     }
     
     func addLandmarks(){
         //TODO: Fully implement
-        
-   
+        // same as landmarks?
     }
     
 //    func updateLocation(_ location: CLLocation){

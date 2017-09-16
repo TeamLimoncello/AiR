@@ -10,9 +10,10 @@ import Foundation
 import SceneKit
 import UIKit
 
-class Billboard {
+public class Billboard: SCNNode {
     
-    func create(with text: String?, position: SCNVector3) -> SCNNode {
+    init(with text: String?, position: SCNVector3) {
+        super.init()
         // The pole
         let pole = SCNTube(innerRadius: 0.1, outerRadius: 0.1, height: 1.2)
         pole.firstMaterial?.diffuse.contents  = UIColor.black
@@ -27,14 +28,16 @@ class Billboard {
         let boardNode = SCNNode(geometry: board)
         boardNode.position = SCNVector3(position.x, position.y+1, position.z)
         // The billboard
-        let billboardNode = SCNNode()
-        billboardNode.addChildNode(poleNode)
-        billboardNode.addChildNode(boardNode)
-        return billboardNode
+        self.addChildNode(poleNode)
+        self.addChildNode(boardNode)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     /// Create an image from some text
-    func imageWithText(text: String, fontSize: CGFloat = 30, fontColor: UIColor = .white, imageSize: CGSize, backgroundColor: UIColor) -> UIImage? {
+    fileprivate func imageWithText(text: String, fontSize: CGFloat = 30, fontColor: UIColor = .white, imageSize: CGSize, backgroundColor: UIColor) -> UIImage? {
         let imageRect = CGRect(origin: CGPoint.zero, size: imageSize)
         UIGraphicsBeginImageContext(imageSize)
         defer {
