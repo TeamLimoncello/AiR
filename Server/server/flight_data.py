@@ -64,7 +64,7 @@ def flight_ident(flight):
 
 def get_flight_path(ident):
     result = fa_get_request('GetFlightTrack', {'ident': ident})
-    if result is None:
+    if result is None or "GetFlightTrackResult" not in result:
         return None
     return result['GetFlightTrackResult']['tracks']
 
