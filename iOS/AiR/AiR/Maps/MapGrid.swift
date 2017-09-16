@@ -59,14 +59,28 @@ public class MapGrid {
             let long = city.long - mainPlaneNode.position.y
             cubeNode.position = SCNVector3(lat, 0, long)
             cubeNode.name = "city-\(city.id)"
-            mainPlaneNode.addChildNode(cubeNode)
+            //mainPlaneNode.addChildNode(cubeNode)
         }
     }
     
     func addLandmarks(){
   
         for landmark in landmarks {
-            //TODO: Processing, including IF 3D Model available
+            if let modelName = landmark.modelName {
+                
+                if let path = Bundle.main.path(forResource: "art.scnassets/\(modelName)", ofType: "dae"){
+                    print(path)
+//                    let source = SCNSceneSource(url: url, options: nil)
+//                    let block = source?.entryWithIdentifier(modelName, withClass: SCNGeometry.self)
+//                    mainPlaneNode.addChildNode(SCNNode(geometry: block))
+                } else {
+                    print("URL is not valid")
+                }
+                
+            } else {
+                //Add a standard pin
+            }
+           
         }
     }
     
