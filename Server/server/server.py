@@ -294,7 +294,7 @@ def save_image(db, flight_id, image, alat, along, blat, blong):
         c = db.execute('SELECT COUNT(*) FROM tiles WHERE file=?', [file])
         if c.fetchone()[0] is 0:
             break
-    db.execute('INSERT INTO tiles (fileName, id, alat, along, blat, blong)'
+    db.execute('INSERT INTO tiles (file, id, alat, along, blat, blong)'
                'VALUES (?,?,?,?,?,?)',
                [file, flight_id, alat, along, blat, blong])
     image.save('img/{}.jpg'.format(file))
