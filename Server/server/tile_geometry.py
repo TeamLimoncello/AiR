@@ -57,14 +57,15 @@ def parse_csv_line(line):
     return int(row[0]), float(row[1]), float(row[2]), int(row[3])
 
 
+# sorted_points: [xmin, xmax, y]
 def group_points(sorted_points):
     if not sorted_points: return []
-    grouped = [(sorted_points[0][0],[sorted_points[0][1]])]
+    grouped = [[sorted_points[0][0], sorted_points[0][0], sorted_points[0][1]]]
     for x,y in sorted_points[1:]:
-        if grouped[-1] == (x,y-1):
-            grouped[-1][1].append(y)
+        if grouped[-1][1] == x-1 and grouped[-1][2] == y:
+            grouped[-1][1] = x
         else:
-            grouped.append((x, [y]))
+            grouped.append([x, x, y])
     return grouped
 
 
@@ -77,16 +78,16 @@ def image_url(bounding_box):
 
 
 def mercator_bounds(group):
-    x, ys = group
-    alat, along = merc.wgs84_to_lat_long((x-0.5)*ramani_factor, (ys[0]-0.5)*ramani_factor)
-    blat, blong = merc.wgs84_to_lat_long((x+0.5)*ramani_factor, (ys[-1]+0.5)*ramani_factor)
+    x0, x1, y = group
+    alat, along = merc.wgs84_to_lat_long((x0-0.5)*ramani_factor, (y-0.5)*ramani_factor)
+    blat, blong = merc.wgs84_to_lat_long((x1+0.5)*ramani_factor, (y+0.5)*ramani_factor)
     return alat, along, blat, blong
 
 
 def fetch_group_image(group):
-    x, ys = group
-    result = Image.new('RGB', (256, 256*len(ys)))
-    for i, y in enumerate(ys):
+    x0, x1, y = group
+    result = Image.new('RGB', (256, 256*(x1+1-x0)))
+    for i, x in enumerate(frange(x0, x1+1)):
         image = Image.open(urlopen(image_url(get_bounding_box(x,y))))
-        result.paste(image, (0, 256*i))
+        result.paste(image, (256*i, 0))
     return result
