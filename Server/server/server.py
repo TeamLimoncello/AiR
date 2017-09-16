@@ -284,6 +284,7 @@ def load_data(flight_id):
             save_image(db, flight_id, image, *bounds)
         db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', [flight_id])
         db.commit()
+        db.close()
     return flight_id
 
 
