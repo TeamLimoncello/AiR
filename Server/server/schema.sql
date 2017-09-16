@@ -40,5 +40,6 @@ CREATE TABLE tiles (
   alat Float,
   along Float,
   blat Float,
-  blong Float
+  blong Float,
+  tag Text
 );

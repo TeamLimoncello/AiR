@@ -1,5 +1,4 @@
 from datetime import datetime
-import time
 import re
 import secrets
 
@@ -115,7 +114,7 @@ def fetch(ref_id):
                 'population': city['population'],
                 'name_en': city['name_en'],
             }
-    tiles = db.execute('SELECT file, alat, along, blat, blong '
+    tiles = db.execute('SELECT file, alat, along, blat, blong, tag '
                        'FROM tiles WHERE id=?',
                        [ref_id]).fetchall()
     return send_json({
@@ -175,13 +174,14 @@ def fetch(ref_id):
                 'blong': tile['blong'],
                 'image': '/api/v1/tile/{}/{}.jpg'
                     .format(ref_id, tile['file']),
+                'tag': tile['tag'],
             } for tile in tiles
         ]
     })
 
 
 @app.route('/api/v1/tile/<ref_id>/<filename>')
-def image(ref_id, filename):
+def serve_image(ref_id, filename):
     db = get_db()
     c = db.execute('SELECT flightCode, date FROM flightIDs WHERE id=?',
                    [ref_id])
@@ -276,22 +276,34 @@ def load_data(flight_id):
         db.execute(
             'UPDATE flightIDs SET progress=0.2 WHERE id=?',
             [flight_id])
-        print(flight_id)
         db.commit()
 
-        points = tile_geometry.generate_points(path)
+        tiler = tile_geometry.Tiler(64)
+        night_tiler = tile_geometry.Tiler(
+            zoom=4096, radius=1,
+            params='LAYERS=ddl.simS3seriesNighttimeLightsGlob.brightness&STYLES=boxfill%2Fgreyscale'
+        )
+        points = tiler.generate_points(path)
         grouped_points = tile_geometry.group_points(points)
-        count = len(grouped_points)
-        job = celery_group(load_group.s(flight_id, group, count) for group in grouped_points)
-        result = job()
+        night_points = night_tiler.generate_points(path)
+        print(points, night_points)
+        night_grouped_points = tile_geometry.group_points(night_points)
+        count = len(grouped_points)+len(night_grouped_points)
+        celery_group(load_group.s(
+            flight_id, group, count, tiler.serialize(), 'day'
+        ) for group in grouped_points)()
+        celery_group(load_group.s(
+            flight_id, group, count, night_tiler.serialize(), 'night'
+        ) for group in night_grouped_points)()
 
 
 @celery.task
-def load_group(flight_id, group, count):
+def load_group(flight_id, group, count, tiling, tag):
     db = get_db()
-    bounds = tile_geometry.mercator_bounds(group)
-    image = tile_geometry.fetch_group_image(group)
-    save_image(db, flight_id, image, *bounds)
+    tiler = tile_geometry.Tiler(*tiling)
+    bounds = tiler.mercator_bounds(group)
+    image = tiler.fetch_group_image(group)
+    save_image(db, flight_id, image, *bounds, tag)
     db.execute(
         'UPDATE flightIDs SET progress=progress+? WHERE id=?',
         [0.8/count, flight_id])
@@ -302,22 +314,21 @@ def load_group(flight_id, group, count):
     if c.fetchone()[0] == count:
         db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', [flight_id])
         db.commit()
-    print('completed')
     try:
         db.close()
     except sqlite3.ProgrammingError:
         pass
 
 
-def save_image(db, flight_id, image, alat, along, blat, blong):
+def save_image(db, flight_id, image, alat, along, blat, blong, tag):
     while True:
         file = str(secrets.token_urlsafe(24))
         app.logger.info(str(id))
         c = db.execute('SELECT COUNT(*) FROM tiles WHERE file=?', [file])
         if c.fetchone()[0] is 0:
             break
-    db.execute('INSERT INTO tiles (file, id, alat, along, blat, blong)'
-               'VALUES (?,?,?,?,?,?)',
-               [file, flight_id, alat, along, blat, blong])
+    db.execute('INSERT INTO tiles (file, id, alat, along, blat, blong, tag)'
+               'VALUES (?,?,?,?,?,?,?)',
+               [file, flight_id, alat, along, blat, blong, tag])
     db.commit()
     image.save('imgs/{}.jpg'.format(file))
