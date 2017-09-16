@@ -61,8 +61,12 @@ class Tiler:
 
     def mercator_bounds(self, group):
         x0, x1, y = group
-        alat, along = merc.wgs84_to_lat_long((x0-0.5)*ramani_factor, (y-0.5)*ramani_factor)
-        blat, blong = merc.wgs84_to_lat_long((x1+0.5)*ramani_factor, (y+0.5)*ramani_factor)
+        alat, along = merc.wgs84_to_lat_long(
+            (x0-0.5) * ramani_factor * self.zoom,
+            (y-0.5) * ramani_factor * self.zoom)
+        blat, blong = merc.wgs84_to_lat_long(
+            (x1+0.5) * ramani_factor * self.zoom,
+            (y+0.5) * ramani_factor * self.zoom)
         return alat, along, blat, blong
 
     def fetch_group_image(self, group):

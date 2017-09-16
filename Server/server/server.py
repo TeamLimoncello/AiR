@@ -280,7 +280,7 @@ def load_data(flight_id):
 
         tiler = tile_geometry.Tiler(64)
         night_tiler = tile_geometry.Tiler(
-            zoom=4096, radius=1,
+            zoom=4096, radius=1.5,
             params='LAYERS=ddl.simS3seriesNighttimeLightsGlob.brightness&STYLES=boxfill%2Fgreyscale'
         )
         points = tiler.generate_points(path)
