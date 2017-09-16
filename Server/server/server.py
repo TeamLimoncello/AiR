@@ -297,7 +297,10 @@ def load_data(flight_id):
             pool.join()
         db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', [flight_id])
         db.commit()
-        db.close()
+        try:
+            db.close()
+        except sqlite3.ProgrammingError:
+            pass
     return flight_id
 
 
