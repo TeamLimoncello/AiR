@@ -73,6 +73,8 @@ class Tiler:
                 image = Image.open(urlopen(self.image_url(self.get_bounding_box(x, y))))
                 result.paste(image, (256*i, 0))
             except OSError as e:
+                print(self.image_url(self.get_bounding_box(x, y)))
+                print(e)
         return result
 
     def image_url(self, bounding_box):
