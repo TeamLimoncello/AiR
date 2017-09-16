@@ -116,8 +116,8 @@ def fetch(ref_id):
                 'population': city['population'],
                 'name_en': city['name_en'],
             }
-    tiles = db.execute('SELECT file, alat, along, blat, blong)'
-                       'FROM tiles WHERE flightID=?',
+    tiles = db.execute('SELECT file, alat, along, blat, blong '
+                       'FROM tiles WHERE id=?',
                        [ref_id]).fetchall()
     return send_json({
         'meta': {
