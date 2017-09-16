@@ -65,7 +65,7 @@ class Intro: UIViewController {
         var state: AiRState = .NoFlights
         if allFlightPaths.count > 0 {
             closestFlight = allFlightPaths.sorted(by: { (p1, p2) -> Bool in
-                return p1.date < p2.date
+                return p1.date > p2.date
             }).first
             if isNow(flight: closestFlight!) { state = .FlightReady }
             else { state = .UpcomingFlight }
