@@ -89,5 +89,5 @@ def fetch_group_image(group):
     result = Image.new('RGB', (256, 256*len(ys)))
     for i, y in enumerate(ys):
         image = Image.open(urlopen(image_url(get_bounding_box(x,y))))
-        result.paste(image, (0, 256*y))
+        result.paste(image, (0, 256*i))
     return result
