@@ -85,7 +85,6 @@ def mercator_bounds(group):
 
 def fetch_group_image(group):
     x, ys = group
-    images = []
     result = Image.new('RGB', (256, 256*len(ys)))
     for i, y in enumerate(ys):
         image = Image.open(urlopen(image_url(get_bounding_box(x,y))))

@@ -121,6 +121,7 @@ def load_flight(db, flight_id):
         db.execute(
             'UPDATE flightIDs SET progress=0.05 WHERE flightCode=?',
             [flight_code])
+        db.commit()
         # do some fancy (Geod.npts from pyproj) interpolation:
         # flighttime/2min data points. Assume constant speed
         this_flight = get_this_flight(flight_code, flight_date)
@@ -132,6 +133,7 @@ def load_flight(db, flight_id):
         db.execute(
             'UPDATE flightIDs SET progress=0.1 WHERE flightCode=?',
             [flight_code])
+        db.commit()
         origin = this_flight['origin']
         destination = this_flight['destination']
         duration = this_flight['arrivaltime'] - this_flight['departuretime']
@@ -164,6 +166,7 @@ def load_flight(db, flight_id):
         db.execute(
             'UPDATE flightIDs SET progress=0.1 WHERE flightCode=?',
             [flight_code])
+        db.commit()
         ident = flight_ident(past_flight)
         path = print_flight_path(process_flight_path(get_flight_path(ident)))
         origin = openflights_post_request({
@@ -178,6 +181,7 @@ def load_flight(db, flight_id):
     db.execute(
         'UPDATE flightIDs SET progress=0.2 WHERE flightCode=?',
         [flight_code])
+    db.commit()
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
         '(flightCode, origin, originCode, destination, destinationCode, expires, path) '

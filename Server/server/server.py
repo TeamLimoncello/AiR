@@ -251,6 +251,7 @@ def init_db():
                         city['lat'],
                         city['long'],
                         city['name_en']])
+            db.commit()
     db.commit()
 
 
@@ -279,6 +280,7 @@ def load_data(flight_id):
             db.execute(
                 'UPDATE flightIDs SET progress=? WHERE flightCode=?',
                 [progress, flight_id])
+            db.commit()
             bounds = tile_geometry.mercator_bounds(group)
             image = tile_geometry.fetch_group_image(group)
             save_image(db, flight_id, image, *bounds)
@@ -298,4 +300,5 @@ def save_image(db, flight_id, image, alat, along, blat, blong):
     db.execute('INSERT INTO tiles (file, id, alat, along, blat, blong)'
                'VALUES (?,?,?,?,?,?)',
                [file, flight_id, alat, along, blat, blong])
+    db.commit()
     image.save('imgs/{}.jpg'.format(file))
