@@ -273,6 +273,11 @@ def close_db(error):
 def load_data(flight_id):
     with connect_db() as db:
         path = flight_data.load_flight(db, flight_id)
+        db.execute(
+            'UPDATE flightIDs SET progress=0.2 WHERE id=?',
+            [flight_id])
+        db.commit()
+
         points = tile_geometry.generate_points(path)
         grouped_points = tile_geometry.group_points(points)
         for i, group in enumerate(grouped_points):

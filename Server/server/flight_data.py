@@ -179,10 +179,6 @@ def load_flight(db, flight_id):
         })['airports'][0]
 
     db.execute(
-        'UPDATE flightIDs SET progress=0.2 WHERE flightCode=?',
-        [flight_code])
-    db.commit()
-    db.execute(
         'INSERT OR REPLACE INTO flightPaths '
         '(flightCode, origin, originCode, destination, destinationCode, expires, path) '
         'VALUES (?,?,?,?,?,?,?)',
