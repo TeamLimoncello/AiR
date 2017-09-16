@@ -75,4 +75,8 @@ public func getFromCache(name: String) -> UIImage? {
     }
 }
 
-
+extension UIViewController {
+    func sizeClass() -> (UIUserInterfaceSizeClass, UIUserInterfaceSizeClass) {
+        return (self.traitCollection.horizontalSizeClass, self.traitCollection.verticalSizeClass)
+    }
+}

@@ -53,7 +53,6 @@ class Intro: UIViewController {
 
     func initialStyle() {
         // Style Flight Management buttons
-        airLogoView.layer.cornerRadius = airLogoView.frame.size.width/2
         flightMgmtButtonsParentView.backgroundColor = .clear
         createFlightView.layer.cornerRadius = 8
         createFlightView.addShadow(intensity: .Weak)
@@ -61,11 +60,24 @@ class Intro: UIViewController {
         viewFlightsView.addShadow(intensity: .Weak)
     }
 
+    override func viewDidLayoutSubviews() {
+        if firstLoad {
+            // Apply the gradient background
+            let gradient = CAGradientLayer()
+            gradient.frame = view.bounds
+            gradient.colors = [UIColor.hexToRGB(hex: "BADAF8")!.cgColor, UIColor.hexToRGB(hex: "799FCF")!.cgColor]
+            view.layer.insertSublayer(gradient, at: 0)
+            parentView.backgroundColor = .clear
+            airLogoView.layer.cornerRadius = airLogoView.frame.size.width
+            firstLoad = false
+        }
+    }
+    
     func setState() {
         var state: AiRState = .NoFlights
         if allFlightPaths.count > 0 {
             closestFlight = allFlightPaths.sorted(by: { (p1, p2) -> Bool in
-                return p1.date > p2.date
+                return p1.date < p2.date
             }).first
             if isNow(flight: closestFlight!) { state = .FlightReady }
             else { state = .UpcomingFlight }
@@ -81,18 +93,6 @@ class Intro: UIViewController {
         let flightDate = flight.date
         if now == flightDate { return true }
         return false
-    }
-
-    override func viewDidLayoutSubviews() {
-        if firstLoad {
-            // Apply the gradient background
-            let gradient = CAGradientLayer()
-            gradient.frame = view.bounds
-            gradient.colors = [UIColor.hexToRGB(hex: "BADAF8")!.cgColor, UIColor.hexToRGB(hex: "799FCF")!.cgColor]
-            view.layer.insertSublayer(gradient, at: 0)
-            parentView.backgroundColor = .clear
-            firstLoad = false
-        }
     }
     
     func loadFlights() {
@@ -119,7 +119,9 @@ class Intro: UIViewController {
         switch state {
         case .FlightReady:
             flightMgmtButtonsParentView.isHidden = true
-            destinationLabel.text = "\(closestFlight!.destination)"
+            destinationLabel.isHidden = false
+            destinationLabel.text = "\(closestFlight?.destination ?? "San Francisco")"
+            dateLabel.isHidden = false
             dateLabel.text = "Ready to fly!"
             // Flight ready to experience!
             planeButton.isHidden = false
@@ -135,8 +137,8 @@ class Intro: UIViewController {
             destinationLabel.isHidden = false
             flightMgmtButtonsParentView.isHidden = false
             experienceLabel.text = "Make sure to come back when you've taken off to experience AiR."
-            destinationLabel.text = "\(closestFlight!.destination)"
-            dateLabel.text = "\(closestFlight!.date)"
+            destinationLabel.text = "\(closestFlight?.destination ?? "San Francisco")"
+            dateLabel.text = "\(closestFlight?.date ?? "21st July")"
             createFlightButtonWidth.constant = 140
             self.view.layoutIfNeeded()
         default:
@@ -153,8 +155,8 @@ class Intro: UIViewController {
     }
 
     @IBAction func planePressed(_ sender: Any) {
-        self.planeHorizontalConstraint.constant += 300
-        self.planeTopConstraint.constant -= 250
+        self.planeHorizontalConstraint.constant += 520
+        self.planeTopConstraint.constant -= 320
         self.planeButton.titleLabel?.font = UIFont(name: (self.planeButton.titleLabel?.font.fontName)!, size: 200)
         UIView.animate(withDuration: 1.1, animations: {
             self.view.layoutIfNeeded()

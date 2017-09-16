@@ -17,6 +17,10 @@ class ViewFlights: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     var allFlightPaths: [Path]!
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         allFlightPaths = [Path]()
         styleView()
