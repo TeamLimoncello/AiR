@@ -1,6 +1,8 @@
 from datetime import datetime
+import time
 import re
 import secrets
+from multiprocessing.pool import Pool
 
 from celery import Celery
 from flask import Flask, Response, request, g
@@ -280,20 +282,29 @@ def load_data(flight_id):
 
         points = tile_geometry.generate_points(path)
         grouped_points = tile_geometry.group_points(points)
-        for i, group in enumerate(grouped_points):
-            progress = 0.2 + 0.8 * i / len(group)
-            db.execute(
-                'UPDATE flightIDs SET progress=? WHERE flightCode=?',
-                [progress, flight_id])
-            db.commit()
-            bounds = tile_geometry.mercator_bounds(group)
-            image = tile_geometry.fetch_group_image(group)
-            save_image(db, flight_id, image, *bounds)
+        pool = Pool(os.cpu_count())
+        try:
+            result = pool.map(lambda group: load_group(db, flight_id, group), grouped_points)
+            while not result.ready():
+                progress = 1.0 - 0.8 * result._number_left / len(grouped_points)
+                db.execute(
+                    'UPDATE flightIDs SET progress=? WHERE flightCode=?',
+                    [progress, flight_id])
+                db.commit()
+                time.sleep(1)
+        finally:
+            pool.close()
+            pool.join()
         db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', [flight_id])
         db.commit()
         db.close()
     return flight_id
 
+
+def load_group(db, flight_id, group):
+    bounds = tile_geometry.mercator_bounds(group)
+    image = tile_geometry.fetch_group_image(group)
+    save_image(db, flight_id, image, *bounds)
 
 def save_image(db, flight_id, image, alat, along, blat, blong):
     while True:
