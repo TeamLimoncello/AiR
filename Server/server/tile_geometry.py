@@ -1,5 +1,4 @@
 import math
-from pyproj import Proj
 from urllib.request import urlopen
 
 from PIL import Image
@@ -19,7 +18,7 @@ def generate_points(path):
     # path :: [(time, lat, long, alt)]
     points = set()
     for pos in path:
-        x_pos,y_pos = merc.projLatLonToWorldMercator(pos[1], pos[2])
+        x_pos,y_pos = merc.lat_long_to_wgs84(pos[1], pos[2])
         x_pos /= ramani_factor
         y_pos /= ramani_factor
 
