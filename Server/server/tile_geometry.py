@@ -17,7 +17,7 @@ def frange(a,b,step=1.0):
 def generate_points(path):
     # path :: [(time, lat, long, alt)]
     points = set()
-    for pos in path.split('\n'):
+    for pos in path.rstrip().split('\n'):
         time, lat, long, alt = parse_csv_line(pos)
         x_pos, y_pos = merc.lat_long_to_wgs84(lat, long)
         x_pos /= ramani_factor
