@@ -15,7 +15,8 @@ public class MapGrid {
     
     private var mainPlane: SCNPlane
     public var mainPlaneNode: SCNNode
-    private var deviceLocation: CLLocation?
+    private var lastKnownDeviceLocation: CLLocation?
+    private var deviceLocationUpdateTime: Date?
     private var tiles: [MapTile]
     private var cities: [City]
     private var landmarks: [Landmark]
@@ -64,19 +65,21 @@ public class MapGrid {
     }
     
     func addLandmarks(){
-  
-//        if let model = SCNScene(named: "3dmodels/Pisa.scn") {
-//            model.rootNode.scale = SCNVector3(x: 0.01, y: 0.01, z: -0.01)
-//            model.rootNode.position = SCNVector3(-90, 0, 0)
-//            mainPlaneNode.addChildNode(model.rootNode)
-//        } else {
-//            //Add a standard pin
-//        }
+        //TODO: Fully implement
+        if let model = SCNScene(named: "3dmodels/Colosseum.scn") {
+            model.rootNode.scale = SCNVector3(x: 0.01, y: 0.01, z: -0.01)
+            model.rootNode.position = SCNVector3(-90, 0, -90)
+            model.rootNode.name = "landmark-"
+            mainPlaneNode.addChildNode(model.rootNode)
+        } else {
+            //Add a standard pin
+        }
    
     }
     
     func updateLocation(_ location: CLLocation){
-        self.deviceLocation = location
+        self.lastKnownDeviceLocation = location
+        self.deviceLocationUpdateTime = Date()
         let lat = location.coordinate.latitude
         let long = location.coordinate.longitude
         

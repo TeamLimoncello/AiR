@@ -92,8 +92,8 @@ class Path {
         
         
         //Debug statements
-//        print("Adding landmarks \(landmarks.map({$0.name}))")
-//        print("Adding cities \(cities.map({$0.name}))")
-//        print("Adding tiles \(tiles.map({$0.origin}))")
+        print("Adding landmarks \(landmarks.map({$0.name}))")
+        print("Adding cities \(cities.map({$0.name}))")
+        print("Adding tiles \(tiles.map({$0.origin}))")
     }
 }

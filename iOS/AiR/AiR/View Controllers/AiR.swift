@@ -119,7 +119,7 @@ class AiR: UIViewController {
         switch nodeID[0] {
         case "city":
             break
-        case " ":
+        case "landmark":
             break
         default:
             print("Error whilst parsing touch")
