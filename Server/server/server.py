@@ -291,7 +291,7 @@ def save_image(db, flight_id, image, alat, along, blat, blong):
     while True:
         file = str(secrets.token_urlsafe(24))
         app.logger.info(str(id))
-        c = db.execute('SELECT COUNT(*) FROM tiles WHERE fileName=?', [file])
+        c = db.execute('SELECT COUNT(*) FROM tiles WHERE file=?', [file])
         if c.fetchone()[0] is 0:
             break
     db.execute('INSERT INTO tiles (fileName, id, alat, along, blat, blong)'
