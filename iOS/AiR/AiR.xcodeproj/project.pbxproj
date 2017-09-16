@@ -26,6 +26,7 @@
 		DA4E30841F6ABC46002D13A6 /* pathEx.json in Resources */ = {isa = PBXBuildFile; fileRef = DA4E30831F6AB847002D13A6 /* pathEx.json */; };
 		DAB95D061F694D9000E547A4 /* CreateFlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB95D051F694D9000E547A4 /* CreateFlight.swift */; };
 		DAB95D081F694D9F00E547A4 /* ViewFlights.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB95D071F694D9F00E547A4 /* ViewFlights.swift */; };
+		DAD9E83E1F6DC9AE00D7D034 /* Billboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD9E83D1F6DC9AE00D7D034 /* Billboard.swift */; };
 		DAE5EAFE1F6825E90028810D /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAD1C9AC1F6819D800B356A0 /* Montserrat-Black.ttf */; };
 		DAE5EAFF1F6825E90028810D /* Montserrat-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAD1C9AD1F6819D800B356A0 /* Montserrat-BlackItalic.ttf */; };
 		DAE5EB001F6825E90028810D /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAD1C9AE1F6819D800B356A0 /* Montserrat-Bold.ttf */; };
@@ -90,6 +91,7 @@
 		DAD1C9BC1F6819D800B356A0 /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Thin.ttf"; sourceTree = "<group>"; };
 		DAD1C9BD1F6819D800B356A0 /* Montserrat-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ThinItalic.ttf"; sourceTree = "<group>"; };
 		DAD1C9BE1F6819D800B356A0 /* OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		DAD9E83D1F6DC9AE00D7D034 /* Billboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Billboard.swift; sourceTree = "<group>"; };
 		DAE5EB101F682A4E0028810D /* UIView+Shadows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Shadows.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 				DA4E30801F6A6F99002D13A6 /* City.swift */,
 				69D043D31F6BFBCF003A84B4 /* Waypoint.swift */,
 				6915BE781F6C66E100DE5E86 /* Landmark.swift */,
+				DAD9E83D1F6DC9AE00D7D034 /* Billboard.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 				DA4E30811F6A6F99002D13A6 /* City.swift in Sources */,
 				69D73D021F67C8AD00BA3E46 /* Utilties.swift in Sources */,
 				69D73D051F67C9EE00BA3E46 /* UIColor+hex.swift in Sources */,
+				DAD9E83E1F6DC9AE00D7D034 /* Billboard.swift in Sources */,
 				69D84E111F68725900CBD39E /* Intro.swift in Sources */,
 				696BFFCB1F68757D00A32AF7 /* MapGrid.swift in Sources */,
 				DAB95D061F694D9000E547A4 /* CreateFlight.swift in Sources */,
