@@ -31,3 +31,14 @@ CREATE TABLE cities (
   long Float,
   name_en Text
 );
+
+DROP TABLE IF EXISTS tiles;
+
+CREATE TABLE tiles (
+  file Text PRIMARY KEY,
+  id Char(16),
+  alat Float,
+  along Float,
+  blat Float,
+  blong Float
+);

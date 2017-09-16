@@ -10,7 +10,7 @@ import sqlite3
 from PIL import Image
 from io import BytesIO
 
-from server import flight_data
+from server import flight_data, tile_geometry
 
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
@@ -104,7 +104,7 @@ def fetch(ref_id):
         except IndexError:
             print('Error at {}'.format(i))
         d = db.execute('SELECT id, name, lat, long, population, name_en '
-                       'FROM cities WHERE (lat - ?) BETWEEN (-1) AND 1 AND  (long - ?) BETWEEN (-1) AND 1',
+                       'FROM cities WHERE (lat - ?) BETWEEN (-1) AND 1 AND (long - ?) BETWEEN (-1) AND 1',
                        [csv_lat, csv_long])
         for city in d.fetchall():
             cities[city['id']] = {
@@ -112,8 +112,11 @@ def fetch(ref_id):
                 'lat': city['lat'],
                 'long': city['long'],
                 'population': city['population'],
-                'name_en': city['name_en']
+                'name_en': city['name_en'],
             }
+    tiles = db.execute('SELECT file, alat, along, blat, blong)'
+                       'FROM tiles WHERE flightID=?',
+                       [ref_id]).fetchall()
     return send_json({
         'meta': {
             'flightCode': flight['flightCode'],
@@ -147,7 +150,7 @@ def fetch(ref_id):
                 'name': 'Arc De Triomphe',
                 'lat': 48.8738,
                 'long': 2.2950,
-                'model_name': 'ArcDeTriumphe'
+                'model_name': 'ArcDeTriomphe'
             },
             {
                 'name': 'Leaning Tower of Pisa',
@@ -165,12 +168,13 @@ def fetch(ref_id):
         "cities": list(cities.values()),
         "tiles": [
             {
-                'alat': 0,
-                'along': 0,
-                'blat': 1,
-                'blong': 1,
-                'image': '/api/v1/tile/' + ref_id + '/img.jpg',
-            },
+                'alat': tile['alat'],
+                'along': tile['along'],
+                'blat': tile['blat'],
+                'blong': tile['blong'],
+                'image': '/api/v1/tile/{}/{}.jpg'
+                    .format(ref_id, tile['file']),
+            } for tile in tiles
         ]
     })
 
@@ -231,6 +235,9 @@ def init_db():
     db = get_db()
     with app.open_resource('schema.sql', mode='r') as f:
         db.cursor().executescript(f.read())
+    for f in os.listdir('imgs/'):
+        if f != 'img.jpg':
+            os.remove(f)
     with open('server/parsed_cities.json') as raw:
         json_data = json.loads(raw.read())
         for city in json_data:
@@ -264,7 +271,26 @@ def close_db(error):
 @celery.task
 def load_data(flight_id):
     with connect_db() as db:
-        flight_data.load_flight(db, flight_id)
-        db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', (flight_id,))
+        path = flight_data.load_flight(db, flight_id)
+        points = tile_geometry.generate_points(path)
+        grouped_points = tile_geometry.group_points(points)
+        for group in grouped_points:
+            bounds = tile_geometry.mercator_bounds(group)
+            image = tile_geometry.fetch_group_image(group)
+            save_image(db, flight_id, image, *bounds)
+        db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', [flight_id])
         db.commit()
     return flight_id
+
+
+def save_image(db, flight_id, image, alat, along, blat, blong):
+    while True:
+        file = str(secrets.token_urlsafe(24))
+        app.logger.info(str(id))
+        c = db.execute('SELECT COUNT(*) FROM tiles WHERE fileName=?', [file])
+        if c.fetchone()[0] is 0:
+            break
+    db.execute('INSERT INTO tiles (fileName, id, alat, along, blat, blong)'
+               'VALUES (?,?,?,?,?,?)',
+               [file, flight_id, alat, along, blat, blong])
+    image.save('img/{}.jpg'.format(file))
