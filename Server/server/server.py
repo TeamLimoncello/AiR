@@ -281,7 +281,7 @@ def load_data(flight_id):
 
         points = tile_geometry.generate_points(path)
         grouped_points = tile_geometry.group_points(points)
-        job = celery_group(load_group.s(db, flight_id, group) for group in grouped_points)
+        job = celery_group(load_group.s(flight_id, group) for group in grouped_points)
         result = job.apply_async()
         while not result.ready():
             progress = 0.2 + 0.8 * result.completed_count() / len(grouped_points)
@@ -300,10 +300,15 @@ def load_data(flight_id):
 
 
 @celery.task
-def load_group(db, flight_id, group):
+def load_group(flight_id, group):
+    db = get_db()
     bounds = tile_geometry.mercator_bounds(group)
     image = tile_geometry.fetch_group_image(group)
     save_image(db, flight_id, image, *bounds)
+    try:
+        db.close()
+    except sqlite3.ProgrammingError:
+        pass
 
 
 def save_image(db, flight_id, image, alat, along, blat, blong):

@@ -4,9 +4,9 @@ import requests
 from pyproj import Geod
 
 
-fa_api_key = 'd499582d8f88245d34324afa83107671b67cbc33'
+fa_api_key = 'e460788778fda62e665483a4abf1c46486e41851'
 fa_url = 'https://flightxml.flightaware.com/json/FlightXML3/'
-fa_username = 'lewisbell999'
+fa_username = 'xsanda'
 
 
 def fa_get_request(link, params):
