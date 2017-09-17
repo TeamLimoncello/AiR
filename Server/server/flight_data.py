@@ -5,9 +5,9 @@ import requests
 from pyproj import Geod
 
 
-fa_api_key = 'e460788778fda62e665483a4abf1c46486e41851'
+fa_api_key = '5101d8fbf92c869e198f84d4722fa05004bf68ba'
 fa_url = 'https://flightxml.flightaware.com/json/FlightXML3/'
-fa_username = 'xsanda'
+fa_username = 'jaylees'
 
 
 def fa_get_request(link, params):
@@ -116,8 +116,10 @@ def load_flight(db, flight_id):
         [flight_id]).fetchone()
     if not flight_id_query:
         raise NameError(flight_id)
+
     flight_code, raw_date = flight_id_query
     flight_date = datetime.strptime(raw_date, '%Y-%m-%d')
+
     existing_path = db.execute(
         'SELECT path FROM flightPaths '
         'WHERE flightCode=? AND expires>?',
@@ -125,56 +127,17 @@ def load_flight(db, flight_id):
     ).fetchone()
     if existing_path:
         return existing_path["path"]
+
     past_flight = get_flight_history(flight_code)
-    if past_flight is None:
-        # do some fancy (Geod.npts from pyproj) interpolation:
-        # flighttime/2min data points. Assume constant speed
-        this_flight = get_this_flight(flight_code, flight_date)
-        if this_flight is None:
-            db.execute(
-                'UPDATE flightIDs SET invalid=? WHERE id=?',
-                ["No flight for given day", flight_id])
-            db.commit()
-            return
-        origin = this_flight['origin']
-        destination = this_flight['destination']
-        duration = this_flight['arrivaltime'] - this_flight['departuretime']
-        try:
-            origin_data = openflights_post_request({
-                'icao': origin,
-                'db': 'airports',
-            })['airports'][0]
-            destination_data = openflights_post_request({
-                'icao': destination,
-                'db': 'airports',
-            })['airports'][0]
-            points = Geod().npts(
-                float(origin_data['y']),
-                float(destination_data['y']),
-                float(origin_data['x']),
-                float(destination_data['x']),
-                float(duration/180),
-            )
-            path = ''
-            for i, (long,lat) in enumerate(points):
-                path += '{},{},{},{}\n'.format(
-                    duration/len(points), lat, long, 350)
-        except (IndexError, KeyError) as a:
-            db.execute(
-                'UPDATE flightIDs SET invalid=? WHERE id=?',
-                ["Unable to prepare flight path for this flight", flight_id])
-            db.commit()
-            raise NameError(flight_id)
-    else:
-        ident = flight_ident(past_flight)
-        path = print_flight_path(process_flight_path(get_flight_path(ident)))
-        this_flight = get_this_flight(flight_code, flight_date)
-        if this_flight is None:
-            db.execute(
-                'UPDATE flightIDs SET invalid=? WHERE id=?',
-                ["No flight for given day", flight_id])
-            db.commit()
-            return
+    this_flight = get_this_flight(flight_code, flight_date)
+    if this_flight is None:
+        db.execute(
+            'UPDATE flightIDs SET invalid=? WHERE id=?',
+            ["No flight for given day", flight_id])
+        db.commit()
+        return
+
+    try:
         origin = openflights_post_request({
             'icao': this_flight["origin"],
             'db': 'airports',
@@ -183,6 +146,22 @@ def load_flight(db, flight_id):
             'icao': this_flight["destination"],
             'db': 'airports',
         })['airports'][0]
+    except (IOError, IndexError):
+        db.execute(
+            'UPDATE flightIDs SET invalid=? WHERE id=?',
+            ["No information available about provided airport", flight_id])
+        db.commit()
+        return
+
+    if past_flight is None:
+        path = predict_path(db, flight_id, origin, destination, this_flight)
+    else:
+        ident = flight_ident(past_flight)
+        flight_path = get_flight_path(ident)
+        if flight_path is None:
+            path = predict_path(db, flight_id, origin, destination, this_flight)
+        else:
+            path = print_flight_path(process_flight_path(flight_path))
 
     departure_time = this_flight['departuretime']
 
@@ -199,3 +178,20 @@ def load_flight(db, flight_id):
     db.commit()
     return path
 
+
+def predict_path(db, flight_id, origin_data, destination_data, this_flight):
+    # do some fancy (Geod.npts from pyproj) interpolation:
+    # flighttime/2min data points. Assume constant speed
+    duration = this_flight['arrivaltime'] - this_flight['departuretime']
+    points = Geod().npts(
+        float(origin_data['y']),
+        float(destination_data['y']),
+        float(origin_data['x']),
+        float(destination_data['x']),
+        float(duration/180),
+    )
+    path = ''
+    for i, (long,lat) in enumerate(points):
+        path += '{},{},{},{}\n'.format(
+            duration/len(points), lat, long, 350)
+    return path
