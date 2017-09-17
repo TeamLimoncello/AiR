@@ -124,8 +124,12 @@ def fetch(ref_id):
             'date': flight['date'],
             'origin': flight['origin'],
             'originCode': flight['originCode'],
+            'originLat': flight['originLat'],
+            'originLong': flight['originLong'],
             'destination': flight['destination'],
             'destinationCode': flight['destinationCode'],
+            'destinationLat': flight['destinationLat'],
+            'destinationLong': flight['destinationLong'],
         },
         'path': flight["path"],
         "landmarks": [

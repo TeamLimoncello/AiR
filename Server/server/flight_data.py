@@ -180,9 +180,11 @@ def load_flight(db, flight_id):
 
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
-        '(flightCode, origin, originCode, destination, destinationCode, expires, path) '
+        '(flightCode, origin, originCode, originLat, originLong,'
+        ' destination, destinationCode, destinationLat, destinationLong, expires, path) '
         'VALUES (?,?,?,?,?,?,?)',
-        [flight_code, origin['name'], origin['iata'], destination['name'], destination['iata'],
+        [flight_code, origin['name'], origin['iata'], origin['y'], origin['x'],
+         destination['name'], destination['iata'], destination['y'], destination['x'],
          int(time.time()+2592000), path])
     db.commit()
     return path

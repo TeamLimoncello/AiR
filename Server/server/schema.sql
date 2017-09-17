@@ -17,8 +17,12 @@ CREATE TABLE flightPaths (
   path Text,
   origin Text,
   originCode Char(3),
+  originLat Float,
+  originLong Float,
   destination Text,
-  destinationCode Char(3)
+  destinationCode Char(3),
+  destinationLat Float,
+  destinationLong Float
 );
 
 DROP TABLE IF EXISTS cities;
