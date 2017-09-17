@@ -143,37 +143,60 @@ def fetch(ref_id):
                 'name': 'Clifton Suspension Bridge',
                 'lat': 51.4549,
                 'long': -2.6278,
-                'model_name': 'CliftonSuspensionBridge'
+                'model_name': 'CliftonSuspensionBridge',
+                'description': "The Clifton Suspension Bridge is a suspension bridge spanning the Avon Gorge and the "
+                               + "River Avon, linking Clifton in Bristol to Leigh Woods in North Somerset. ",
+                'height': '75m',
+                'established': 'June 21, 1831'
             },
             {
                 'name': 'Eiffel Tower',
                 'lat': 48.8584,
                 'long': 2.2945,
-                'model_name': 'EiffelTower'
+                'model_name': 'EiffelTower',
+                'description': "The Eiffel Tower is a wrought iron lattice tower on the Champ de Mars in Paris, "
+                               + "France. It is named after the engineer Gustave Eiffel, whose company designed and "
+                               + "built the tower. ",
+                'height': '300m',
+                'established': "1889-03-31"
             },
             {
                 'name': 'Colosseum',
                 'lat': 41.8902,
                 'long': 12.4922,
-                'model_name': 'Colosseum'
-            },
-            {
-                'name': 'Arc De Triomphe',
-                'lat': 48.8738,
-                'long': 2.2950,
-                'model_name': 'ArcDeTriomphe'
+                'model_name': 'Colosseum',
+                'description': "The Colosseum or Coliseum is an oval "
+                              + "amphitheatre in the centre of the city of Rome, Italy. Built of concrete and sand, "
+                              + "it is the largest amphitheatre ever built. The Colosseum is situated just east of the "
+                              + "Roman Forum. Construction began under the emperor Vespasian in AD 72, "
+                              + "and was completed in AD 80 under his successor and heir Titus. Further modifications "
+                              + "were made during the reign of Domitian (81–96). These three emperors are known as the "
+                              + "Flavian dynasty, and the amphitheatre was named in Latin for its association with "
+                              + "their family name (Flavius). ",
+                'height': '48m',
+                'established': '80AD'
             },
             {
                 'name': 'Leaning Tower of Pisa',
                 'lat': 43.7230,
                 'long': 10.3966,
-                'model_name': 'Pisa'
+                'model_name': 'Pisa',
+                'description': "The Leaning Tower of Pisa (Italian: Torre pendente di Pisa) or simply the Tower of "
+                               + "Pisa (Torre di Pisa) is the campanile, or freestanding bell tower, of the cathedral "
+                               + "of the Italian city of Pisa, known worldwide for its unintended tilt. ",
+                'height': '56m',
+                'established': '1372'
             },
             {
                 'name': "St Peter's Basilica",
                 'lat': 41.9022,
                 'long': 12.4539,
-                'model_name': 'Basilica'
+                'model_name': 'Basilica',
+                'description': "The Papal Basilica of St. Peter in the Vatican, or simply St. Peter's Basilica, "
+                               + "is an Italian Renaissance church in Vatican City, the papal enclave within the city "
+                               + "of Rome. ",
+                'height': '137m',
+                'established': '1506'
             }
         ],
         "cities": list(cities.values()),
@@ -250,7 +273,7 @@ def init_db():
         db.cursor().executescript(f.read())
     for f in os.listdir('imgs/'):
         if f != 'img.jpg':
-            os.remove('imgs/'+f)
+            os.remove('imgs/' + f)
     with open('server/parsed_cities.json') as raw:
         json_data = json.loads(raw.read())
         for city in json_data:
