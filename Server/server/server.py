@@ -11,6 +11,7 @@ from PIL import Image
 from io import BytesIO
 
 from server import flight_data, tile_geometry
+from server.tile_geometry import frange
 
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
@@ -278,20 +279,26 @@ def load_data(flight_id):
             [flight_id])
         db.commit()
 
-        tiler = tile_geometry.Tiler(64)
+        far_tiler = tile_geometry.Tiler(256)
+        tiler = tile_geometry.Tiler(256, radius=1.5)
         night_tiler = tile_geometry.Tiler(
             zoom=4096, radius=1.5,
             params='LAYERS=ddl.simS3seriesNighttimeLightsGlob.brightness&STYLES=boxfill%2Fgreyscale'
         )
         points = tiler.generate_points(path)
-        grouped_points = tile_geometry.group_points(points)
+        far_points = far_tiler.generate_points(path) - points
+        points = tiler.zoom_by(4, points)
         night_points = night_tiler.generate_points(path)
-        print(points, night_points)
+        grouped_points = tile_geometry.group_points(points)
+        far_grouped_points = tile_geometry.group_points(far_points)
         night_grouped_points = tile_geometry.group_points(night_points)
-        count = len(grouped_points)+len(night_grouped_points)
+        count = len(grouped_points) + len(night_grouped_points) + len(far_grouped_points)
         celery_group(load_group.s(
             flight_id, group, count, tiler.serialize(), 'day'
         ) for group in grouped_points)()
+        celery_group(load_group.s(
+            flight_id, group, count, far_tiler.serialize(), 'day'
+        ) for group in far_grouped_points)()
         celery_group(load_group.s(
             flight_id, group, count, night_tiler.serialize(), 'night'
         ) for group in night_grouped_points)()

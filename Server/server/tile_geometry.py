@@ -46,9 +46,6 @@ class Tiler:
             points.update((x, y) for x in frange(min_x, max_x+1)
                                  for y in frange(min_y, max_y+1)
                                  if (x-x_pos)**2 + (y-y_pos)**2 <= distance_sq)
-
-        points = list(points)
-        points.sort(key=lambda pair: tuple(reversed(pair)))
         return points
 
     def get_bounding_box(self, x, y):
@@ -81,6 +78,12 @@ class Tiler:
                 print(e)
         return result
 
+    def zoom_by(self, factor, points):
+        self.zoom /= factor
+        return [(x, y) for point in points
+                for x in frange((point[0] - 0.5) * 4 + 0.5, (point[0] + 0.5) * 4)
+                for y in frange((point[1] - 0.5) * 4 + 0.5, (point[1] + 0.5) * 4)]
+
     def image_url(self, bounding_box):
         return ('https://ramani.ujuizi.com/cloud/wms/ramaniddl/tilecache?'
                 'SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&{}&'
@@ -94,9 +97,14 @@ def parse_csv_line(line):
     return int(row[0]), float(row[1]), float(row[2]), int(row[3])
 
 
+def sort_points(points):
+    return sorted(points, key=lambda pair: tuple(reversed(pair)))
+
+
 # sorted_points: [xmin, xmax, y]
-def group_points(sorted_points):
-    if not sorted_points: return []
+def group_points(points):
+    if not points: return []
+    sorted_points = sort_points(points)
     grouped = [[sorted_points[0][0], sorted_points[0][0], sorted_points[0][1]]]
     for x,y in sorted_points[1:]:
         if grouped[-1][1] == x-1 and grouped[-1][2] == y:
