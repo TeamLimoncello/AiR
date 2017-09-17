@@ -38,7 +38,7 @@ class AiR: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         toggleSphereView.layer.cornerRadius = 8
-        sceneView.showsStatistics = true
+        //sceneView.showsStatistics = true
         let scene = SCNScene()
         sceneView.scene = scene
         //sceneView.autoenablesDefaultLighting = true
@@ -129,7 +129,8 @@ class AiR: UIViewController {
         
         switch nodeID[0] {
         case "city":
-            print(nodeID[1])
+            let cityID = Int(String(Array(nodeID[1])))
+            displayCity((flightPath.cities.filter({$0.id == cityID}).first)!)
             break
         case "landmark":
             print(nodeID[1])
@@ -138,8 +139,7 @@ class AiR: UIViewController {
             print("Error whilst parsing touch")
         }
         
-        let cityName = String(Array(nodeID[1]))
-        displayCity((flightPath.cities.filter({$0.name == cityName}).first)!)
+        
     }
     
     //MARK: - Action Methods

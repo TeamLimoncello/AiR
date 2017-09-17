@@ -128,12 +128,14 @@ public class MapGrid {
     private func nextLoc(_ iterator: IndexingIterator<[Waypoint]>){
         var iterator = iterator
         if let next = iterator.next() {
+            
+            let duration = TimeInterval(next.time - (offsetPosition?.time ?? 0)) / 30
             self.offsetPosition = next
             
-            let action = SCNAction.move(to: SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08 + altitudeOffset, self.offsetPosition!.y), duration: 5)
+            let action = SCNAction.move(to: SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08 + altitudeOffset, self.offsetPosition!.y), duration:  duration)
             mainPlaneNode.runAction(action)
             
-            locationTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { (_) in
+            locationTimer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { (_) in
                 self.nextLoc(iterator)
             }
         }
