@@ -109,6 +109,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     }
 
     func getData(withID id : String){
+        sleep(5)
         print("Requesting with ID \(id)")
         Server.shared.FetchData(with: id) { (data, error) in
             guard error == nil else {

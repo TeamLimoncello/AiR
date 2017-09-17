@@ -36,7 +36,7 @@ class AiR: UIViewController {
         let scene = SCNScene()
         sceneView.scene = scene
         //sceneView.autoenablesDefaultLighting = true
-        sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
+        //sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         sceneView.isJitteringEnabled = true
     }
     
@@ -133,10 +133,17 @@ class AiR: UIViewController {
     
     
     //MARK: - Action Methods
+    @IBAction func exitARPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func toggleNightModePressed(_ sender: Any) {
+         mapGrid?.changeTileType()
+    }
+    
     @IBAction func toggleSpherePressed(_ sender: Any) {
-//        outerSphereNode.isHidden = !outerSphereNode.isHidden
-//        toggleSphereButton.setBackgroundImage(outerSphereNode.isHidden ? #imageLiteral(resourceName: "Earth") : #imageLiteral(resourceName: "No Earth"), for: .normal)
-        mapGrid?.changeTileType()
+        outerSphereNode.isHidden = !outerSphereNode.isHidden
+        //toggleSphereButton.setBackgroundImage(outerSphereNode.isHidden ? #imageLiteral(resourceName: "Earth") : , for: .normal)
     }
 }
 
