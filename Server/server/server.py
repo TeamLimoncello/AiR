@@ -2,6 +2,7 @@ from datetime import datetime
 import re
 import secrets
 
+import requests
 from celery import Celery, group as celery_group
 from flask import Flask, Response, request, g
 import json
@@ -151,7 +152,7 @@ def fetch(ref_id):
             },
             {
                 'name': 'Eiffel Tower',
-                'lat': 48.8584,
+                'lat'
                 'long': 2.2945,
                 'model_name': 'EiffelTower',
                 'description': "The Eiffel Tower is a wrought iron lattice tower on the Champ de Mars in Paris, "
@@ -199,7 +200,7 @@ def fetch(ref_id):
                 'established': '1506'
             }
         ],
-        "cities": list(cities.values()),
+        "cities": get_weather(list(cities.values())),
         "progress": progress,
         "tiles": [
             {
@@ -337,6 +338,21 @@ def load_data(flight_id):
         celery_group(load_group.s(
             flight_id, group, night_tiler.serialize(), 'night'
         ) for group in night_grouped_points)()
+
+
+def get_weather(cities):
+    weather = json.loads(requests.get('http://api.openweathermap.org/data/2.5/forecast',params={
+        'lat': 48.843186,
+        'lon': 2.353233,
+        'appid': '726bacce48baa919814ae45e1306d76c'
+    }).json())['list'][0]
+    for city in cities:
+        city['weather'] = {
+            'temperature': weather['main']['temp']-273.15,
+            'weather': weather['weather']['description']
+        }
+    return cities
+
 
 
 @celery.task
