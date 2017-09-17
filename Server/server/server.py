@@ -98,7 +98,7 @@ def fetch(ref_id):
     if flight['tiles'] == None:
         return send_json({'progress': 0}, 503)
     progress = flight['loaded'] / flight['tiles']
-    csv_path = map(lambda row: row.split(','), flight["path"].split('\n'))
+    csv_path = map(lambda row: row.split(','), flight["path"].rstrip().split('\n'))
     cities = {}
     for i, row in enumerate(csv_path):
         try:
@@ -299,21 +299,21 @@ def load_data(flight_id):
         far_grouped_points = tile_geometry.group_points(far_points)
         night_grouped_points = tile_geometry.group_points(night_points)
         count = len(grouped_points) + len(night_grouped_points) + len(far_grouped_points)
-        db.execute(
-            'UPDATE flightIDs SET tiles=? WHERE id=?', [count, flight_id])
+        db.execute('UPDATE flightIDs SET tiles=? WHERE id=?', [count, flight_id])
+        db.commit()
         celery_group(load_group.s(
-            flight_id, group, count, tiler.serialize(), 'day'
+            flight_id, group, tiler.serialize(), 'day'
         ) for group in grouped_points)()
         celery_group(load_group.s(
-            flight_id, group, count, far_tiler.serialize(), 'day'
+            flight_id, group, far_tiler.serialize(), 'day'
         ) for group in far_grouped_points)()
         celery_group(load_group.s(
-            flight_id, group, count, night_tiler.serialize(), 'night'
+            flight_id, group, night_tiler.serialize(), 'night'
         ) for group in night_grouped_points)()
 
 
 @celery.task
-def load_group(flight_id, group, count, tiling, tag):
+def load_group(flight_id, group, tiling, tag):
     db = get_db()
     tiler = tile_geometry.Tiler(*tiling)
     bounds = tiler.mercator_bounds(group)
