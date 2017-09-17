@@ -24,6 +24,7 @@ public class MapGrid {
     private var offsetPosition: Waypoint?
     private var currentType: TileType = .Day
     private var altitudeOffset: Double
+    private var locationTimer: Timer?
     
     init(deviceHeading: Float, path: Path){
         self.tiles = path.tiles
@@ -71,36 +72,32 @@ public class MapGrid {
         })
      
         //If we have not alreayd set an offset, set it now and move the plane there
+        //Position the plane node as the negative of where the map elements are
         if offsetPosition == nil {
             offsetPosition = waypoints.first
             self.mainPlaneNode.position = SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08 + altitudeOffset, self.offsetPosition!.y)
-        }
+            let action = SCNAction.move(to: SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08 + altitudeOffset, self.offsetPosition!.y), duration: 1)
+            mainPlaneNode.runAction(action)
+        } else {
         
-        //Position the plane node as the negative of where the map elements are
-        //Add an altitude offset if is in night mode as the map is less high res
-        altitudeOffset = type == .Night ? -20.0 : 0.0
         
-        let action = SCNAction.move(to: SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08 + altitudeOffset, self.offsetPosition!.y), duration: 1)
-        mainPlaneNode.runAction(action)
-       
-    }
-    
-    func startFlight(){
-        nextLoc(waypoints.makeIterator())
-    }
-    
-    private func nextLoc(_ iterator: IndexingIterator<[Waypoint]>){
-        var iterator = iterator
-        if let next = iterator.next() {
-            self.offsetPosition = next
+            //Add an altitude offset if is in night mode as the map is less high res
+            altitudeOffset = type == .Night ? -30.0 : 0.0
+            mainPlaneNode.removeAllActions()
+            let index = waypoints.index { (waypoint) -> Bool in
+                return waypoint.lat == offsetPosition?.lat && waypoint.long == offsetPosition?.long
+            }
             
             let action = SCNAction.move(to: SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08 + altitudeOffset, self.offsetPosition!.y), duration: 1)
             mainPlaneNode.runAction(action)
             
-            Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { (_) in
-                self.nextLoc(iterator)
+            if index != nil {
+                let mag = index!.magnitude
+                let sub = Array(waypoints[Int(mag)...])
+                nextLoc(sub.makeIterator())
             }
         }
+        
     }
     
     private func addCities() {
@@ -119,6 +116,26 @@ public class MapGrid {
                 mainPlaneNode.addChildNode(landmarkModel.rootNode)
             } else {
                 print("No model for landmark")
+            }
+        }
+    }
+    
+    
+    //Start Flights
+    func startFlight(){
+        nextLoc(waypoints.makeIterator())
+    }
+    
+    private func nextLoc(_ iterator: IndexingIterator<[Waypoint]>){
+        var iterator = iterator
+        if let next = iterator.next() {
+            self.offsetPosition = next
+            
+            let action = SCNAction.move(to: SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08 + altitudeOffset, self.offsetPosition!.y), duration: 5)
+            mainPlaneNode.runAction(action)
+            
+            locationTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { (_) in
+                self.nextLoc(iterator)
             }
         }
     }

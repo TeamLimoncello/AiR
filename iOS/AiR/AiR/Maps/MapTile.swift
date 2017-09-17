@@ -48,8 +48,33 @@ public class MapTile {
     }
     
     public func setImage(_ image: UIImage){
-        self.plane.firstMaterial?.diffuse.contents = image
-        self.plane.firstMaterial?.isDoubleSided = true
         self.image = image
+        
+        if tileType == .Night {
+            let context = CIContext(options: nil)
+            
+            if let currentFilter = CIFilter(name: "CIFalseColor") {
+                let beginImage = CIImage(image: image)
+                currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+                
+                let yellowUI = UIColor(red: 222/255.0, green: 199/255.0, blue: 136/255.0, alpha: 1.0)
+                let blackUI = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+                let yellow = CIColor(color: yellowUI)
+                let black = CIColor(color: blackUI)
+                
+                currentFilter.setValue(black, forKey: "inputColor0")
+                currentFilter.setValue(yellow, forKey: "inputColor1")
+                
+                if let output = currentFilter.outputImage {
+                    if let cgimg = context.createCGImage(output, from: output.extent) {
+                        let processedImage = UIImage(cgImage: cgimg)
+                       self.plane.firstMaterial?.diffuse.contents = processedImage
+                    }
+                }
+            }
+        } else {
+            self.plane.firstMaterial?.diffuse.contents = image
+        }
+        self.plane.firstMaterial?.isDoubleSided = true
     }
 }
