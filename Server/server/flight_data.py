@@ -125,10 +125,7 @@ def load_flight(db, flight_id):
         'WHERE flightCode=? AND expires>?',
         [flight_code, int(time.time())]
     ).fetchone()
-    if existing_path:
-        return existing_path["path"]
 
-    past_flight = get_flight_history(flight_code)
     this_flight = get_this_flight(flight_code, flight_date)
     if this_flight is None:
         db.execute(
@@ -136,6 +133,14 @@ def load_flight(db, flight_id):
             ["No flight for given day", flight_id])
         db.commit()
         return
+    db.execute('UPDATE flightIDs SET departureTime=? WHERE id=?',
+               [this_flight['departuretime'], flight_id])
+    db.commit()
+
+    if existing_path:
+        return existing_path["path"]
+
+    past_flight = get_flight_history(flight_code)
 
     try:
         origin = openflights_post_request({
@@ -163,10 +168,6 @@ def load_flight(db, flight_id):
         else:
             path = print_flight_path(process_flight_path(flight_path))
 
-    departure_time = this_flight['departuretime']
-
-    db.execute('UPDATE flightIDs SET departureTime=? WHERE id=?',
-               [departure_time, flight_id])
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
         '(flightCode, origin, originCode, originLat, originLong, '
