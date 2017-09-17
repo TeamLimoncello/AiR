@@ -13,9 +13,12 @@ class Path {
 
     let origin: String
     let originCode: String
+    let originPos: (lat: Double, long: Double)
     let destination: String
     let destinationCode: String
+    let destinationPos: (lat: Double, long: Double)
     let date: String
+    let departureTime: Date
     let flightCode: String
     let tiles: [MapTile]!
     let waypoints: [Waypoint]!
@@ -31,10 +34,13 @@ class Path {
         let meta = source["meta"] as! [String: Any]
         origin = meta["origin"] as! String
         originCode = meta["originCode"] as! String
+        originPos = (lat: meta["originLat"] as! Double, long: meta["originLong"] as! Double)
         destination = meta["destination"] as! String
         destinationCode = meta["destinationCode"] as! String
+        destinationPos = (lat: meta["destinationLat"] as! Double, long: meta["destinationLong"] as! Double)
         date = meta["date"] as! String
         flightCode = meta["flightCode"] as! String
+        departureTime = Date(timeIntervalSince1970: TimeInterval(meta["departureTime"] as! Double))
 
 
         //Waypoint parsing
@@ -87,7 +93,10 @@ class Path {
             let long = landmark["long"] as! Double
             let name = landmark["name"] as! String
             let modelName = landmark["model_name"] as? String
-            landmarks.append(Landmark(id: landmarkID, name: name, lat: lat, long: long, modelName: modelName))
+            let description = landmark["description"] as! String
+            let height = landmark["height"] as! String
+            let established = landmark["established"] as! String
+            landmarks.append(Landmark(id: landmarkID, name: name, lat: lat, long: long, modelName: modelName, description: description, height: height, established: established))
             landmarkID += 1
         }
         

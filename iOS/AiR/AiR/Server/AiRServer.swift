@@ -81,6 +81,7 @@ class Server {
                 case 200:
                     do {
                         let response = try JSONSerialization.jsonObject(with: data!) as! [String : Any]
+                        print(response)
                         self.persistData(data!, id: id)
                         completion(response, nil)
                     } catch {
@@ -176,6 +177,7 @@ class Server {
                 completion(nil, "Could not connect to server")
                 return
             }
+            
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
                 case 200:
