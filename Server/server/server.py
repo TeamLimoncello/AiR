@@ -83,8 +83,9 @@ def register():
 def fetch(ref_id):
     db = get_db()
     c = db.execute('SELECT flightIDs.flightCode AS flightCode, date, '
-                   'dataReady, invalid, path, origin, destination, '
-                   'originCode, destinationCode, progress '
+                   'tiles, loaded, invalid, path, origin, destination, '
+                   'originCode, destinationCode, '
+                   'originLat, originLong, destinationLat, destinationLong '
                    'FROM flightIDs INNER JOIN flightPaths '
                    'ON flightIDs.flightCode = flightPaths.flightCode '
                    'WHERE id=?',
@@ -94,8 +95,9 @@ def fetch(ref_id):
         return '', 403
     if flight['invalid']:
         return '', 404
-    if not flight['dataReady']:
-        return send_json({'progress': flight['progress']}, 503)
+    if flight['tiles'] == None:
+        return send_json({'progress': 0}, 503)
+    progress = flight['loaded'] / flight['tiles']
     csv_path = map(lambda row: row.split(','), flight["path"].split('\n'))
     cities = {}
     for i, row in enumerate(csv_path):
@@ -115,9 +117,12 @@ def fetch(ref_id):
                 'population': city['population'],
                 'name_en': city['name_en'],
             }
-    tiles = db.execute('SELECT file, alat, along, blat, blong, tag '
-                       'FROM tiles WHERE id=?',
-                       [ref_id]).fetchall()
+    if progress == 1.0:
+        tiles = db.execute('SELECT file, alat, along, blat, blong, tag '
+                           'FROM tiles WHERE id=?',
+                           [ref_id]).fetchall()
+    else:
+        tiles = []
     return send_json({
         'meta': {
             'flightCode': flight['flightCode'],
@@ -171,6 +176,7 @@ def fetch(ref_id):
             }
         ],
         "cities": list(cities.values()),
+        "progress": progress,
         "tiles": [
             {
                 'alat': tile['alat'],
@@ -182,7 +188,7 @@ def fetch(ref_id):
                 'tag': tile['tag'],
             } for tile in tiles
         ]
-    })
+    }, code=(200 if progress == 1.0 else 503))
 
 
 @app.route('/api/v1/tile/<ref_id>/<filename>')
@@ -278,10 +284,6 @@ def close_db(error):
 def load_data(flight_id):
     with connect_db() as db:
         path = flight_data.load_flight(db, flight_id)
-        db.execute(
-            'UPDATE flightIDs SET progress=0.2 WHERE id=?',
-            [flight_id])
-        db.commit()
 
         far_tiler = tile_geometry.Tiler(256)
         tiler = tile_geometry.Tiler(256, radius=1.5)
@@ -297,6 +299,8 @@ def load_data(flight_id):
         far_grouped_points = tile_geometry.group_points(far_points)
         night_grouped_points = tile_geometry.group_points(night_points)
         count = len(grouped_points) + len(night_grouped_points) + len(far_grouped_points)
+        db.execute(
+            'UPDATE flightIDs SET tiles=? WHERE id=?', [count, flight_id])
         celery_group(load_group.s(
             flight_id, group, count, tiler.serialize(), 'day'
         ) for group in grouped_points)()
@@ -316,15 +320,9 @@ def load_group(flight_id, group, count, tiling, tag):
     image = tiler.fetch_group_image(group)
     save_image(db, flight_id, image, *bounds, tag)
     db.execute(
-        'UPDATE flightIDs SET progress=progress+? WHERE id=?',
-        [0.8/count, flight_id])
-    db.commit()
-    c = db.execute(
-        'SELECT COUNT(*) FROM tiles WHERE id=?',
+        'UPDATE flightIDs SET loaded=loaded+1 WHERE id=?',
         [flight_id])
-    if c.fetchone()[0] == count:
-        db.execute('UPDATE flightIDs SET dataReady=1 WHERE id=?', [flight_id])
-        db.commit()
+    db.commit()
     try:
         db.close()
     except sqlite3.ProgrammingError:

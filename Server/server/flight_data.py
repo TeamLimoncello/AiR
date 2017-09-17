@@ -118,10 +118,6 @@ def load_flight(db, flight_id):
         return existing_path["path"]
     past_flight = get_flight_history(flight_code)
     if past_flight is None:
-        db.execute(
-            'UPDATE flightIDs SET progress=0.05 WHERE flightCode=?',
-            [flight_code])
-        db.commit()
         # do some fancy (Geod.npts from pyproj) interpolation:
         # flighttime/2min data points. Assume constant speed
         this_flight = get_this_flight(flight_code, flight_date)
@@ -130,10 +126,6 @@ def load_flight(db, flight_id):
                 'UPDATE flightIDs SET invalid=1 WHERE id=?',
                 [flight_id])
             return
-        db.execute(
-            'UPDATE flightIDs SET progress=0.1 WHERE flightCode=?',
-            [flight_code])
-        db.commit()
         origin = this_flight['origin']
         destination = this_flight['destination']
         duration = this_flight['arrivaltime'] - this_flight['departuretime']
@@ -163,10 +155,6 @@ def load_flight(db, flight_id):
                 [flight_id])
             raise NameError(flight_id)
     else:
-        db.execute(
-            'UPDATE flightIDs SET progress=0.1 WHERE flightCode=?',
-            [flight_code])
-        db.commit()
         ident = flight_ident(past_flight)
         path = print_flight_path(process_flight_path(get_flight_path(ident)))
         origin = openflights_post_request({

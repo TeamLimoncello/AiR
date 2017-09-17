@@ -6,7 +6,8 @@ CREATE TABLE flightIDs (
   date Char(10),
   dataReady Boolean DEFAULT 0,
   invalid Boolean DEFAULT 0,
-  progress Float DEFAULT 0.0
+  tiles Int,
+  loaded Int DEFAULT 0
 );
 
 DROP TABLE IF EXISTS flightPaths;
