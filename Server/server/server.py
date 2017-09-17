@@ -54,7 +54,7 @@ def foo():
 def register():
     try:
         raw_date = request.form['date']
-        datetime.strptime(raw_date, '%Y-%M-%d')
+        datetime.strptime(raw_date, '%Y-%m-%d')
     except (KeyError, ValueError):
         return send_json({'code': 1, 'string': 'Bad Date'}, 400)
     try:
