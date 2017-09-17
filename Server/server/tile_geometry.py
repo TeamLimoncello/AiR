@@ -68,8 +68,8 @@ class Tiler:
 
     def fetch_group_image(self, group):
         x0, x1, y = group
-        result = Image.new('RGB', (256*int(x1+1-x0), 256))
-        for i, x in enumerate(frange(x0, x1+1)):
+        result = Image.new('RGB', (256*int(x1-x0), 256))
+        for i, x in enumerate(frange(x0, x1)):
             try:
                 image = Image.open(urlopen(self.image_url(self.get_bounding_box(x, y))))
                 result.paste(image, (256*i, 0))
@@ -80,9 +80,10 @@ class Tiler:
 
     def zoom_by(self, factor, points):
         self.zoom /= factor
+        self.radius *= factor
         return [(x, y) for point in points
-                for x in frange((point[0] - 0.5) * 4 + 0.5, (point[0] + 0.5) * 4)
-                for y in frange((point[1] - 0.5) * 4 + 0.5, (point[1] + 0.5) * 4)]
+                for x in frange((point[0] - 0.5) * factor + 0.5, (point[0] + 0.5) * factor)
+                for y in frange((point[1] - 0.5) * factor + 0.5, (point[1] + 0.5) * factor)]
 
     def image_url(self, bounding_box):
         return ('https://ramani.ujuizi.com/cloud/wms/ramaniddl/tilecache?'
@@ -101,14 +102,14 @@ def sort_points(points):
     return sorted(points, key=lambda pair: tuple(reversed(pair)))
 
 
-# sorted_points: [xmin, xmax, y]
+# grouped : [xmin, xmax+1, y]
 def group_points(points):
     if not points: return []
     sorted_points = sort_points(points)
     grouped = [[sorted_points[0][0], sorted_points[0][0], sorted_points[0][1]]]
     for x,y in sorted_points[1:]:
-        if grouped[-1][1] == x-1 and grouped[-1][2] == y:
-            grouped[-1][1] = x
+        if grouped[-1][1] == x and grouped[-1][2] == y:
+            grouped[-1][1] += 1
         else:
-            grouped.append([x, x, y])
+            grouped.append([x, x+1, y])
     return grouped
