@@ -106,7 +106,7 @@ def sort_points(points):
 def group_points(points):
     if not points: return []
     sorted_points = sort_points(points)
-    grouped = [[sorted_points[0][0], sorted_points[0][0], sorted_points[0][1]]]
+    grouped = [[sorted_points[0][0], sorted_points[0][0]+1, sorted_points[0][1]]]
     for x,y in sorted_points[1:]:
         if grouped[-1][1] == x and grouped[-1][2] == y:
             grouped[-1][1] += 1
