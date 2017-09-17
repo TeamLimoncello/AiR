@@ -79,6 +79,9 @@ class AiR: UIViewController {
     fileprivate func addPlane(){
         mapGrid = MapGrid(deviceHeading: Float(deviceHeading!.magnitude), path: flightPath)
         sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
+        
+        self.mapGrid?.startFlight()
+        
     }
     
     fileprivate func setupInfoView(){

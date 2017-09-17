@@ -12,6 +12,8 @@ class Waypoint{
     var time: Int
     var lat: Double
     var long: Double
+    var x: Double
+    var y: Double
     var altitude: Int
     
     init(time: Int, lat: Double, long: Double, altitude: Int){
@@ -19,5 +21,8 @@ class Waypoint{
         self.lat = lat
         self.long = long
         self.altitude = altitude
+        let coords = latLongToWGS84(lat: lat, long: long)
+        x = coords.0 * scaleConstant
+        y = coords.1 * scaleConstant
     }
 }

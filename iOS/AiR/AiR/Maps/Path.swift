@@ -53,13 +53,14 @@ class Path {
             let blat = tile["blat"] as! Double
             let blong = tile["blong"] as! Double
             let imageURL = tile["image"] as! String
-            let mapTile = MapTile(alat: alat, along: along, blat: blat, blong: blong)
+            let type = tile["tag"] as! String
+            let mapTile = MapTile(alat: alat, along: along, blat: blat, blong: blong, type: type == "night" ? .Night : .Day)
             Server.shared.DownloadImage(url: imageURL) { (image, error) in
                 guard error == nil else {
                     print("Error whilst downloading image", error!)
                     return
                 }
-                mapTile.image = image
+                mapTile.setImage(image!)
             }
             tiles.append(mapTile)
         }
@@ -90,10 +91,6 @@ class Path {
             landmarkID += 1
         }
         
-        
-        //Debug statements
-        print("Adding landmarks \(landmarks.map({$0.name}))")
-        print("Adding cities \(cities.map({$0.name}))")
-        print("Adding tiles \(tiles.map({$0.origin}))")
+
     }
 }

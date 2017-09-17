@@ -183,7 +183,6 @@ class Server {
                         completion(nil, "No Data to retrieve")
                         return
                     }
-                    print("Got image from", url)
                     let image = UIImage(data: data!)!
                     cacheImage(image: image, name: url)
                     completion(image, nil)

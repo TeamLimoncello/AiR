@@ -20,47 +20,72 @@ public class MapGrid {
     private var tiles: [MapTile]
     private var cities: [City]
     private var landmarks: [Landmark]
+    private var waypoints: [Waypoint]
+    private var offsetPosition: Waypoint?
     
     init(deviceHeading: Float, path: Path){
         self.tiles = path.tiles
         self.cities = path.cities
         self.landmarks = path.landmarks
+        self.waypoints = path.waypoints
         mainPlane = SCNPlane(width: 10, height: 10)
+        mainPlane.firstMaterial?.diffuse.contents = UIColor.clear
         mainPlaneNode = SCNNode(geometry: mainPlane)
-        mainPlaneNode.eulerAngles.x = degreesToRadians(90)
-        mainPlaneNode.eulerAngles.y = degreesToRadians(deviceHeading + headingOfFlight)
-        mainPlaneNode.position = SCNVector3(x: 0, y: -70, z: 0)
+        //Rotates into the correct plane
+        mainPlaneNode.eulerAngles.x = Float(degreesToRadians(-90))
+        //mainPlaneNode.eulerAngles.y = degreesToRadians(deviceHeading + headingOfFlight)
+        
+        //Moves the device 70 meters into the air
+        mainPlaneNode.position = SCNVector3(x: 0, y: -1, z: 0)
         
         addTiles()
         addCities()
         addLandmarks()
     }
     
+    
+    
+    /*
+     Notes:
+         X-Axis is right(+) and left(-)
+         Y-Axis is backwards(-) and forwards(+)
+         Z-Axis is closer to camera(+) and further away(-)
+ 
+     */
     func addTiles() {
-//        tiles.forEach({
-//            mainPlaneNode.addChildNode($0.node)
-//            $0.setPosition(SCNVector3($0.alat, 0, $0.along))
-//        })
-
+        tiles.filter({$0.tileType == .Day}).forEach({
+            let x = $0.origin.x + ($0.size.w/2)
+            let y = -$0.origin.y + ($0.size.h/2)
+            
+            $0.setPosition(SCNVector3(x: Float(x), y: Float(y), z: 0))
+            mainPlaneNode.addChildNode($0.node)
+        })
+     
+        self.offsetPosition = waypoints.first
+        self.mainPlaneNode.position = SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08, self.offsetPosition!.y)
         
-        let demoTile = SCNPlane(width: 1, height: 1)
-        demoTile.firstMaterial?.diffuse.contents = UIColor.red
-        let demoTileNode = SCNNode(geometry: demoTile)
-        demoTileNode.position = SCNVector3(x: 0, y: 0, z: 0)
-        mainPlaneNode.addChildNode(demoTileNode)
+        print(tiles.filter({$0.tileType == .Day})[0].node.position)
+        print(mainPlaneNode.position)
+       
+    }
+    
+    func startFlight(){
+        nextLoc(waypoints.makeIterator())
         
-        
-        
-//        //Position the tiles in the correct position
-//        //let numberOfColsPerRow = 1
-//
-//        //let numberOfRows = tiles.count / numberOfColsPerRow
-//        //for rowNumber in 0...numberOfRows - 1 {
-//            for columnNumber in 0...numberOfColsPerRow - 1 {
-//                let tile = tiles[numberOfColsPerRow*rowNumber + columnNumber]
-//                tile.setPosition(SCNVector3(columnNumber*Int(tile.resolution.w), 0, rowNumber*Int(tile.resolution.h)))
-//            }
-//        }
+    }
+    
+    func nextLoc(_ iterator: IndexingIterator<[Waypoint]>){
+        var iterator = iterator
+        if let next = iterator.next() {
+            self.offsetPosition = next
+            
+            let action = SCNAction.move(to: SCNVector3(-self.offsetPosition!.x, Double(-self.offsetPosition!.altitude) / 328.08, self.offsetPosition!.y), duration: 1)
+            mainPlaneNode.runAction(action)
+            
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
+                self.nextLoc(iterator)
+            }
+        }
     }
     
     func addCities() {

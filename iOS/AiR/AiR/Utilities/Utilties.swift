@@ -9,9 +9,55 @@
 import Foundation
 import UIKit
 
-func degreesToRadians(_ degrees: Float) -> Float {
-    return degrees * Float.pi/180
+let scaleConstant: Double = 0.0001
+
+//Conversion from Lat/Long to and from Mercator x and y coordinates
+let sm_a = 6378137.0
+let sm_b = 6378301.898519918
+
+func latLongToWGS84(lat: Double, long: Double, isDeg: Bool = true) -> (Double, Double){
+    
+    var latitude = lat
+    var longitude = long
+    
+    let long0 = 0.0
+    if isDeg {
+        latitude = degreesToRadians(lat)
+        longitude = degreesToRadians(long)
+    }
+    
+    let x = sm_a * (longitude - long0)
+    let y = sm_b * log((1 + sin(latitude)) / (1 - sin(latitude))) / 2
+    
+    return (x, y)
 }
+
+func WGS84ToLatLong(x: Double, y: Double, inDeg: Bool = true) -> (Double, Double){
+    let long0 = 0.0
+    var long = x / sm_a + long0
+    var lat = sin((exp(2 * y / sm_b) - 1) / (exp(2 * y / sm_b) + 1))
+    
+    if inDeg {
+        lat = radiansToDegrees(lat)
+        long = radiansToDegrees(long)
+    }
+    
+    return (lat, long)
+}
+
+func degreesToRadians(_ degrees: Double) -> Double {
+    return degrees * Double.pi/180
+}
+
+func radiansToDegrees(_ radians: Double) -> Double {
+    return radians / Double.pi * 180.0
+}
+
+
+
+
+
+
 
 func createDialogue(title: String, message: String, parentViewController: UIViewController, dismissOnCompletion: Bool) {
     DispatchQueue.main.async(execute: {
@@ -40,8 +86,7 @@ public func cacheImage(image: UIImage, name: String){
     let flightID = components[4]
     let tileName = components[5]
     
-    let fileURL = getDocumentsDirectory().appendingPathComponent("tile-\(flightID)-\(tileName)")
-    print("Saving to \(fileURL)")
+    let fileURL = getDocumentsDirectory().appendingPathComponent("tile-\(flightID)-\(tileName).jpg")
     
     if let data = UIImageJPEGRepresentation(image, 1) {
         do {
@@ -52,6 +97,8 @@ public func cacheImage(image: UIImage, name: String){
     }
 }
 
+
+
 public func getDocumentsDirectory() -> URL {
     return try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
 }
@@ -61,8 +108,7 @@ public func getFromCache(name: String) -> UIImage? {
     let flightID = components[4]
     let tileName = components[5]
     
-    let fileURL = getDocumentsDirectory().appendingPathComponent("tile-\(flightID)-\(tileName)")
-    print("Getting from \(fileURL)")
+    let fileURL = getDocumentsDirectory().appendingPathComponent("tile-\(flightID)-\(tileName).jpg")
     do {
         let data = try Data(contentsOf: fileURL)
         if let image = UIImage(data: data) {

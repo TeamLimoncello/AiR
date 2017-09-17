@@ -10,30 +10,37 @@ import Foundation
 import UIKit
 import ARKit
 
+enum TileType {
+    case Day
+    case Night
+}
+
+
 /// A single tile on the path for the flight
 public class MapTile {
     private var plane: SCNPlane
     public var node: SCNNode
-    var alat: Double
-    var along: Double
-    var blat: Double
-    var blong: Double
-    var origin: (lat: Double, long: Double)
-    var resolution: (w: Double, h: Double)
+    public var geoCoordinate: (alat: Double, along: Double, blat: Double, blong: Double)
+    var origin: (x: Double, y: Double)
+    var size: (w: Double, h: Double)
     var image: UIImage?
-    let scaleConstant: Double = 10.0
+    var tileType: TileType
     
-    init(alat: Double, along: Double, blat: Double, blong: Double){
-        self.alat = alat
-        self.blat = blat
-        self.along = along
-        self.blong = blong
-        self.origin = (alat, along)
-        self.resolution = ((blat-alat)*scaleConstant, (blong-along)*scaleConstant)
-        self.plane = SCNPlane(width: CGFloat(self.resolution.w), height: CGFloat(self.resolution.h))
-        self.plane.firstMaterial?.diffuse.contents = image
-        self.plane.firstMaterial?.isDoubleSided = true
+    init(alat: Double, along: Double, blat: Double, blong: Double, type: TileType){
+        self.geoCoordinate = (alat, along, blat, blong)
+        let originWGS84 = latLongToWGS84(lat: alat, long: along)
+        self.origin = (x: originWGS84.0 * scaleConstant, y: -originWGS84.1 * scaleConstant)
+        
+        let width = (latLongToWGS84(lat: blat, long: blong).0 - latLongToWGS84(lat: alat, long: along).0) * scaleConstant
+        let height = (latLongToWGS84(lat: blat, long: blong).1 - latLongToWGS84(lat: alat, long: along).1) * scaleConstant
+        self.size = (w: width, h: height)
+        
+        self.plane = SCNPlane(width: CGFloat(self.size.w), height: CGFloat(self.size.h))
+        
         self.node = SCNNode(geometry: plane)
+        self.node.name = "Tile-\(alat)-\(along)"
+        
+        self.tileType = type
     }
     
     public func setPosition(_ vector: SCNVector3){
@@ -41,7 +48,8 @@ public class MapTile {
     }
     
     public func setImage(_ image: UIImage){
+        self.plane.firstMaterial?.diffuse.contents = image
+        self.plane.firstMaterial?.isDoubleSided = true
         self.image = image
     }
-
 }
