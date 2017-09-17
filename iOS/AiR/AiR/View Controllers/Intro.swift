@@ -48,6 +48,10 @@ class Intro: UIViewController {
 
     // Reload flight whenever home appears
     override func viewDidAppear(_ animated: Bool) {
+        planeTopConstraint.constant = self.sizeClass() == (.regular, .regular) ? 41 : 20
+        planeHorizontalConstraint.constant = 0
+        planeButton.titleLabel?.font = UIFont(name: (planeButton.titleLabel?.font.fontName)!, size: 70.0)
+        view.layoutIfNeeded()
         loadFlights()
         setState()
     }

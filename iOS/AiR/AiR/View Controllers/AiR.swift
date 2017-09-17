@@ -16,7 +16,9 @@ class AiR: UIViewController {
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var toggleSphereView: UIView!
     @IBOutlet weak var toggleSphereButton: UIButton!
-   
+    @IBOutlet weak var nightModeView: UIView!
+    @IBOutlet weak var backView: UIView!
+    
     @IBOutlet var significantPlaceInfoView: UIView!
     @IBOutlet weak var significantPlaceName: UILabel!
     @IBOutlet weak var significantPlaceEnglishName: UILabel!
@@ -28,6 +30,10 @@ class AiR: UIViewController {
     var mapGrid: MapGrid?
     var outerSphereNode: SCNNode!
     var flightPath: Path!
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,9 +54,16 @@ class AiR: UIViewController {
             addOuterSphere()
             setupLocation()
             setupInfoView()
+            styleButtons()
         } else {
             createDialogue(title: "Error", message: "Your device does not support Augmented Reality apps.", parentViewController: self, dismissOnCompletion: true)
         }
+    }
+    
+    func styleButtons() {
+        backView.addShadow(intensity: .Ehh)
+        toggleSphereView.addShadow(intensity: .Ehh)
+        nightModeView.addShadow(intensity: .Ehh)
     }
     
     fileprivate func setupLocation(){
@@ -81,24 +94,19 @@ class AiR: UIViewController {
         sceneView.scene.rootNode.addChildNode(mapGrid!.mainPlaneNode)
         
         self.mapGrid?.startFlight()
-        
     }
     
     fileprivate func setupInfoView(){
         significantPlaceInfoView.layer.cornerRadius = 16
-        significantPlaceInfoView.center = view.center
+        significantPlaceInfoView.center = self.sceneView.center
         significantPlaceInfoView.addShadow(intensity: .Ehh)
-        view.addSubview(significantPlaceInfoView)
-        significantPlaceInfoView.isHidden = true
     }
     
     func displayCity(_ place: City){
         significantPlaceName.text = place.name
-        if let englishName = place.englishName {
-            significantPlaceEnglishName.text = "English Name: \(englishName)"
-        }
+        significantPlaceEnglishName.text = "English Name: \(place.englishName ?? place.name)"
         significantPlacePopulation.text =  "Population: \(place.population)"
-        significantPlaceInfoView.isHidden = false
+        view.addSubview(significantPlaceInfoView)
     }
     
     //MARK: - Touch Methods
@@ -129,12 +137,14 @@ class AiR: UIViewController {
         default:
             print("Error whilst parsing touch")
         }
+        
+        let cityName = String(Array(nodeID[1]))
+        displayCity((flightPath.cities.filter({$0.name == cityName}).first)!)
     }
-    
     
     //MARK: - Action Methods
     @IBAction func exitARPressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func toggleNightModePressed(_ sender: Any) {
@@ -144,6 +154,10 @@ class AiR: UIViewController {
     @IBAction func toggleSpherePressed(_ sender: Any) {
         outerSphereNode.isHidden = !outerSphereNode.isHidden
         //toggleSphereButton.setBackgroundImage(outerSphereNode.isHidden ? #imageLiteral(resourceName: "Earth") : , for: .normal)
+    }
+    
+    @IBAction func significantPlaceBackPressed(_ sender: Any) {
+        significantPlaceInfoView.removeFromSuperview()
     }
 }
 
@@ -155,8 +169,8 @@ extension AiR: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let grid = mapGrid {
-            //grid.updateLocation(locations[0])
-        }
+//        if let grid = mapGrid {
+//            //grid.updateLocation(locations[0])
+//        }
     }
 }
