@@ -52,7 +52,6 @@ public class MapGrid {
         addTiles(type: currentType)
     }
     
-    
     /*
      Notes:
          X-Axis is right(+) and left(-)
