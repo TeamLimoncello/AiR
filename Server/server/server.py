@@ -285,15 +285,15 @@ def load_data(flight_id):
     with connect_db() as db:
         path = flight_data.load_flight(db, flight_id)
 
-        far_tiler = tile_geometry.Tiler(256)
-        tiler = tile_geometry.Tiler(256, radius=1.5)
+        far_tiler = tile_geometry.Tiler(512)
+        tiler = tile_geometry.Tiler(512, radius=1)
         night_tiler = tile_geometry.Tiler(
             zoom=4096, radius=1.5,
             params='LAYERS=ddl.simS3seriesNighttimeLightsGlob.brightness&STYLES=boxfill%2Fgreyscale'
         )
         points = tiler.generate_points(path)
         far_points = far_tiler.generate_points(path) - points
-        points = tiler.zoom_by(4, points)
+        points = tiler.zoom_by(8, points)
         night_points = night_tiler.generate_points(path)
         grouped_points = tile_geometry.group_points(points)
         far_grouped_points = tile_geometry.group_points(far_points)
