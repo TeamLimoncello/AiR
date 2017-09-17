@@ -101,7 +101,7 @@ public class MapGrid {
     
     private func addCities() {
         for city in cities {
-            let billboard = Billboard(withName: city.name, englishName: city.englishName, position: city.position)
+            let billboard = Billboard(city: city)
              mainPlaneNode.addChildNode(billboard.node)
         }
     }
