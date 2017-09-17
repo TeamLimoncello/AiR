@@ -84,9 +84,9 @@ def fetch(ref_id):
     db = get_db()
     c = db.execute('SELECT flightIDs.flightCode AS flightCode, date, '
                    'tiles, loaded, invalid, path, origin, destination, '
-                   'originCode, destinationCode, '
+                   'originCode, destinationCode, departureTime, '
                    'originLat, originLong, destinationLat, destinationLong '
-                   'FROM flightIDs INNER JOIN flightPaths '
+                   'FROM flightIDs LEFT JOIN flightPaths '
                    'ON flightIDs.flightCode = flightPaths.flightCode '
                    'WHERE id=?',
                    [ref_id])
@@ -94,7 +94,7 @@ def fetch(ref_id):
     if flight is None:
         return '', 403
     if flight['invalid']:
-        return '', 404
+        return flight['invalid'], 404
     if flight['tiles'] == None:
         return send_json({'progress': 0}, 503)
     progress = flight['loaded'] / flight['tiles']
@@ -127,6 +127,7 @@ def fetch(ref_id):
         'meta': {
             'flightCode': flight['flightCode'],
             'date': flight['date'],
+            'departureTime': flight['departureTime'],
             'origin': flight['origin'],
             'originCode': flight['originCode'],
             'originLat': flight['originLat'],
@@ -284,6 +285,9 @@ def close_db(error):
 def load_data(flight_id):
     with connect_db() as db:
         path = flight_data.load_flight(db, flight_id)
+
+        if path is None:
+            return
 
         far_tiler = tile_geometry.Tiler(512)
         tiler = tile_geometry.Tiler(512, radius=1)

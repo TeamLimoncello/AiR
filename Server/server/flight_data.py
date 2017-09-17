@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 import re
 import requests
 from pyproj import Geod
@@ -14,7 +15,8 @@ def fa_get_request(link, params):
                             params=params,
                             auth=(fa_username, fa_api_key))
     if response.status_code not in range(200,299):
-        raise IOError('error: {}'.format(response.text))
+        print('error {}: {}'.format(response.status_code, response.text))
+        return None
     return response.json()
 
 
@@ -36,6 +38,8 @@ def get_flight_history(raw_flight):
         'flightno': flight_num[2],
         'howMany': 1,
     })
+    if result is None:
+        return None
     try:
         return result['AirlineFlightSchedulesResult']['flights'][0]
     except IndexError:
@@ -46,12 +50,16 @@ def get_this_flight(raw_flight, flight_date):
     flight_num = re.match(r'([A-Z]{3})([0-9]{1,4})([A-Za-z]?)',
                           raw_flight)
     result = fa_get_request('AirlineFlightSchedules', {
-        'end_date': str(flight_date.timestamp() + 86400),
-        'start_date': str(flight_date.timestamp()),
+        'end_date': str(int(flight_date.timestamp()) + 86400),
+        'start_date': str(int(flight_date.timestamp())),
         'airline': flight_num[1],
         'flightno': flight_num[2],
         'howMany': 1,
     })
+    if result is None:
+        print(flight_date)
+        print(str(int(flight_date.timestamp())))
+        return None
     try:
         return result['AirlineFlightSchedulesResult']['flights'][0]
     except IndexError:
@@ -108,7 +116,8 @@ def load_flight(db, flight_id):
         [flight_id]).fetchone()
     if not flight_id_query:
         raise NameError(flight_id)
-    flight_code, flight_date = flight_id_query
+    flight_code, raw_date = flight_id_query
+    flight_date = datetime.strptime(raw_date, '%Y-%m-%d')
     existing_path = db.execute(
         'SELECT path FROM flightPaths '
         'WHERE flightCode=? AND expires>?',
@@ -123,8 +132,9 @@ def load_flight(db, flight_id):
         this_flight = get_this_flight(flight_code, flight_date)
         if this_flight is None:
             db.execute(
-                'UPDATE flightIDs SET invalid=1 WHERE id=?',
-                [flight_id])
+                'UPDATE flightIDs SET invalid=? WHERE id=?',
+                ["No flight for given day", flight_id])
+            db.commit()
             return
         origin = this_flight['origin']
         destination = this_flight['destination']
@@ -151,25 +161,37 @@ def load_flight(db, flight_id):
                     duration/len(points), lat, long, 350)
         except (IndexError, KeyError) as a:
             db.execute(
-                'UPDATE flightIDs SET invalid=1 WHERE id=?',
-                [flight_id])
+                'UPDATE flightIDs SET invalid=? WHERE id=?',
+                ["Unable to prepare flight path for this flight", flight_id])
+            db.commit()
             raise NameError(flight_id)
     else:
         ident = flight_ident(past_flight)
         path = print_flight_path(process_flight_path(get_flight_path(ident)))
+        this_flight = get_this_flight(flight_code, flight_date)
+        if this_flight is None:
+            db.execute(
+                'UPDATE flightIDs SET invalid=? WHERE id=?',
+                ["No flight for given day", flight_id])
+            db.commit()
+            return
         origin = openflights_post_request({
-            'icao': past_flight["origin"],
+            'icao': this_flight["origin"],
             'db': 'airports',
         })['airports'][0]
         destination = openflights_post_request({
-            'icao': past_flight["destination"],
+            'icao': this_flight["destination"],
             'db': 'airports',
         })['airports'][0]
 
+    departure_time = this_flight['departuretime']
+
+    db.execute('UPDATE flightIDs SET departureTime=? WHERE id=?',
+               [departure_time, flight_id])
     db.execute(
         'INSERT OR REPLACE INTO flightPaths '
-        '(flightCode, origin, originCode, originLat, originLong,'
-        ' destination, destinationCode, destinationLat, destinationLong, expires, path) '
+        '(flightCode, origin, originCode, originLat, originLong, '
+        'destination, destinationCode, destinationLat, destinationLong, expires, path) '
         'VALUES (?,?,?,?,?,?,?,?,?,?,?)',
         [flight_code, origin['name'], origin['iata'], origin['y'], origin['x'],
          destination['name'], destination['iata'], destination['y'], destination['x'],

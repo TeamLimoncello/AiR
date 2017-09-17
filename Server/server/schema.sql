@@ -4,8 +4,9 @@ CREATE TABLE flightIDs (
   id Char(16) PRIMARY KEY,
   flightCode Char(8),
   date Char(10),
+  departureTime Int,
   dataReady Boolean DEFAULT 0,
-  invalid Boolean DEFAULT 0,
+  invalid Text,
   tiles Int,
   loaded Int DEFAULT 0
 );
