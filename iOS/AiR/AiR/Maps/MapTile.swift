@@ -38,7 +38,7 @@ public class MapTile {
         self.plane = SCNPlane(width: CGFloat(self.size.w), height: CGFloat(self.size.h))
         
         self.node = SCNNode(geometry: plane)
-        self.node.name = "Tile-\(alat)-\(along)"
+        self.node.name = "tile-\(alat)-\(along)"
         
         self.tileType = type
     }

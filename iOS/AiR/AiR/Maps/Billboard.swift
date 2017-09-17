@@ -10,26 +10,32 @@ import Foundation
 import SceneKit
 import UIKit
 
-public class Billboard: SCNNode {
+public class Billboard {
     
-    init(with text: String?, position: SCNVector3) {
-        super.init()
+    var node: SCNNode
+    
+    init(withName name : String, englishName: String?, position: SCNVector3) {
+        // The board
+        let board = SCNBox(width: 1.0, height: 1/3, length: 1/3, chamferRadius: 0.1)
+        let text = englishName == nil ? name : englishName
+        self.node = SCNNode(geometry: board)
+        self.node.position = SCNVector3(position.x, position.y+1, position.z)
+        self.node.name = "city-\(text!)"
+        
+    
+        if let image = imageWithText(text: text!, imageSize: CGSize(width:100, height: 100/3), backgroundColor: UIColor.hexToRGB(hex: "195083")!) {
+            board.firstMaterial?.diffuse.contents = image
+        }
+        
         // The pole
         let pole = SCNTube(innerRadius: 0.1, outerRadius: 0.1, height: 1.2)
         pole.firstMaterial?.diffuse.contents  = UIColor.black
         pole.firstMaterial?.specular.contents = UIColor.white
         let poleNode = SCNNode(geometry: pole)
-        poleNode.position = position
-        // The board
-        let board = SCNBox(width: 3, height: 1, length: 1, chamferRadius: 0.2)
-        if let image = imageWithText(text: text!, imageSize: CGSize(width:300, height: 100), backgroundColor: UIColor.hexToRGB(hex: "#195083")!) {
-            board.firstMaterial?.diffuse.contents = image
-        }
-        let boardNode = SCNNode(geometry: board)
-        boardNode.position = SCNVector3(position.x, position.y+1, position.z)
-        // The billboard
-        self.addChildNode(poleNode)
-        self.addChildNode(boardNode)
+        poleNode.position = SCNVector3(x: 0, y: -0.5, z: 0)
+        self.node.addChildNode(poleNode)
+        self.node.eulerAngles.x = Float(degreesToRadians(90))
+        
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -37,7 +43,7 @@ public class Billboard: SCNNode {
     }
     
     /// Create an image from some text
-    fileprivate func imageWithText(text: String, fontSize: CGFloat = 30, fontColor: UIColor = .white, imageSize: CGSize, backgroundColor: UIColor) -> UIImage? {
+    fileprivate func imageWithText(text: String, fontSize: CGFloat = 10, fontColor: UIColor = .white, imageSize: CGSize, backgroundColor: UIColor) -> UIImage? {
         let imageRect = CGRect(origin: CGPoint.zero, size: imageSize)
         UIGraphicsBeginImageContext(imageSize)
         defer {

@@ -70,8 +70,8 @@ class Path {
         var citiesID = 0
         cities = [City]()
         for place in (source["cities"] as! [[String: Any]]) {
-            let lat = place["lat"] as! Float
-            let long = place["long"] as! Float
+            let lat = place["lat"] as! Double
+            let long = place["long"] as! Double
             let name = place["name"] as! String
             let englishName = place["name_en"] as? String
             let population = place["population"] as! Int
@@ -83,8 +83,8 @@ class Path {
         var landmarkID = 0
         landmarks = [Landmark]()
         for landmark in source["landmarks"] as! [[String:Any]]{
-            let lat = landmark["lat"] as! Float
-            let long = landmark["long"] as! Float
+            let lat = landmark["lat"] as! Double
+            let long = landmark["long"] as! Double
             let name = landmark["name"] as! String
             let modelName = landmark["model_name"] as? String
             landmarks.append(Landmark(id: landmarkID, name: name, lat: lat, long: long, modelName: modelName))

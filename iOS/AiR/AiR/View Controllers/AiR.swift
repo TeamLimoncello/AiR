@@ -121,8 +121,10 @@ class AiR: UIViewController {
         
         switch nodeID[0] {
         case "city":
+            print(nodeID[1])
             break
         case "landmark":
+            print(nodeID[1])
             break
         default:
             print("Error whilst parsing touch")
@@ -132,8 +134,9 @@ class AiR: UIViewController {
     
     //MARK: - Action Methods
     @IBAction func toggleSpherePressed(_ sender: Any) {
-        outerSphereNode.isHidden = !outerSphereNode.isHidden
-        toggleSphereButton.setBackgroundImage(outerSphereNode.isHidden ? #imageLiteral(resourceName: "Earth") : #imageLiteral(resourceName: "No Earth"), for: .normal) 
+//        outerSphereNode.isHidden = !outerSphereNode.isHidden
+//        toggleSphereButton.setBackgroundImage(outerSphereNode.isHidden ? #imageLiteral(resourceName: "Earth") : #imageLiteral(resourceName: "No Earth"), for: .normal)
+        mapGrid?.changeTileType()
     }
 }
 
