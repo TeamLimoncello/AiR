@@ -153,7 +153,7 @@ def fetch(ref_id):
             },
             {
                 'name': 'Eiffel Tower',
-                'lat'
+                'lat': 48.858222,
                 'long': 2.2945,
                 'model_name': 'EiffelTower',
                 'description': "The Eiffel Tower is a wrought iron lattice tower on the Champ de Mars in Paris, "
