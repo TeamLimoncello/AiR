@@ -74,6 +74,7 @@ class Server {
                         print("Data is not ready yet. It is \(progress * 100)% completed")
                         sleep(1)
                         self.FetchData(with: id, completion: completion)
+                        completion(response, nil)
                     } catch {
                         completion(nil, "Error whilst parsing JSON")
                     }

@@ -21,6 +21,7 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var createFlightButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var creatingView: UIView!
+    @IBOutlet weak var downloadProgessBar: UIProgressView!
     
     var flightNo = ""
     var flightDate = Date()
@@ -85,8 +86,8 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
 
     @IBAction func createFlightClicked(_ sender: Any) {
         if map(regex: "([A-Z]{3})([0-9]{1,4})([A-Za-z]?)", to: flightNo) {
+            self.moveCard(direction: .Down)
             Server.shared.CreateFlight(flightNumber: flightNo, flightTime: flightDate) { (success, payload) in
-                self.moveCard(direction: .Down)
                 if success {
                     print("Successfully created flight with ID \(String(describing: payload))")
                     DispatchQueue.main.async {
@@ -118,15 +119,23 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
                 return
             }
 
-            //Persists the flightPath in the IDs
-            if var existing = UserDefaults.standard.array(forKey: "flightPaths") {
-                existing.append(id)
-                UserDefaults.standard.set(existing, forKey: "flightPaths")
-            } else {
-                UserDefaults.standard.set([id], forKey: "flightPaths")
+            if let progress = data!["progress"] {
+                DispatchQueue.main.sync {
+                    self.downloadProgessBar.setProgress((progress as! Float), animated: true)
+                }
+                
+                if progress as! Float == 1 {
+                    //Persists the flightPath in the IDs
+                    if var existing = UserDefaults.standard.array(forKey: "flightPaths") {
+                        existing.append(id)
+                        UserDefaults.standard.set(existing, forKey: "flightPaths")
+                    } else {
+                        UserDefaults.standard.set([id], forKey: "flightPaths")
+                    }
+                    
+                    createDialogue(title: "Flight Successfully Created!", message: "Now you just have to launch AiR on the day of your flight.", parentViewController: self, dismissOnCompletion: true)
+                }
             }
-
-            createDialogue(title: "Flight Successfully Created!", message: "Now you just have to launch AiR on the day of your flight.", parentViewController: self, dismissOnCompletion: true)
         }
     }
 

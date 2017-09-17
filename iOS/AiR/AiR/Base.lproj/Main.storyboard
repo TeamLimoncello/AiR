@@ -287,7 +287,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G9r-Yl-0ks">
-                                <rect key="frame" x="238.5" y="340" width="291" height="155"/>
+                                <rect key="frame" x="239" y="340" width="291" height="155"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This may take a while, sit tight." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wH8-Am-4bU">
                                         <rect key="frame" x="29" y="66" width="233.5" height="20"/>
@@ -295,34 +295,32 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ODs-LO-9PA">
-                                        <rect key="frame" x="135.5" y="112" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="ukd-BB-tGB"/>
-                                            <constraint firstAttribute="width" constant="20" id="zG8-wh-tzm"/>
-                                        </constraints>
-                                    </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creating Flight..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9h2-Uz-inO">
                                         <rect key="frame" x="83" y="25" width="125.5" height="20"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3TT-ql-rBF">
+                                        <rect key="frame" x="71" y="120" width="150" height="2"/>
+                                        <color key="tintColor" name="B2"/>
+                                    </progressView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="3TT-ql-rBF" firstAttribute="centerX" secondItem="G9r-Yl-0ks" secondAttribute="centerX" id="14Q-EC-fxx"/>
                                     <constraint firstItem="wH8-Am-4bU" firstAttribute="top" secondItem="9h2-Uz-inO" secondAttribute="bottom" constant="21" id="8Se-MG-Wzp"/>
+                                    <constraint firstItem="3TT-ql-rBF" firstAttribute="leading" secondItem="G9r-Yl-0ks" secondAttribute="leading" constant="71" id="CWb-QA-zDF"/>
                                     <constraint firstAttribute="height" constant="155" id="PCy-Ol-IA2"/>
                                     <constraint firstAttribute="width" constant="291" id="Yo8-wj-k7U"/>
                                     <constraint firstItem="9h2-Uz-inO" firstAttribute="centerX" secondItem="G9r-Yl-0ks" secondAttribute="centerX" id="ZHl-t9-XLu"/>
-                                    <constraint firstItem="ODs-LO-9PA" firstAttribute="top" secondItem="G9r-Yl-0ks" secondAttribute="top" constant="112" id="b7g-Du-Eih"/>
+                                    <constraint firstItem="3TT-ql-rBF" firstAttribute="top" secondItem="wH8-Am-4bU" secondAttribute="bottom" constant="34" id="Zhg-2O-OWR"/>
                                     <constraint firstItem="wH8-Am-4bU" firstAttribute="centerX" secondItem="G9r-Yl-0ks" secondAttribute="centerX" id="pRa-vu-LQm"/>
-                                    <constraint firstItem="ODs-LO-9PA" firstAttribute="centerX" secondItem="G9r-Yl-0ks" secondAttribute="centerX" id="pzo-lp-mrl"/>
                                     <constraint firstItem="9h2-Uz-inO" firstAttribute="top" secondItem="G9r-Yl-0ks" secondAttribute="top" constant="25" id="vFV-Ul-qaM"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C0X-9s-wpk">
-                                <rect key="frame" x="167.5" y="200" width="433" height="622"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C0X-9s-wpk">
+                                <rect key="frame" x="168" y="744" width="433" height="622"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Flight" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6k-sb-1ZJ">
                                         <rect key="frame" x="79" y="41" width="274" height="56"/>
@@ -452,6 +450,7 @@
                         <outlet property="createFlightParentView" destination="MDn-Ac-fHI" id="Jy8-uN-ffo"/>
                         <outlet property="createFlightTitle" destination="O6k-sb-1ZJ" id="vfI-sz-iyg"/>
                         <outlet property="creatingView" destination="G9r-Yl-0ks" id="QiX-kb-iFE"/>
+                        <outlet property="downloadProgessBar" destination="3TT-ql-rBF" id="ALs-yW-1ye"/>
                         <outlet property="flightNoTextField" destination="2kO-B8-dFl" id="FFK-R9-1KE"/>
                         <outlet property="flightTimePicker" destination="Rsh-Cx-qe0" id="bum-vH-wNi"/>
                         <outlet property="parentView" destination="C0X-9s-wpk" id="Sfm-QC-nFu"/>
@@ -481,7 +480,7 @@
                                         <rect key="frame" x="84" y="100" width="600" height="824"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flights" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utm-qR-qKu">
-                                                <rect key="frame" x="229.5" y="20" width="142.5" height="56"/>
+                                                <rect key="frame" x="229" y="20" width="142.5" height="56"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="48"/>
                                                 <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -797,6 +796,9 @@
         <image name="Moon" width="300" height="300"/>
         <image name="Sky" width="960" height="540"/>
         <image name="SkyTint" width="1024" height="640"/>
+        <namedColor name="B2">
+            <color red="0.10100000351667404" green="0.54900002479553223" blue="0.76999998092651367" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="B2">
             <color red="0.10100000351667404" green="0.54900002479553223" blue="0.76999998092651367" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
