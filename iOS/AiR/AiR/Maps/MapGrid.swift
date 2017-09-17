@@ -111,7 +111,7 @@ public class MapGrid {
     }
     
     private func addLandmarks(){
-        for landmark in [landmarks[0]] {
+        for landmark in landmarks {
             if let modelName = landmark.modelName, let landmarkModel = SCNScene(named: "3dmodels/\(modelName).scn"){
                 landmarkModel.rootNode.position = landmark.position
                 landmarkModel.rootNode.name = "landmark-\(landmark.name)"
