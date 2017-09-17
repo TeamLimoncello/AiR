@@ -38,13 +38,8 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vrk-NB-4ef">
                                         <rect key="frame" x="87.5" y="211" width="200" height="200"/>
                                         <subviews>
-<<<<<<< Updated upstream
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.55000000000000004" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yYs-B5-cP5">
                                                 <rect key="frame" x="21.5" y="117" width="160" height="43"/>
-=======
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.55000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="yYs-B5-cP5">
-                                                <rect key="frame" x="27.5" y="156.5" width="252" height="74"/>
->>>>>>> Stashed changes
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="252" id="3l7-7g-uhQ">
                                                         <variation key="heightClass=regular-widthClass=compact" constant="160"/>
@@ -75,11 +70,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTN-fp-PPe">
-<<<<<<< Updated upstream
                                                 <rect key="frame" x="69" y="165" width="63" height="16"/>
-=======
-                                                <rect key="frame" x="104" y="248.5" width="96.5" height="23.5"/>
->>>>>>> Stashed changes
                                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="20"/>
                                                 <color key="textColor" name="B5"/>
                                                 <nil key="highlightedColor"/>
@@ -111,21 +102,13 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created By Limoncello in 🇮🇹" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Nw-G0-Smo">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="91" y="641.5" width="192.5" height="17.5"/>
-=======
-                                        <rect key="frame" x="287.5" y="998.5" width="192.5" height="17.5"/>
->>>>>>> Stashed changes
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yEz-gU-iGU">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="32" y="563.5" width="311" height="48"/>
-=======
-                                        <rect key="frame" x="96" y="852.5" width="576" height="82"/>
->>>>>>> Stashed changes
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2I1-Hv-rEE">
                                                 <rect key="frame" x="0.0" y="0.0" width="140" height="48"/>
@@ -219,11 +202,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make sure to enable airplane mode and have GPS turned on to experience AiR." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIc-82-GDU">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="57" y="471" width="260" height="52.5"/>
-=======
-                                        <rect key="frame" x="113.5" y="722" width="540" height="58.5"/>
->>>>>>> Stashed changes
                                         <constraints>
                                             <constraint firstAttribute="width" constant="540" id="Qw1-hw-Np4">
                                                 <variation key="heightClass=regular-widthClass=compact" constant="260"/>
@@ -348,52 +327,32 @@
                                 <rect key="frame" x="168" y="744" width="433" height="622"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Flight" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6k-sb-1ZJ">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="34" y="41" width="274" height="56"/>
-=======
-                                        <rect key="frame" x="79.5" y="41" width="274" height="56"/>
->>>>>>> Stashed changes
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="48"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flight Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcZ-yx-ZKK">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="42" y="268" width="87" height="20"/>
-=======
-                                        <rect key="frame" x="69" y="285" width="87" height="20"/>
->>>>>>> Stashed changes
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="e.g. EIN450" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2kO-B8-dFl">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="114" y="198" width="113.5" height="25"/>
-=======
-                                        <rect key="frame" x="159.5" y="215" width="113.5" height="25"/>
->>>>>>> Stashed changes
                                         <color key="tintColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="21"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" keyboardAppearance="alert" returnKeyType="continue" enablesReturnKeyAutomatically="YES"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flight Number:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="toN-Pj-aFT">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="42" y="140" width="112.5" height="20"/>
-=======
-                                        <rect key="frame" x="69" y="157" width="112.5" height="20"/>
->>>>>>> Stashed changes
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="10" translatesAutoresizingMaskIntoConstraints="NO" id="Rsh-Cx-qe0">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="11" y="311" width="320" height="172"/>
-=======
-                                        <rect key="frame" x="56" y="328" width="320" height="172"/>
->>>>>>> Stashed changes
                                         <constraints>
                                             <constraint firstAttribute="height" constant="172" id="uys-mA-bS6"/>
                                         </constraints>
@@ -405,11 +364,7 @@
                                         </connections>
                                     </datePicker>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MDn-Ac-fHI">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="101" y="527" width="140" height="40"/>
-=======
-                                        <rect key="frame" x="146" y="518" width="140" height="40"/>
->>>>>>> Stashed changes
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mYC-QW-7bQ">
                                                 <rect key="frame" x="0.0" y="0.0" width="140" height="40"/>
@@ -433,11 +388,7 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UJp-vE-cqJ">
-<<<<<<< Updated upstream
                                         <rect key="frame" x="145.5" y="583" width="50" height="31"/>
-=======
-                                        <rect key="frame" x="190.5" y="574" width="50" height="31"/>
->>>>>>> Stashed changes
                                         <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                         <state key="normal" title="Cancel">
                                             <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -533,27 +484,16 @@
                                         <rect key="frame" x="16" y="64" width="343" height="583"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flights" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utm-qR-qKu">
-<<<<<<< Updated upstream
                                                 <rect key="frame" x="101" y="20" width="142.5" height="56"/>
-=======
-                                                <rect key="frame" x="229.5" y="20" width="142.5" height="56"/>
->>>>>>> Stashed changes
                                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="48"/>
                                                 <color key="textColor" red="1" green="0.97647058819999999" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nee-ZT-2aL">
-<<<<<<< Updated upstream
                                                 <rect key="frame" x="22" y="98" width="298" height="423"/>
                                                 <subviews>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Y3w-YX-Gat">
                                                         <rect key="frame" x="0.0" y="0.0" width="298" height="423"/>
-=======
-                                                <rect key="frame" x="22" y="98" width="555" height="664"/>
-                                                <subviews>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Y3w-YX-Gat">
-                                                        <rect key="frame" x="0.0" y="0.0" width="555" height="664"/>
->>>>>>> Stashed changes
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <prototypes>
                                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="flightCell" rowHeight="76" id="Tu2-2d-Dio">
@@ -573,11 +513,7 @@
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="21st July" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8J-yt-hcc">
-<<<<<<< Updated upstream
                                                                                     <rect key="frame" x="201.5" y="20.5" width="68.5" height="20"/>
-=======
-                                                                                    <rect key="frame" x="458.5" y="20.5" width="68.5" height="20"/>
->>>>>>> Stashed changes
                                                                                     <fontDescription key="fontDescription" name="Montserrat-Light" family="Montserrat" pointSize="17"/>
                                                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                     <nil key="highlightedColor"/>
@@ -615,11 +551,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z0f-DR-ava">
-<<<<<<< Updated upstream
                                                 <rect key="frame" x="152" y="537" width="39" height="30"/>
-=======
-                                                <rect key="frame" x="280.5" y="778" width="39" height="30"/>
->>>>>>> Stashed changes
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="cYb-Sz-RdD"/>
                                                 </constraints>
