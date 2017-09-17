@@ -182,7 +182,7 @@ def load_flight(db, flight_id):
         'INSERT OR REPLACE INTO flightPaths '
         '(flightCode, origin, originCode, originLat, originLong,'
         ' destination, destinationCode, destinationLat, destinationLong, expires, path) '
-        'VALUES (?,?,?,?,?,?,?)',
+        'VALUES (?,?,?,?,?,?,?,?,?,?,?)',
         [flight_code, origin['name'], origin['iata'], origin['y'], origin['x'],
          destination['name'], destination['iata'], destination['y'], destination['x'],
          int(time.time()+2592000), path])
