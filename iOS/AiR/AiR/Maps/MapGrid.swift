@@ -109,10 +109,13 @@ public class MapGrid {
     private func addLandmarks(){
         for landmark in landmarks {
             if let modelName = landmark.modelName, let landmarkModel = SCNScene(named: "3dmodels/\(modelName).scn"){
-                landmarkModel.rootNode.position = landmark.position
-                landmarkModel.rootNode.name = "landmark-\(landmark.name)"
-                landmarkModel.rootNode.scale = SCNVector3(scaleConstant, scaleConstant, scaleConstant)
-                mainPlaneNode.addChildNode(landmarkModel.rootNode)
+                
+                let tempNode = SCNNode()
+                tempNode.addChildNode(landmarkModel.rootNode)
+                tempNode.scale = SCNVector3(scaleConstant, scaleConstant, scaleConstant)
+                tempNode.name = "landmark-\(landmark.name)"
+                
+                mainPlaneNode.addChildNode(tempNode)
             } else {
                 print("No model for landmark")
             }

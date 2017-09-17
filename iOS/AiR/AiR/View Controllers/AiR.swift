@@ -131,7 +131,9 @@ class AiR: UIViewController {
             let location = touch.location(in: sceneView)
             let hitTestResults = sceneView.hitTest(location, options: nil)
             for result in hitTestResults {
+                print(result)
                 if let nodeName = result.node.name {
+                    print(nodeName)
                     showInformation(nodeID: nodeName)
                 }
             }
