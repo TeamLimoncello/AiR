@@ -36,8 +36,10 @@ class AiR: UIViewController {
     var locationManager: CLLocationManager!
     var deviceHeading: CLLocationDirection?
     var mapGrid: MapGrid?
+    let outerSphere = SCNSphere(radius: 500)
     var outerSphereNode: SCNNode!
     var flightPath: Path!
+    var showSky = false
 
     override var prefersStatusBarHidden: Bool {
         return true
@@ -84,14 +86,12 @@ class AiR: UIViewController {
 
     fileprivate func addOuterSphere() {
         // Create a double sided sphere of radius 1m
-        let outerSphere = SCNSphere(radius: 500)
-        outerSphere.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "skyGradient")
+        alterSphereGradient()
         outerSphere.firstMaterial?.isDoubleSided = true
 
         // Set the outer sphere node to the phones position (0, 0, 0)
         outerSphereNode = SCNNode(geometry: outerSphere)
         outerSphereNode.position = SCNVector3(0, 0, 0)
-        outerSphereNode.isHidden = true
 
         // Add the node to our world
         sceneView.scene.rootNode.addChildNode(outerSphereNode)
@@ -169,8 +169,8 @@ class AiR: UIViewController {
     }
 
     @IBAction func toggleSpherePressed(_ sender: Any) {
-        outerSphereNode.isHidden = !outerSphereNode.isHidden
-        //toggleSphereButton.setBackgroundImage(outerSphereNode.isHidden ? #imageLiteral(resourceName: "Earth") : , for: .normal)
+        alterSphereGradient()
+        showSky = !showSky
     }
 
     @IBAction func significantPlaceBackPressed(_ sender: Any) {
@@ -179,6 +179,17 @@ class AiR: UIViewController {
 
     @IBAction func landmarkBackPressed(_ sender: Any) {
         landmarkInfoView.removeFromSuperview()
+    }
+    
+    func alterSphereGradient() {
+        let gradient = CAGradientLayer()
+        let firstColour = showSky ? UIColor.orange.cgColor : UIColor.hexToRGB(hex: "29ABE2")!.cgColor
+        let secondColour = showSky ? UIColor.hexToRGB(hex: "29ABE2")!.cgColor : UIColor.clear.cgColor
+        gradient.colors = [firstColour, secondColour]
+        let firstStop: NSNumber = showSky ? 0.1 : 0.2
+        gradient.locations = [firstStop, 1] // GRADIENT STOP POSITIONS
+        gradient.frame = sceneView.frame
+        outerSphere.firstMaterial?.diffuse.contents = gradient
     }
 }
 
