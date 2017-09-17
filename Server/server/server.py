@@ -117,6 +117,7 @@ def fetch(ref_id):
                 'long': city['long'],
                 'population': city['population'],
                 'name_en': city['name_en'],
+                'weather': {}
             }
     if progress == 1.0:
         tiles = db.execute('SELECT file, alat, along, blat, blong, tag '
@@ -341,11 +342,19 @@ def load_data(flight_id):
 
 
 def get_weather(cities):
-    weather = json.loads(requests.get('http://api.openweathermap.org/data/2.5/forecast',params={
-        'lat': 48.843186,
-        'lon': 2.353233,
-        'appid': '726bacce48baa919814ae45e1306d76c'
-    }).json())['list'][0]
+    # weather = json.loads(requests.get('http://api.openweathermap.org/data/2.5/forecast', params={
+    #     'lat': 48.843186,
+    #     'lon': 2.353233,
+    #     'appid': '726bacce48baa919814ae45e1306d76c'
+    # }).json())['list'][0]
+    weather = {
+        'main': {
+            'temp': 285.15
+        },
+        'weather': {
+            'description': 'Sunny Intervals'
+        }
+    }
     for city in cities:
         city['weather'] = {
             'temperature': weather['main']['temp']-273.15,
