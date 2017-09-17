@@ -61,6 +61,8 @@ class Path {
             let imageURL = tile["image"] as! String
             let type = tile["tag"] as! String
             let mapTile = MapTile(alat: alat, along: along, blat: blat, blong: blong, type: type == "night" ? .Night : .Day)
+            // This will automatically pull the image from cache as it has been previously downloaded as part of FetchData
+            // If any downloads fail, this will fill the gaps
             Server.shared.DownloadImage(url: imageURL) { (image, error) in
                 guard error == nil else {
                     print("Error whilst downloading image", error!)

@@ -110,9 +110,28 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
     }
 
     func getData(withID id : String){
-        sleep(5)
+        sleep(5) // To accomodate for the server database's incosistencies
         print("Requesting with ID \(id)")
         Server.shared.FetchData(with: id) { (data, error) in
+            
+            var currentProgress: Float = 0 {
+                didSet {
+                    if currentProgress == 1 {
+                        DispatchQueue.main.sync {
+                            //Persists the flightPath in the IDs
+                            if var existing = UserDefaults.standard.array(forKey: "flightPaths") {
+                                existing.append(id)
+                                UserDefaults.standard.set(existing, forKey: "flightPaths")
+                            } else {
+                                UserDefaults.standard.set([id], forKey: "flightPaths")
+                            }
+                            
+                            createDialogue(title: "Flight Successfully Created!", message: "Now you just have to launch AiR on the day of your flight.", parentViewController: self, dismissOnCompletion: true)
+                        }
+                    }
+                }
+            }
+            
             guard error == nil else {
                 self.moveCard(direction: .Up)
                 createDialogue(title: "Error getting data for this flight", message: error!, parentViewController: self, dismissOnCompletion: false)
@@ -120,20 +139,30 @@ class CreateFlight: UIViewController, UITextFieldDelegate {
             }
 
             if let progress = data!["progress"] {
+                
+                currentProgress = (progress as! Float) / 2
+                
                 DispatchQueue.main.sync {
-                    self.downloadProgessBar.setProgress((progress as! Float), animated: true)
+                    self.downloadProgessBar.setProgress(currentProgress, animated: true)
                 }
                 
+                // This indicates the initial payload is ready and we now need to download all the images
                 if progress as! Float == 1 {
-                    //Persists the flightPath in the IDs
-                    if var existing = UserDefaults.standard.array(forKey: "flightPaths") {
-                        existing.append(id)
-                        UserDefaults.standard.set(existing, forKey: "flightPaths")
-                    } else {
-                        UserDefaults.standard.set([id], forKey: "flightPaths")
+                    // For each downloaded tile, download it's images
+                    if let tiles = data!["tiles"] as? [[String: Any]] {
+                        for tileID in 1...tiles.count {
+                            let tile = tiles[tileID-1]
+                            let imageURL = tile["image"] as! String
+                            Server.shared.DownloadImage(url: imageURL) { (image, error) in
+                                guard error == nil else {
+                                    print("Error whilst downloading image", error!)
+                                    return
+                                }
+                                currentProgress = 0.5 + ((Float(tileID/tiles.count)) / 2)
+                                DispatchQueue.main.sync { self.downloadProgessBar.setProgress(currentProgress, animated: true) }
+                            }
+                        }
                     }
-                    
-                    createDialogue(title: "Flight Successfully Created!", message: "Now you just have to launch AiR on the day of your flight.", parentViewController: self, dismissOnCompletion: true)
                 }
             }
         }
