@@ -25,7 +25,7 @@ class City {
         self.englishName = englishName
         self.lat = lat
         self.long = long
-        self.position = SCNVector3(x: Float(latLongToWGS84(lat: lat, long: long).0 * scaleConstant), y: Float(latLongToWGS84(lat: lat, long: long).1 * scaleConstant), z: 0.3)
+        self.position = SCNVector3(x: Float(latLongToWGS84(lat: lat, long: long).0 * scaleConstant), y: Float(latLongToWGS84(lat: lat, long: long).1 * scaleConstant), z: 1)
         self.population = population
     }
     
