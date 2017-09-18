@@ -1,0 +1,41 @@
+[
+	{
+		"alat": -0.000676,
+		"along": 0.643565,
+		"blat": -0.000776,
+		"blong": 0.643665,
+		"image": "http://www.godan.info/sites/default/files/old/2015/04/Satellite.jpg",
+		"significantPlaces": [{
+			"name": "Rome",
+			"lat": -0.000677,
+			"long": 0.643566
+			}
+		]
+	},
+ {
+ "alat": -0.000776,
+ "along": 0.643665,
+ "blat": -0.000876,
+ "blong": 0.643765,
+ "image": "http://www.godan.info/sites/default/files/old/2015/04/Satellite.jpg",
+ "significantPlaces": [{
+                       "name": "Citadel",
+                       "lat": -0.000777,
+                       "long": 0.643675
+                       }
+                       ]
+ },
+ {
+ "alat": -0.000876,
+ "along": 0.643765,
+ "blat": -0.000976,
+ "blong": 0.643865,
+ "image": "http://www.godan.info/sites/default/files/old/2015/04/Satellite.jpg",
+ "significantPlaces": [{
+                       "name": "Pope's House",
+                       "lat": -0.000880,
+                       "long": 0.643865
+                       }
+                       ]
+ }
+]
