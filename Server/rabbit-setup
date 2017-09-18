@@ -1,0 +1,4 @@
+rabbitmqctl add_user user password
+rabbitmqctl add_vhost myvhost
+rabbitmqctl set_user_tags user mytag
+rabbitmqctl set_permissions -p myvhost user ".*" ".*" ".*"
