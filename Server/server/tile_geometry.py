@@ -62,7 +62,7 @@ class Tiler:
             (x0-0.5) * ramani_factor * self.zoom,
             (y-0.5) * ramani_factor * self.zoom)
         blat, blong = merc.wgs84_to_lat_long(
-            (x1+0.5) * ramani_factor * self.zoom,
+            (x1-0.5) * ramani_factor * self.zoom,
             (y+0.5) * ramani_factor * self.zoom)
         return alat, along, blat, blong
 
