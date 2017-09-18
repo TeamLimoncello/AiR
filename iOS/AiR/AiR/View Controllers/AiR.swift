@@ -108,6 +108,9 @@ class AiR: UIViewController {
         significantPlaceInfoView.layer.cornerRadius = 16
         significantPlaceInfoView.center = self.sceneView.center
         significantPlaceInfoView.addShadow(intensity: .Ehh)
+        landmarkInfoView.center = view.center
+        landmarkInfoView.layer.cornerRadius = 16
+        landmarkInfoView.addShadow(intensity: .Ehh)
     }
 
     func displayCity(_ place: City){
@@ -131,7 +134,12 @@ class AiR: UIViewController {
             let location = touch.location(in: sceneView)
             let hitTestResults = sceneView.hitTest(location, options: nil)
             for result in hitTestResults {
-                print(result)
+                mapGrid?.landmarkNodes.forEach({ (scene) in
+                    if result.node.parent == scene {
+                        print("TRUEEEE")
+                    }
+                })
+                
                 if let nodeName = result.node.name {
                     print(nodeName)
                     showInformation(nodeID: nodeName)
@@ -181,6 +189,14 @@ class AiR: UIViewController {
 
     @IBAction func landmarkBackPressed(_ sender: Any) {
         landmarkInfoView.removeFromSuperview()
+    }
+    
+    @IBAction func fakeParisButton(_ sender: Any) {
+        displayLandmark(flightPath.landmarks.filter({$0.modelName == "EiffelTower"}).first!)
+    }
+    
+    @IBAction func fakePisaButton(_ sender: Any) {
+        displayLandmark(flightPath.landmarks.filter({$0.modelName == "Pisa"}).first!)
     }
     
     func alterSphereGradient() {

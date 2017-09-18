@@ -26,6 +26,8 @@ public class MapGrid {
     private var altitudeOffset: Double
     private var locationTimer: Timer?
     
+    public var landmarkNodes: [SCNScene] = [SCNScene]()
+    
     init(deviceHeading: Float, path: Path){
         self.tiles = path.tiles
         self.cities = path.cities
@@ -60,7 +62,15 @@ public class MapGrid {
  
      */
     private func addTiles(type: TileType) {
-        mainPlaneNode.childNodes.filter({($0.name?.contains("tile"))!}).forEach({$0.removeFromParentNode()})
+        mainPlaneNode.childNodes.forEach { (node) in
+            if let name = node.name {
+                if name.contains("tile") {
+                    node.removeFromParentNode()
+                }
+            }
+        }
+//        mainPlaneNode.childNodes.filter({($0.name?.contains("tile"))!}).forEach({$0.removeFromParentNode()})
+//
         tiles.filter({$0.tileType == type}).forEach({
             let x = $0.origin.x + ($0.size.w/2)
             let y = -$0.origin.y + ($0.size.h/2)
@@ -110,10 +120,12 @@ public class MapGrid {
         for landmark in landmarks {
             if let modelName = landmark.modelName, let landmarkModel = SCNScene(named: "3dmodels/\(modelName).scn"){
                 
+                
+                
                 let tempNode = SCNNode()
                 tempNode.addChildNode(landmarkModel.rootNode)
                 tempNode.scale = SCNVector3(scaleConstant, scaleConstant, scaleConstant)
-                tempNode.name = "landmark-\(landmark.name)"
+                tempNode.position = landmark.position
                 
                 mainPlaneNode.addChildNode(tempNode)
             } else {
