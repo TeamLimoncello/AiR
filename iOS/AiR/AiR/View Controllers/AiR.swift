@@ -48,11 +48,8 @@ class AiR: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         toggleSphereView.layer.cornerRadius = 8
-        //sceneView.showsStatistics = true
         let scene = SCNScene()
         sceneView.scene = scene
-        //sceneView.autoenablesDefaultLighting = true
-        //sceneView.debugOptions = [.showConstraints, .showLightExtents, ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         sceneView.isJitteringEnabled = true
     }
 

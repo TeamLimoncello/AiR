@@ -119,12 +119,12 @@ class Intro: UIViewController {
     func apply(state: AiRState) {
         switch state {
         case .FlightReady:
+            // Flight ready to experience!
             flightMgmtButtonsParentView.isHidden = true
             destinationLabel.isHidden = false
             destinationLabel.text = "\(closestFlight?.destination ?? "San Francisco")"
             dateLabel.isHidden = false
             dateLabel.text = "Ready to fly!"
-            // Flight ready to experience!
             planeButton.isHidden = false
             planeButton.isEnabled = true
             planeButton.addShadow(intensity: .ChristianBale)
