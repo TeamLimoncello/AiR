@@ -7,13 +7,26 @@ import mercator as merc
 
 ramani_factor = 1.1943285667419434*256
 
-def frange(a,b,step=1.0):
+
+def frange(a,b=None,step=1.0):
+    """
+    An enumerator for floats with a fixed difference.
+    :param a: The lower bound, or upper bound if no b is given (and so the lower bound is set to zero).
+    :param b: The upper bound.
+    :param step: The difference between terms of the enumerator.
+    """
+    if b is None:
+        b = a
+        a = 0.0
     while a < b:
         yield a
         a += step
 
 
 class Tiler:
+    """
+    A class for a tile fetcher.
+    """
 
     def __init__(self, zoom=16, radius=6, params='LAYERS=ddl.s2cloudless3857&MAXCC=20'):
         self.zoom = zoom
@@ -21,10 +34,17 @@ class Tiler:
         self.params = params
 
     def serialize(self):
+        """
+        :return: The parameters to the constructor.
+        """
         return self.zoom, self.radius, self.params
 
     def generate_points(self, path):
-        # path :: [(time, lat, long, alt)]
+        """
+        Get the map tile coordinates for a given path.
+        :param path: A flight path: [(time, lat, long, alt)]
+        :return: A set of points.
+        """
         points = set()
         for pos in path.rstrip().split('\n'):
             time, lat, long, alt = parse_csv_line(pos)
@@ -49,6 +69,12 @@ class Tiler:
         return points
 
     def get_bounding_box(self, x, y):
+        """
+        Get the bounding box of a map tile, given the coordinates of its centre.
+        :param x: The x-coord of the tile's centre
+        :param y: The y-coord of the tile's centre
+        :return: A ramani-API-formatted bounding box.
+        """
         return "{},{},{},{}".format(
             (x-0.5) * ramani_factor * self.zoom,
             (y-0.5) * ramani_factor * self.zoom,
@@ -57,6 +83,11 @@ class Tiler:
         )
 
     def mercator_bounds(self, group):
+        """
+        Get the mercator bounds of a group
+        :param group: (min x, max x, y)
+        :return: (min lat, min long, max lat, max long)
+        """
         x0, x1, y = group
         alat, along = merc.wgs84_to_lat_long(
             (x0-0.5) * ramani_factor * self.zoom,
@@ -67,6 +98,11 @@ class Tiler:
         return alat, along, blat, blong
 
     def fetch_group_image(self, group):
+        """
+        Get the image for a group, by stitching many images together.
+        :param group: (min x, max x, y)
+        :return: The image object with all the tiles fetched stitched together.
+        """
         x0, x1, y = group
         result = Image.new('RGB', (256*int(x1-x0), 256))
         for i, x in enumerate(frange(x0, x1)):
@@ -79,6 +115,12 @@ class Tiler:
         return result
 
     def zoom_by(self, factor, points):
+        """
+        Zoom a tile by a factor, adjusting points at the same time.
+        :param factor: The factor to zoom by.
+        :param points: The points relative to the old coordinate system.
+        :return: The points, now relative to the new coordinate system.
+        """
         self.zoom /= factor
         self.radius *= factor
         return [(x, y) for point in points
@@ -94,16 +136,31 @@ class Tiler:
 
 
 def parse_csv_line(line):
+    """
+    Convert a CSV path entry to a tuple with numeric data types.
+    :param line: The CSV entry as a string.
+    :return: A tuple (time,lat,long,alt).
+    """
     row = line.split(',')
     return int(row[0]), float(row[1]), float(row[2]), int(row[3])
 
 
 def sort_points(points):
+    """
+    Sort some points, by y then by x.
+    :param points:
+    :return:
+    """
     return sorted(points, key=lambda pair: tuple(reversed(pair)))
 
 
 # grouped : [xmin, xmax+1, y]
 def group_points(points):
+    """
+    Group some points by shared x.
+    :param points: A collection of points [(x,y)].
+    :return: A list of points [(min x, max x, y)].
+    """
     if not points: return []
     sorted_points = sort_points(points)
     grouped = [[sorted_points[0][0], sorted_points[0][0]+1, sorted_points[0][1]]]

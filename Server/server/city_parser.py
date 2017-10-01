@@ -1,7 +1,12 @@
 import json
 import re
 
+
 def main():
+    """
+        Convert the OSM-formatted JSON file `cities.json` into AiR-specific `parsed-ctiies.json`, discarding invalid
+        data and parsing populations.
+    """
     json_data = json.loads(open('cities.json').read())
     open('cities.json').close()
     results=[]
@@ -24,7 +29,6 @@ def main():
         })
     result_file = open('parsed_cities.json', 'w+')
     result_file.write(json.dumps(results))
-
 
 
 if __name__ == '__main__':
