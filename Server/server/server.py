@@ -46,13 +46,19 @@ celery = make_celery(app)
 @app.route('/api/v1/')
 def foo():
     obj = {
-        'version': '0.2',
+        'version': '1.0',
     }
     return send_json(obj)
 
 
 @app.route('/api/v1/register', methods=['POST'])
 def register():
+    """
+    Register a flight.
+    POST data: date (YYYY-MM-DD)
+               flightNumber (IATA AAA1111[a])
+    :return: The passenger/device's ID.
+    """
     try:
         raw_date = request.form['date']
         datetime.strptime(raw_date, '%Y-%m-%d')
@@ -82,6 +88,22 @@ def register():
 
 @app.route('/api/v1/fetch/<ref_id>')
 def fetch(ref_id):
+    """
+    Get the progress of a given ID.
+    :param ref_id: The passenger/device ID.
+    :return: 403 if flight unrecognised.
+             404 if flight is not a valid flight.
+             503 if the data is not all ready, 200 if data is, with following content as JSON:
+                meta: flightCode,date,departureTime,origin,originCode,originLat,originLong,destination,destinationCode,
+                      destinationLat,destinationLong
+                path: flightpath as CSV
+                landmarks: [(name,lat,long,model_name,description,height,established)]
+                cities: cites with their weather.
+                progress: a number from 0 to 1, where 1 means all ready (status 200), 0 means nothing ready (and so no
+                          other fields are present), all else meaning tiles are still loading (status 503).
+                tiles: [(alat,along,blat,blong,image,tag)]. If progress != 200, there are still more to load.
+
+    """
     db = get_db()
     c = db.execute('SELECT flightIDs.flightCode AS flightCode, date, '
                    'tiles, loaded, invalid, path, origin, destination, '
@@ -219,6 +241,12 @@ def fetch(ref_id):
 
 @app.route('/api/v1/tile/<ref_id>/<filename>')
 def serve_image(ref_id, filename):
+    """
+    Serve a requested image, if it is assigned to the given user.
+    :param ref_id: The passenger/device ID.
+    :param filename: The image file name.
+    :return: The image as a response.
+    """
     db = get_db()
     c = db.execute('SELECT flightCode, date FROM flightIDs WHERE id=?',
                    [ref_id])
@@ -233,21 +261,44 @@ def serve_image(ref_id, filename):
 
 @app.route('/api/v1/reload/<ref_id>')
 def reload(ref_id):
+    """
+    Should trigger reload of weather data; as yet does nothing.
+    :param ref_id: The passenger/device ID.
+    :return: Success code, no meaningful content.
+    """
     return 'reload %s' % ref_id
 
 
 @app.route('/api/v1/refetch/<ref_id>')
 def refetch(ref_id):
+    """
+
+    Should fetch reloaded weather data; as yet does nothing.
+    :param ref_id: The passenger/device ID.
+    :return: Success code, no meaningful content.
+    """
     return
 
 
 def send_json(data, code=200):
+    """
+    Send a response as JSON.
+    :param data: A JSON-serialisable object.
+    :param code: A status code, default 200 Success.
+    :return: The response, json-encoded and with a JSON MIME type.
+    """
     return Response(response=json.dumps(data),
                     status=code,
                     mimetype="application/json")
 
 
 def send_string(string, code=200):
+    """
+    Send a response as a string.
+    :param string: A string to send.
+    :param code: A status code, default 200 Success.
+    :return: The response, with a plain text MIME type.
+    """
     return Response(response=string,
                     status=code,
                     mimetype="text/plain")
@@ -270,6 +321,9 @@ def get_db():
 
 
 def init_db():
+    """
+    Set up the database, clearing any data and loading the data for cities.
+    """
     db = get_db()
     with app.open_resource('schema.sql', mode='r') as f:
         db.cursor().executescript(f.read())
@@ -308,6 +362,11 @@ def close_db(error):
 
 @celery.task
 def load_data(flight_id):
+    """
+    Cache the data, and then start to load the images.
+    :param flight_id:
+    :return:
+    """
     with connect_db() as db:
         path = flight_data.load_flight(db, flight_id)
 
@@ -342,6 +401,11 @@ def load_data(flight_id):
 
 
 def get_weather(cities):
+    """
+    Get the weather data for each city.
+    :param cities: A list of city objects.
+    :return: A list of city objects, with the weather set.
+    """
     # weather = json.loads(requests.get('http://api.openweathermap.org/data/2.5/forecast', params={
     #     'lat': 48.843186,
     #     'lon': 2.353233,
@@ -363,9 +427,15 @@ def get_weather(cities):
     return cities
 
 
-
 @celery.task
 def load_group(flight_id, group, tiling, tag):
+    """
+    Load the imagery for a line of tiles.
+    :param flight_id: The flight ID to store the imagery inder.
+    :param group: The group of images: (x0,x1,y)
+    :param tiling: The parameters of the tiler, decomposed to allow for serialisation.
+    :param tag: A tag for the images.
+    """
     db = get_db()
     tiler = tile_geometry.Tiler(*tiling)
     bounds = tiler.mercator_bounds(group)
@@ -382,6 +452,17 @@ def load_group(flight_id, group, tiling, tag):
 
 
 def save_image(db, flight_id, image, alat, along, blat, blong, tag):
+    """
+    Save an image file for a map tile.
+    :param db: An open database connection.
+    :param flight_id: The flight ID to attribute the imagery to.
+    :param image: The image itself.
+    :param alat: The min latitude of the image.
+    :param along: The min longitude of the image.
+    :param blat: The max latitude of the image.
+    :param blong: The max longitude of the image.
+    :param tag: A tag for the image.
+    """
     while True:
         file = str(secrets.token_urlsafe(24))
         app.logger.info(str(id))
