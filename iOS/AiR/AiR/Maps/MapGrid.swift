@@ -69,8 +69,6 @@ public class MapGrid {
                 }
             }
         }
-//        mainPlaneNode.childNodes.filter({($0.name?.contains("tile"))!}).forEach({$0.removeFromParentNode()})
-//
         tiles.filter({$0.tileType == type}).forEach({
             let x = $0.origin.x + ($0.size.w/2)
             let y = -$0.origin.y + ($0.size.h/2)
@@ -119,9 +117,6 @@ public class MapGrid {
     private func addLandmarks(){
         for landmark in landmarks {
             if let modelName = landmark.modelName, let landmarkModel = SCNScene(named: "3dmodels/\(modelName).scn"){
-                
-                
-                
                 let tempNode = SCNNode()
                 tempNode.addChildNode(landmarkModel.rootNode)
                 tempNode.scale = SCNVector3(scaleConstant, scaleConstant, scaleConstant)
@@ -133,7 +128,6 @@ public class MapGrid {
             }
         }
     }
-    
     
     //Start Flights
     func startFlight(){
@@ -155,24 +149,4 @@ public class MapGrid {
             }
         }
     }
-    
-//    func updateLocation(_ location: CLLocation){
-//        self.lastKnownDeviceLocation = location
-//        self.deviceLocationUpdateTime = Date()
-//        let lat = location.coordinate.latitude
-//        let long = location.coordinate.longitude
-//
-//        let tilesStartCoordinate = tiles[0].origin
-//        let distanceBetweenLat = -lat.distance(to: tilesStartCoordinate.0)
-//        let distanceBetweenLong = -long.distance(to: tilesStartCoordinate.1)
-//
-//        mainPlaneNode.position.x = Float(distanceBetweenLat)
-//        mainPlaneNode.position.z = Float(distanceBetweenLong)
-//
-//        /*
-//        print("Device is at: \(lat, long) and firstTileIsAt \(tiles[0].startCoordinate)" )
-//        print("Distance:", distanceBetweenLat, distanceBetweenLong)
-//        print(mainPlaneNode.position)
-//         */
-//    }
 }
