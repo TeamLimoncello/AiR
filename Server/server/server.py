@@ -22,8 +22,14 @@ app.config.update(
     CELERY_RESULT_BACKEND='rpc://'
 )
 
-#comment comment comment
+
 def make_celery(app):
+    """
+    Make the celery instance with the correct configuration.
+    :param app: The Flask App instance
+    :return: The celery instance created
+    """
+
     celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
                     broker=app.config['CELERY_BROKER_URL'])
     celery.conf.update(app.config)
@@ -39,18 +45,22 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
-#comment
+#Create the celery instance
 celery = make_celery(app)
 
 
 @app.route('/api/v1/')
 def foo():
+    '''
+    Metadata about the API.
+    :return: The current API version
+    '''
     obj = {
         'version': '1.0',
     }
     return send_json(obj)
 
-#comment
+
 @app.route('/api/v1/register', methods=['POST'])
 def register():
     """
