@@ -2,7 +2,6 @@ from datetime import datetime
 import re
 import secrets
 
-import requests
 from celery import Celery, group as celery_group
 from flask import Flask, Response, request, g
 import json
@@ -12,7 +11,6 @@ from PIL import Image
 from io import BytesIO
 
 from server import flight_data, tile_geometry
-from server.tile_geometry import frange
 
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/api/v1'
