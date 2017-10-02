@@ -22,7 +22,7 @@ app.config.update(
     CELERY_RESULT_BACKEND='rpc://'
 )
 
-
+#comment comment comment
 def make_celery(app):
     celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
                     broker=app.config['CELERY_BROKER_URL'])
@@ -39,7 +39,7 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
-
+#comment
 celery = make_celery(app)
 
 
@@ -50,7 +50,7 @@ def foo():
     }
     return send_json(obj)
 
-
+#comment
 @app.route('/api/v1/register', methods=['POST'])
 def register():
     """
