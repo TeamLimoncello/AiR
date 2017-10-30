@@ -12,7 +12,7 @@ fa_username = 'jaylees'
 
 def fa_get_request(link, params):
     """
-    Perform a GET request to FlightAware
+    Perform a GET request to the FlightAware API, using the credentials at the top of the file
     :param link: The URL to request, excluding the initial 'https://flightxml.flightaware.com/json/FlightXML3/'.
     :param params: A dictionary of arguments to send to the server
     :return: The JSON response as returned by the server.
@@ -28,7 +28,7 @@ def fa_get_request(link, params):
 
 def openflights_post_request(data):
     """
-    Perform a GET request to OpenFlights
+    Perform a GET request to the OpenFlights API
     :param data:  The URL to request, excluding the initial 'https://openflights.org/php/apsearch.php'
     :return: The JSON response as returned by the server.
     :raises IOError: The error code and text if a non-2xx response is returned by the server
