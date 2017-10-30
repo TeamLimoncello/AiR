@@ -16,7 +16,7 @@ def lat_long_to_wgs84(lat, long, isDeg=True):
        lat   - Latitude of the point.
        long  - Longitude of the point.
        isDeg - Whether the given latitude and longitude are in degrees. If True
-               (default) it is assumed they are in radians.
+               (default) it is assumed they are in degrees, otherwise they are in radians.
 
      Returns:
        x,y - A 2-element tuple with the World Mercator x and y values.
