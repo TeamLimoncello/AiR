@@ -2,7 +2,7 @@
 
 AiR is a travel app for iOS devices developed by Bristol based development team Limoncello. It aims to use Augmented Reality to take flyers out of their seats and into the sky. Data from the ESA's Copernicus Satellite program is used to display an interactive projection of the world to the user, letting them see information about the cities and landmarks they pass over during their flight, without the disruptions of clouds or the plane getting in the way. The app came out of the team's participation in the Copernicus Space App Camp organised by the ESA and supported by AZO and RAMANI.
 
-![Screenshot](https://scontent-amt2-1.xx.fbcdn.net/v/t35.0-12/21845430_1599599636726957_1030835351_o.jpg?oh=0de6fe7119517f812f2ed1adbac40119&oe=59C07E7D)
+![Screenshot](screen.jpg)
 
 The project consists of an iOS app written in Swift using [ARKit](https://developer.apple.com/arkit/), plus a backend written in python. The stack consists of a [Flask](http://flask.pocoo.org/docs/0.12/) server, running with [Celery](http://docs.celeryproject.org/en/latest/index.html) to handle the distrubuted processing of data and a [RabbitMQ](https://www.rabbitmq.com/) messaging service backing up Celery. The Flask Application is built around a SQLITE3 database.
 
